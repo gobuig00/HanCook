@@ -53,3 +53,6 @@
 1. HanCook
 2. KimchiKitchin
 3. CookGPT
+
+### 프로젝트 이름 선정
+- HanCook으로 선정됨
