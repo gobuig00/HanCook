@@ -85,3 +85,8 @@
 ## 1차 시스템 아키텍처
 ![HanCook drawio](https://user-images.githubusercontent.com/91431779/223962651-b9a2725a-148a-44ce-81e6-596ddadc0303.png)
 
+# 기획 5일차
+- 피그마로 메인페이지, 카메라 촬영 화면 제작
+
+
+
