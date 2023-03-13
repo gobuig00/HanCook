@@ -99,9 +99,13 @@
 # 다음 주 계획
 - DB 설계
 
-# api 명세서 기획
+# 기획 6일차 (03/13)
+
+## api 명세서 기획
 1. 회원기능
 2. 장바구니
 3. 레시피 검색
 ![image.png](./image.png)
 
+## 와이어프레임 작성
+![wireframe](./wireframe1.PNG)
