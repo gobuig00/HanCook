@@ -118,9 +118,10 @@
 7. 재료 상세페이지
 
 # ERD 설계
+![image](/uploads/e4f69dd62299606af3a326271853ca29/image.png)
 - User 테이블
 - Cart 테이블
-
+- FoodRecord 테이블
 # 기획 7일차 (3/14)
 
 ## 와이어프레임 설계 완료
