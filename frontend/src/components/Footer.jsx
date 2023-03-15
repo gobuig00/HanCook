@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import CameraModule from './CameraModule';
+import CamModal from './CamModal';
 
 export default function Footer() {
     let [isVisible, setIsVisible] = useState(false);
+    let [isVideoStart, setIsVideoStart] = useState(false);
+
     const toggleModal = () => {
         setIsVisible(!isVisible);
+        setIsVideoStart(!isVideoStart);
     };
 
     return (
@@ -17,7 +20,7 @@ export default function Footer() {
             </button>
 
             {isVisible && (
-                <CameraModule isVisible = {isVisible} toggleModal={toggleModal}/>
+                <CamModal toggleModal={toggleModal} isVideoStart={isVideoStart} />
             )}
         </div>
     );
