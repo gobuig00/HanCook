@@ -1,5 +1,6 @@
 package com.wooseung.hancook.api.request;
 
+import com.wooseung.hancook.db.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
