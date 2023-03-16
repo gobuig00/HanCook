@@ -39,15 +39,34 @@ export default function Camera({isVideoStart}) {
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
       const dataUrl = canvas.toDataURL('image/png')
       // console.log(dataUrl)
-      axiosFunc(dataUrl)
+      imageMaker(dataUrl);
     }
   };
-  const axiosFunc = (dataUrl) => {
+  const imageMaker = (dataUrl) => {
+    const blob = new Blob([dataUrl], {type: 'image/png'});
+    const imageUrl = URL.createObjectURL(blob);
+    const img = new Image();
+    img.src = imageUrl;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+      canvas.toBlob(blob => {
+        const imageFile = new File([blob], 'image.png', { type: 'image/png' });
+        axiosFunc(imageFile)
+      }, 'image/png', 1);
+    };
+    
+  };
+
+  const axiosFunc = (imageFile) => {
     const apiEndpointUrl = 'https://18c2a61d-b6aa-4581-b1df-02f9c7337ce0.api.kr-central-1.kakaoi.io/ai/vision/4906cb06cc5f42858a61ccbf10bd0f74';
     const apiKey = 'cc044e06145b8c458fba2fb91ed7629f';
 
     const formData = new FormData();
-    formData.append('image', dataUrl);
+    formData.append('image', imageFile);
 
     const headers = {
       'Content-Type': 'multipart/form-data',
