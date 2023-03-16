@@ -50,5 +50,20 @@ public class FoodRecord {
     @Column(nullable = false, name = "food_date")
     LocalDateTime foodDate;
 
+    public FoodRecord(User user, String foodName, int calo, int carbs, int protein, int fat, int salt, int ch, int sugar, LocalDateTime foodDate) {
+        this.user = user;
+        this.foodName = foodName;
+        this.calo = calo;
+        this.carbs = carbs;
+        this.protein = protein;
+        this.fat = fat;
+        this.salt = salt;
+        this.ch = ch;
+        this.sugar = sugar;
+        this.foodDate = foodDate;
+    }
 
+    public FoodRecord(User user, String foodName, int calo, int carbs, int protein, int fat, int salt, int ch, int sugar) {
+
+    }
 }
