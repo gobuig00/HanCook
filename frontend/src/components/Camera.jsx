@@ -76,7 +76,7 @@ export default function Camera({isVideoStart}) {
       <div>
         <video ref={videoRef} />
       </div>
-      
+
       <div>
         <button type="button" onClick={getCapture}> capture </button>
         <canvas ref={canvasRef} style={{display: 'none'}} />

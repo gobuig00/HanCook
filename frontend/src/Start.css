@@ -1,6 +1,6 @@
 .start {
   background-color: #F1F7EB;
-  height: 100vh;
+  height: 1500px;
 }
 
 .start-header {
@@ -10,19 +10,82 @@
     rgba(241, 247, 235, 0.6) 30%,
     rgba(241, 247, 235, 0.7) 60%,
     rgba(241, 247, 235, 1) 100%
-  ), url('./image/fullcourse.jpg');
+  ), url('./images/fullcourse.jpg');
   background-size: cover;
   width: 100%;
   height: 66vw;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 50vw;
 }
 
 .start-logo {
   height: 28.5vw;
   width: 95vw;
 }
+
+.take-picture-image {
+  width: 100%;
+  height: 66vw;
+}
+
+take-picture-image
+
+.main-text-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'semibolditalic';
+}
+
+.main-text-lineheight {
+  line-height: 28px;
+  margin-bottom: 0px;
+}
+
+.main-small-text-container {
+  color: #868686;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-smaill-text-lineheight {
+  line-height: 20px;
+  margin-bottom: 0px;
+}
+
+.orange-text {
+  color: #FD964B;
+  font-size: 32px;
+}
+
+.black-text {
+  color: black;
+  font-size: 28px;
+}
+
+.green-text {
+  color: #69B550;
+  font-size: 32px;
+}
+
+footer {
+  position: fixed;
+  margin-top: auto;
+  bottom: 15px;
+  right: 2.5vw;
+  left: 2.5vw;
+}
+
+.get-started-button {
+  background-color: #69B550;
+  border-color: #69B550;
+  width: 95vw;
+}
+
 
 /* @media (prefers-reduced-motion: no-preference) {
   .App-logo {
