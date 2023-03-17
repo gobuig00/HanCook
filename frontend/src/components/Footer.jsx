@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import CamModal from './CamModal';
+import './Footer.css';
 
 export default function Footer() {
     let [isVisible, setIsVisible] = useState(false);
