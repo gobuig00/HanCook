@@ -4,7 +4,7 @@ import axios from 'axios';
 export default function Camera({isVideoStart}) {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  // const [choice, setChoice] = useState('food')
+  const [choice, setChoice] = useState('food')
 
   useEffect(() => {
     getVideo();
@@ -26,9 +26,9 @@ export default function Camera({isVideoStart}) {
       console.error(err);
     }
   };
-  // const clickRadioBtn = (btnName) => {
-  //   setChoice(btnName)
-  // };
+  const handleClickRadioBtn = (btnName) => {
+    setChoice(btnName)
+  };
 
   const getCapture = () => {
     const canvas = canvasRef.current;
@@ -90,13 +90,13 @@ export default function Camera({isVideoStart}) {
       <div>
         <video ref={videoRef} />
       </div>
-      {/* <div className='radioBtnGroup'>
-        <input type="radio" id="food" checked={choice==='food'} onClick={()=> clickRadioBtn('food')}/>
+      <div className='radioBtnGroup'>
+        <input type="radio" id="food" checked={choice==='food'} onClick={()=> handleClickRadioBtn('food')}/>
         <label htmlFor="food">food</label>
 
-        <input type="radio" id="text" checked={choice==='text'} onClick={()=> clickRadioBtn('text')}/>
+        <input type="radio" id="text" checked={choice==='text'} onClick={()=> handleClickRadioBtn('text')}/>
         <label htmlFor="text">text</label>
-      </div> */}
+      </div>
       <div>
         <button type="button" onClick={getCapture}> capture </button>
         <canvas ref={canvasRef} style={{display: 'none'}} />
