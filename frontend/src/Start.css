@@ -1,0 +1,44 @@
+.start {
+  background-color: #F1F7EB;
+  height: 100vh;
+}
+
+.start-header {
+  background-image: linear-gradient(
+    rgba(241, 247, 235, 0.23) 0%,
+    rgba(241, 247, 235, 0.5) 10%,
+    rgba(241, 247, 235, 0.6) 30%,
+    rgba(241, 247, 235, 0.7) 60%,
+    rgba(241, 247, 235, 1) 100%
+  ), url('./image/fullcourse.jpg');
+  background-size: cover;
+  width: 100%;
+  height: 66vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.start-logo {
+  height: 28.5vw;
+  width: 95vw;
+}
+
+/* @media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+} */
+
+/* @keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} */
+
+
+
+
