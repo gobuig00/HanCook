@@ -1,9 +1,9 @@
-
+// import Footer from './components/Footer'
 
 function Main() {
   return (
     <div>
-        <button>Camera</button>
+        {/* <Footer/> */}
     </div>
   );
 }
