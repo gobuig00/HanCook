@@ -1,4 +1,4 @@
-package com.wooseung.hancook.service;
+package com.wooseung.hancook.api.service;
 
 import com.wooseung.hancook.api.request.FoodRecordRequestDto;
 import com.wooseung.hancook.common.exception.ApiException;
@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import java.time.LocalDateTime;
-
-import static com.wooseung.hancook.db.entity.GenderEnum.MAN;
 
 @Service("foodRecordService")
 @RequiredArgsConstructor

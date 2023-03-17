@@ -1,4 +1,4 @@
-package com.wooseung.hancook.service;
+package com.wooseung.hancook.api.service;
 
 import com.wooseung.hancook.api.request.UserJoinRequestDto;
 import com.wooseung.hancook.api.request.UserLoginRequestDto;
