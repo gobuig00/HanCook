@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
@@ -24,6 +26,7 @@ export default function login() {
             if (response.status === 200) {
                 // 로그인 성공 시 할 일
                 console.log('로그인 성공', response.data);
+                navigate('/main');
             } else {
                 // 로그인 실패 시 할 일
                 console.log('로그인 실패', response.data);
@@ -36,7 +39,7 @@ export default function login() {
 
     return (
         <div className="login-container">
-            <h1>로그인</h1>
+            <h1>Sign In</h1>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="email">Email</label>
                 <input
