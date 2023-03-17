@@ -37,8 +37,16 @@ dependencies {
 
     implementation("com.google.guava:guava:29.0-jre")
     annotationProcessor("com.google.guava:guava:29.0-jre")
+
     // Oauth2
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    // Spring Web
+    implementation 'org.springframework:spring-web:5.3.14'
+
+    // OkHttp
+    implementation 'com.squareup.okhttp3:okhttp:4.9.2'
+
 }
 
 tasks.named('test') {
