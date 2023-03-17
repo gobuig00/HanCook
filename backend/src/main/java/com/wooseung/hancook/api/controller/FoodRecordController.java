@@ -3,7 +3,7 @@ package com.wooseung.hancook.api.controller;
 import com.wooseung.hancook.api.request.FoodRecordRequestDto;
 import com.wooseung.hancook.api.response.BaseResponseBody;
 import com.wooseung.hancook.common.auth.UserDetails;
-import com.wooseung.hancook.service.FoodRecordService;
+import com.wooseung.hancook.api.service.FoodRecordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

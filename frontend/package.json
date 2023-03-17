@@ -1,4 +1,5 @@
 {
+  "proxy": "https://18c2a61d-b6aa-4581-b1df-02f9c7337ce0.api.kr-central-1.kakaoi.io/ai/vision/4906cb06cc5f42858a61ccbf10bd0f74",
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
