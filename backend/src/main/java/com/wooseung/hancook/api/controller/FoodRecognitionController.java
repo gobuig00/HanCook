@@ -1,6 +1,6 @@
 package com.wooseung.hancook.api.controller;
 
-import com.wooseung.hancook.service.FoodRecognitionService;
+import com.wooseung.hancook.api.service.FoodRecognitionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
