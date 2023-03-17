@@ -1,4 +1,4 @@
-package com.wooseung.hancook.service;
+package com.wooseung.hancook.api.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
