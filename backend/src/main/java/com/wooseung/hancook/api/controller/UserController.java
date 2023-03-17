@@ -6,7 +6,7 @@ import com.wooseung.hancook.api.request.UserLoginRequestDto;
 import com.wooseung.hancook.api.response.BaseResponseBody;
 import com.wooseung.hancook.api.response.UserLoginResponseDto;
 import com.wooseung.hancook.common.auth.UserDetails;
-import com.wooseung.hancook.service.UserService;
+import com.wooseung.hancook.api.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.wooseung.hancook.service;
+package com.wooseung.hancook.api.service;
 
 
 import com.wooseung.hancook.api.request.UserJoinRequestDto;
@@ -20,7 +20,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import static com.wooseung.hancook.db.entity.UserRoleEnum.ADMIN;
-import static com.wooseung.hancook.db.entity.UserRoleEnum.USER;
 
 
 @Service("userService")
