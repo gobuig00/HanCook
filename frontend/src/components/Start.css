@@ -10,7 +10,7 @@
     rgba(241, 247, 235, 0.6) 30%,
     rgba(241, 247, 235, 0.7) 60%,
     rgba(241, 247, 235, 1) 100%
-  ), url('./images/fullcourse.jpg');
+  ), url('../images/fullcourse.jpg');
   background-size: cover;
   width: 100%;
   height: 66vw;
