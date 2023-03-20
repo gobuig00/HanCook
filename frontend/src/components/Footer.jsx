@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CamModal from './CamModal';
+import CamModal from './Camera/CamModal';
 import './Footer.css';
 
 export default function Footer() {
