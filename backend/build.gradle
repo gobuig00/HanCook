@@ -46,7 +46,8 @@ dependencies {
 
     // OkHttp
     implementation 'com.squareup.okhttp3:okhttp:4.9.2'
-
+    //JSoup
+    implementation 'org.jsoup:jsoup:1.13.1'
 }
 
 tasks.named('test') {
