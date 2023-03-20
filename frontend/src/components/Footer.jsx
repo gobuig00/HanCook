@@ -1,28 +1,17 @@
-import React, { useState } from 'react';
-import CamModal from './Camera/CamModal';
+import React from 'react';
+
 import './Footer.css';
 
-export default function Footer() {
-    let [isVisible, setIsVisible] = useState(false);
-    let [isVideoStart, setIsVideoStart] = useState(false);
-
-    const toggleModal = () => {
-        setIsVisible(!isVisible);
-        setIsVideoStart(!isVideoStart);
-    };
-
+export default function Footer({ toggleModal }) {
+    
     return (
         <div className='footer'>
             <button
-                className='buttonToCamera'
+                className='Camera-button'
                 onClick={toggleModal}
             >
                 Camera
             </button>
-
-            {isVisible && (
-                <CamModal toggleModal={toggleModal} isVideoStart={isVideoStart} />
-            )}
         </div>
     );
 }
