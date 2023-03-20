@@ -1,0 +1,22 @@
+.main-logo {
+    width: 52%;
+
+}
+.dish-categories {
+    font-family: "semibold";
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: #4d820e;
+}
+
+.main-title{
+    font-family: "bold";
+    color: #4d820e;
+}
+
+.more-button{
+    background-color: #69B550;
+    border-color: #69B550;
+    width: 90vw;
+}
