@@ -8,11 +8,11 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MartResponseDto {
+public class CrawlingResponseDto {
 
 
-       List<MartPriceResponseDto> homeplus;
-       List<MartPriceResponseDto> emart;
-       List<MartPriceResponseDto> lotte;
+       List<CrawlingPriceResponseDto> homeplus;
+       List<CrawlingPriceResponseDto> emart;
+       List<CrawlingPriceResponseDto> lotte;
 
 }
