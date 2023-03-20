@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { React, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -31,7 +31,7 @@ export default function SignUp() {
         try {
             const response = await axios.post("http://localhost:8080/user/join", {
                 email,
-                passowrd,
+                password,
                 name,
                 gender,
             });
