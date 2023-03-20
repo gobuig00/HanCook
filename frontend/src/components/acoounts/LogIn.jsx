@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { React, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-export default function login() {
+export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -20,7 +20,7 @@ export default function login() {
         try {
             const response = await axios.post("http://localhost:8080/user/login", {
                 email,
-                passowrd,
+                password,
             });
 
             if (response.status === 200) {
