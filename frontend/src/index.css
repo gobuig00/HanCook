@@ -8,6 +8,16 @@
   src: url("./fonts/Poppins-SemiBoldItalic.ttf");
 }
 
+@font-face {
+  font-family: "bolditalic";
+  src: url("./fonts/Poppins-BoldItalic.ttf");
+}
+
+@font-face {
+  font-family: "bold";
+  src: url("./fonts/Poppins-Bold.ttf");
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
