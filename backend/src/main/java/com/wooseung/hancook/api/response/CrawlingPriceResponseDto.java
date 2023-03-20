@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MartPriceResponseDto {
+public class CrawlingPriceResponseDto {
     String ingreName;
     String price;
 
