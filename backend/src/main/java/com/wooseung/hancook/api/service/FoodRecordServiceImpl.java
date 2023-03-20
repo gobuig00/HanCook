@@ -22,9 +22,10 @@ public class FoodRecordServiceImpl implements FoodRecordService {
 
     private final FoodRecordRepository foodRecordRepository;
     private final UserRepository userRepository;
+
     @Override
     @Transactional
-    public void insertFoodRecord(FoodRecordRequestDto foodRecordRequestDto,String email) {
+    public void insertFoodRecord(FoodRecordRequestDto foodRecordRequestDto, String email) {
         String foodName = foodRecordRequestDto.getFoodName();
         int calo = foodRecordRequestDto.getCalo();
         int carbs = foodRecordRequestDto.getCarbs();
@@ -37,7 +38,7 @@ public class FoodRecordServiceImpl implements FoodRecordService {
 
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION));
-        FoodRecord foodRecord = new FoodRecord(user, foodName, calo, carbs, protein, fat, salt, ch, sugar,date);
+        FoodRecord foodRecord = new FoodRecord(user, foodName, calo, carbs, protein, fat, salt, ch, sugar, date);
         foodRecordRepository.save(foodRecord);
     }
 }
