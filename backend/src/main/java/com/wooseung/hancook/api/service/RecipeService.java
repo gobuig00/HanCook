@@ -10,6 +10,8 @@ import java.util.List;
 public interface RecipeService {
 //    List<RecipeResponseDto> getRecipeByVeg(String category);
 
+    List<RecipeResponseDto> getRandomRecipe();
+
     RecipeResponseDto getRecipeById(Long recipeId);
 
     List<RecipeResponseDto> getRecipeByIngredient(List<String> ingredient);
@@ -17,4 +19,5 @@ public interface RecipeService {
     List<ComponentResponseDto> getIngredientByRecipeId(Long recipeId);
 
     List<ProcessResponseDto> getProcessByRecipeId(Long recipeId);
+
 }
