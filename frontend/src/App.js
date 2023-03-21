@@ -4,6 +4,7 @@ import Start from './components/Start';
 import Main from './components/Main';
 import Login from './components/acoounts/LogIn';
 import Signup from './components/acoounts/SignUp';
+import Ingredient from './components/Ingredient';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Route path='/main' element={<Main />} />
       <Route path='/login' element={<Login />} />
       <Route path='/signup' element={<Signup />} />
+      <Route path='/ingredient/:id' element={<Ingredient />} />
     </Routes>
   );
 }
