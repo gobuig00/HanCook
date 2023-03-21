@@ -2,8 +2,28 @@
     text-align: center;
 }
 
-.text-middle {
+.title-middle {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+th {
+    padding: 2px !important;
+    height: 53px;
+}
+
+tr {
+    border: 1px solid #4D820E;
+}
+
+td {
+    padding: 2px !important;
+}
+
+.border-right-none {
+    border-right: 0px;
+}
+.border-left-none {
+    border-left: 0px;
 }

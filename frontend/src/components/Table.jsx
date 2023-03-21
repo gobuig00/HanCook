@@ -6,9 +6,9 @@ function TableChart() {
     <Table striped bordered className='table-text'>
         <thead>
             <tr>
-                <th>Nutrients</th>
+                <th className='title-middle border-right-none'><div>Nutrients</div></th>
                 <th>Amount<br />(% Daily value)</th>
-                <th>Per 100g</th>
+                <th className='title-middle border-left-none'><div>Per 100g</div></th>
             </tr>
         </thead>
         <tbody>
