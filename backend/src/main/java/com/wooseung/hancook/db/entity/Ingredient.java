@@ -20,10 +20,8 @@ public class Ingredient {
     @Column(name = "ingredient_id")
     private Long ingredientId;
 
-    @Column(nullable = false)
     private String large;
 
-    @Column(nullable = false)
     private String medium;
 
     @Column(nullable = false)

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Service("recipeService")
+@Service("crawlingService")
 @RequiredArgsConstructor
 @Slf4j
 public class CrawlingServiceImpl implements CrawlingService {

@@ -5,11 +5,12 @@ import com.wooseung.hancook.utils.ModelMapperUtils;
 import lombok.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class DealResponseDto {
-    private long dealId;
+    private Long dealId;
     private String dealDate;
     private String large;
     private String medium;

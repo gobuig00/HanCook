@@ -5,6 +5,7 @@ import com.wooseung.hancook.utils.ModelMapperUtils;
 import lombok.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
