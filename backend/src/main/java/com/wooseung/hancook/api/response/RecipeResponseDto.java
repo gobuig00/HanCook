@@ -5,11 +5,12 @@ import com.wooseung.hancook.utils.ModelMapperUtils;
 import lombok.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class RecipeResponseDto {
-    private int recipeId;
+    private Long recipeId;
     private String name;
     private String description;
     private String time;
@@ -18,7 +19,7 @@ public class RecipeResponseDto {
     private String img;
 
     public static RecipeResponseDto of(Recipe recipeEntity){
-        RecipeResponseDto recipeDto = ModelMapperUtils.getModelMapper().map(recipeEntity, RecipeResponseDto.class);
-        return recipeDto;
+        RecipeResponseDto recipeResponseDto = ModelMapperUtils.getModelMapper().map(recipeEntity, RecipeResponseDto.class);
+        return recipeResponseDto;
     }
 }

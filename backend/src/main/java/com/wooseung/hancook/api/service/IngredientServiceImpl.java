@@ -1,6 +1,9 @@
 package com.wooseung.hancook.api.service;
 
+import com.wooseung.hancook.api.response.IngredientResponseDto;
+import com.wooseung.hancook.api.response.RecipeResponseDto;
 import com.wooseung.hancook.db.entity.Ingredient;
+import com.wooseung.hancook.db.entity.Recipe;
 import com.wooseung.hancook.db.repository.IngredientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,22 @@ import java.util.Optional;
 public class IngredientServiceImpl implements IngredientService {
 
     private final IngredientRepository ingredientRepository;
+
+    @Override
+    public List<IngredientResponseDto> getRandomIngredient() {
+        // 레시피에 포함된 전체 재료 정보 Entity List
+        List<Ingredient> ingredientEntityList = ingredientRepository.findRandomIngredient();
+
+        // 반환할 레시피 Dto List
+        List<IngredientResponseDto> ingredientResponseDtoList = new ArrayList<>();
+
+        for (Ingredient ingredientEntity : ingredientEntityList) {
+            // 반환할 DtoList에 현재 RecipeEntity를 Dto로 변환하여 추가
+            ingredientResponseDtoList.add(IngredientResponseDto.of(ingredientEntity));
+        }
+
+        return ingredientResponseDtoList;
+    }
 
     @Override
     public List<String> getLargeList() {

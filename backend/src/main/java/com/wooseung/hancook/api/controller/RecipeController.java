@@ -30,6 +30,13 @@ public class RecipeController {
 //        return ResponseEntity.status(HttpStatus.OK).body(recipeDtoList);
 //    }
 
+    // 랜덤으로 레시피 3개 받아오기
+    @GetMapping("/random")
+    public ResponseEntity<List<RecipeResponseDto>> getRandomRecipe(){
+        List<RecipeResponseDto> recipeResponseDtoList = recipeService.getRandomRecipe();
+        return ResponseEntity.status(HttpStatus.OK).body(recipeResponseDtoList);
+    }
+
     // 레시피 ID를 입력받아 일치하는 레시피 데이터 및 재료, 과정 데이터 반환
     @GetMapping("/id")
     public ResponseEntity<Map<String, Object>> getRecipeById(@RequestParam("recipeId") Long recipeId){
@@ -43,14 +50,17 @@ public class RecipeController {
     // 재료 배열을 입력받아 포함되어 있는 레시피 데이터 반환
     @GetMapping("/ingredient")
     public ResponseEntity<List<RecipeResponseDto>> getRecipeByIngredient(@RequestParam("ingredient") List<String> ingredient){
-        List<RecipeResponseDto> recipeDtoList = recipeService.getRecipeByIngredient(ingredient);
-        return ResponseEntity.status(HttpStatus.OK).body(recipeDtoList);
+        List<RecipeResponseDto> recipeResponseDtoList = recipeService.getRecipeByIngredient(ingredient);
+        return ResponseEntity.status(HttpStatus.OK).body(recipeResponseDtoList);
     }
 
     // 레시피 아이디를 입력받아 레시피 요리 순서, 설명 반환
     @GetMapping("/process")
     public ResponseEntity<List<ProcessResponseDto>> getProcessByRecipe(@RequestParam("recipeId") Long recipeId){
-        List<ProcessResponseDto> processDtoList = recipeService.getProcessByRecipeId(recipeId);
-        return ResponseEntity.status(HttpStatus.OK).body(processDtoList);
+        List<ProcessResponseDto> processResponseDtoList = recipeService.getProcessByRecipeId(recipeId);
+        return ResponseEntity.status(HttpStatus.OK).body(processResponseDtoList);
     }
+
+
+
 }
