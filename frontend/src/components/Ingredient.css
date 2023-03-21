@@ -1,4 +1,7 @@
-
+.ingredient-logo {
+  width: 90%;
+  margin-bottom: 10vw;
+}
 
 .ingredient-container {
   height: 60vw;
@@ -7,26 +10,30 @@
   margin-right: auto;
   background-color: white;
   border-radius: 30px;
+  margin-bottom: 10vw;
   display: flex;
   align-items: center;
-  margin-bottom: 10vw;
-}
-
-.ingredient-container-right {
-  display: flex;
-  flex-direction: column;
+  position: relative;
 }
 
 .add-shopping-cart-icon {
-  height: 50px;
-  width: 50px;
+  position: absolute;
+  top: 3vw;
+  right: 3vw;
+}
+
+.ingredient-text {
+  text-align: center;
+  width: 42vw;
 }
 
 .ingredient-image {
-  margin-left: 10px;
+  margin-left: 3vw;
   height: 50vw;
   width: 50vw;
   border-radius: 20px;
+  margin-bottom: auto;
+  margin-top: auto;
 }
 
 .ingredient-name {
@@ -43,7 +50,6 @@
 
 .background-green {
   background-color: #F1F7EB;
-  padding-top: 10vw;
 }
 
 .semi-title {
