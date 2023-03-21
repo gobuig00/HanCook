@@ -17,6 +17,7 @@ function Main() {
   const [data, setData] = useState([]);
   const [dishChosen, setDishChosen] = useState('Seasonal');
   const [ingredientChosen, setIngredientChosen] = useState('Seasonal')
+  const [ingredientFood, setIngredientFood] =useState('')
 
   const toggleModal = () => {
     setIsVisible(!isVisible);
@@ -26,8 +27,9 @@ function Main() {
   // useEffect( () => {
   //   const fetchData = async () => {
   //     try {
-  //       const response = await axios.get('여기 주소가 뭐임????');
+  //       const response = await axios.get('http://localhost:8080/');
   //       setData(response.data);
+  //       console.log(data);
   //     }
   //     catch (error) {
   //       console.error('Error fetching data: ', error);
@@ -65,7 +67,8 @@ function Main() {
                     cardImage={dishItem.dishImage}
                     cardIndex={index}
                     usedPart='dish'
-                    cardUrl={dishItem.URL} />
+                    cardUrl={dishItem.URL}
+                    size='small' />
                 ))}
             </div> */}
           </div>
@@ -86,6 +89,8 @@ function Main() {
                   cardIndex={index}
                   usedPart='ingredient'
                   cardUrl={ingredientItem.URL}
+                  size='small'
+                  onClick={}
                 />
               ))} */}
                 
