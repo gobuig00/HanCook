@@ -10,11 +10,11 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class ComponentResponseDto {
-    private int id;
-    private int recipeId;
+    private Long id;
+    private Long recipeId;
     private String name;
     private String capacity;
-    private long ingredientId;
+    private Long ingredientId;
 
     public static ComponentResponseDto of(Component componentEntity){
         ComponentResponseDto componentResponseDto = ModelMapperUtils.getModelMapper().map(componentEntity, ComponentResponseDto.class);

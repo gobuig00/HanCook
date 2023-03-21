@@ -5,16 +5,17 @@ import com.wooseung.hancook.utils.ModelMapperUtils;
 import lombok.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class IngredientResponseDto {
 
-    private long ingredientId;
+    private Long ingredientId;
     private String large;
     private String medium;
     private String name;
-    private long ref;
+    private Long ref;
 
     public static IngredientResponseDto of(Ingredient ingredientEntity) {
         IngredientResponseDto ingredientResponseDto = ModelMapperUtils.getModelMapper().map(ingredientEntity, IngredientResponseDto.class);
