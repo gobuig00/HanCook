@@ -51,33 +51,33 @@ export default function Login() {
             <div className="login-inside">
                 <h1 className="login-title">Sign In</h1>
                 <form onSubmit={handleSubmit} className="login-form">
-                    <div className='inner-form'>
+                    <div className='login-inner-form'>
                         <i className="material-icons">alternate_email</i>
                         <input
-                            className='custom-placeholder'
+                            className='login-custom-placeholder'
                             type="email"
                             id="email"
                             name="email"
-                            placeholder='Input your Email'
+                            placeholder='Enter your Email'
                             value={email}
                             onChange={handleEmailChange}
                             required
                         />
                     </div>
-                    <div className='inner-form'>
+                    <div className='login-inner-form'>
                         <i className='material-icons'>vpn_key</i>
                         <input
-                            className='custom-placeholder'
+                            className='login-custom-placeholder'
                             type="password"
                             id="password"
                             name="password"
-                            placeholder='Input your PW'
+                            placeholder='Enter your PW'
                             value={password}
                             onChange={handlePasswordChange}
                             required
                         />
                     </div>
-                    <a href="#" className='no-underline'>forgot PW?</a>
+                    <a href="#" className='login-no-underline'>forgot PW?</a>
                     <button type="submit" className='login-btn'>Sign In</button>
                 </form>
             </div>
@@ -92,7 +92,6 @@ export default function Login() {
                     JOIN NOW FOR FREE
                 </button>
             </div>
-            
         </div>
     );
 }
