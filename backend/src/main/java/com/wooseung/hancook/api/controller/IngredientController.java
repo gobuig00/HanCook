@@ -1,5 +1,6 @@
 package com.wooseung.hancook.api.controller;
 
+import com.wooseung.hancook.api.response.IngredientResponseDto;
 import com.wooseung.hancook.api.service.IngredientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,12 @@ import java.util.List;
 public class IngredientController {
 
     private final IngredientService ingredientService;
+
+    @GetMapping("/random")
+    public ResponseEntity<List<IngredientResponseDto>> getRandomIngredient() {
+        List<IngredientResponseDto> ingredientResponseDtoList = ingredientService.getRandomIngredient();
+        return ResponseEntity.status(HttpStatus.OK).body(ingredientResponseDtoList);
+    }
 
     // 대분류 반환
     @GetMapping("/large")
