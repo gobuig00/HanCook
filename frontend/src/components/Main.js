@@ -1,14 +1,18 @@
+// 리액트 import
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {Button} from 'react-bootstrap';
 
-import './Main.css';
+// 컴포넌트 import
 import CamModal from './Camera/CamModal';
 import Footer from './Footer'
 import Card from './Card/Card';
 import Category from './Categories/Category';
 import PriceChange from './changes/PriceChange';
+import LineChart from './LineChart';
 
+// 기타파일 import
+import './Main.css';
 import logo from '../images/logo.png';
 
 
@@ -153,27 +157,33 @@ function Main() {
 
           <div className='main-price'>
             <h1 className='main-title'>Price Static</h1>
-            <h4>Most Increased in Price</h4>
-            {data.priceStatic.increased.map((priceItem, index) => (
-              <PriceChange
-                product = {priceItem.product}
-                prevPrice = {priceItem.prevPrice}
-                curPrice = {priceItem.curPrice}
-                percentage = {priceItem.percentage}
-                isIncreased = {true}
-              />
-            ))}
-            
-            <h4>Most Decreased in Price</h4>
-            {data.priceStatic.decreased.map((priceItem, index) => (
-              <PriceChange
-                product = {priceItem.product}
-                prevPrice = {priceItem.prevPrice}
-                curPrice = {priceItem.curPrice}
-                percentage = {priceItem.percentage}
-                isIncreased = {false}
-              />
-            ))}
+            <div className='main-increased-part'>
+              <h4>Most Increased in Price</h4>
+              {data.priceStatic.increased.map((priceItem, index) => (
+                <PriceChange
+                  product = {priceItem.product}
+                  prevPrice = {priceItem.prevPrice}
+                  curPrice = {priceItem.curPrice}
+                  percentage = {priceItem.percentage}
+                  isIncreased = {true}
+                />
+              ))}
+            </div>
+            <div className='main-decreased-part'>
+              <h4>Most Decreased in Price</h4>
+              {data.priceStatic.decreased.map((priceItem, index) => (
+                <PriceChange
+                  product = {priceItem.product}
+                  prevPrice = {priceItem.prevPrice}
+                  curPrice = {priceItem.curPrice}
+                  percentage = {priceItem.percentage}
+                  isIncreased = {false}
+                />
+              ))}
+            </div>
+            <div className='main-chart-part'>
+              <LineChart/>
+            </div>
             
           </div>
         </div>
