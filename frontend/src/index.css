@@ -9,6 +9,14 @@
 }
 
 @font-face {
+<<<<<<< HEAD
+=======
+  font-family: "bolditalic";
+  src: url("./fonts/Poppins-BoldItalic.ttf");
+}
+
+@font-face {
+>>>>>>> 76a5fc44b9bcafc2d5f6846708a63394e2ee5857
   font-family: "bold";
   src: url("./fonts/Poppins-Bold.ttf");
 }
