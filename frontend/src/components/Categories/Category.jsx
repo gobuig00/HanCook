@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './Category.css';
 
 export default function Category({ categoryList, isChosen, setIsChosen, usedPart }) {
