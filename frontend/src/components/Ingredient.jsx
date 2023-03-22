@@ -26,11 +26,11 @@ function Ingredient() {
         </div>
         <Donut />
         <Table />
-        <div className='line main-line'></div>
+        <div className='green-line'></div>
         <div className='line-chart'>
           <LineChart />
         </div>
-        <div className='line main-line'></div>
+        <div className='green-line'></div>
         <div className='related-food-text'>Related food</div>
       </main>
       <footer>
