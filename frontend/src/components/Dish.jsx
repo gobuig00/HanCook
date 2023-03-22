@@ -5,7 +5,7 @@ import Table from './Table';
 import Img from '../images/takepicture.jpg';
 import AddShoppingCart from '../icons/AddShoppingCart.svg';
 import logo from '../images/logo.png'
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import {useState, useEffect } from 'react'
 
@@ -22,8 +22,8 @@ export function Youtube() {
     axios.get('https://www.googleapis.com/youtube/v3/search', { params }
     ).then(function (response) {
       setVideoId(response.data.items[0].id.videoId);
-    }).catch(function (error) {
-      console.log(error)
+    }).catch(function () {
+      console.log('유튜브 api 에러!!')
     })
   }, [target]);
   return(
@@ -33,8 +33,27 @@ export function Youtube() {
   );
 }
 
+function useRecipeAPI() {
+  const params = {
+    recipeId: useParams().id,
+  };
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    axios.get('http://localhost:8080/recipe/id', { params })
+    .then(function (response) {
+      console.log(response)
+      setData(response.data);
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+  }, []);
+  return data;
+}
 
-function Ingredient() {
+
+function Dish() {
+  const data = useRecipeAPI();
   return (
     <div className='background-green'>
       <header>
@@ -64,4 +83,4 @@ function Ingredient() {
   );
 }
 
-export default Ingredient;
+export default Dish;
