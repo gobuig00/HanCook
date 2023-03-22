@@ -1,12 +1,17 @@
 import { React, useState } from 'react';
+import './SignUp.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import logo from '../../images/logo.png';
 
 export default function SignUp() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [passwordCheck, setPasswordCheck] = useState('');
+    const [match, setMatch] = useState(true);
     const [name, setName] = useState('');
     const [gender, setGender] = useState('');
+    const [genderClick, setGenderClick] = useState(false)
     const navigate = useNavigate();
     
     const handleEmailChange = (event) => {
@@ -15,11 +20,25 @@ export default function SignUp() {
 
     const handlePasswordChange = (event) => {
         setPassword(event.target.value);
+        setMatch(event.target.value === passwordCheck);
+    };
+
+    const handlePasswordCheckChange = (event) => {
+        setPasswordCheck(event.target.value);
+        setMatch(event.target.value === password);
     };
 
     const handleNameChange = (event) => {
         setName(event.target.value);
     };
+    const handleGenderClick = (event) => {
+        setGenderClick(!genderClick);
+        if (genderClick) {
+            setGender('male')
+        } else {
+            setGender('female')
+        }
+    }
 
     const handleGenderChange = (event) => {
         setGender(event.target.value);
@@ -52,47 +71,96 @@ export default function SignUp() {
     }
     return (
         <div className="signup-container">
-            <h1>Sign Up</h1>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="email">E-mail</label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={email}
-                    onChange={handleEmailChange}
-                    required
-                />
+            <div className='signup-header'>
+                <img src={logo} className='signup-logo' alt="로고" />
+            </div>
+            <div className="signup-inside">
+                <h1 className="signup-title">Sign up</h1>
+                <form onSubmit={handleSubmit} className="signup-form">
+                    <div className='signup-inner-form'>
+                        <i className="material-icons">alternate_email</i>
+                        <input
+                            className='signup-custom-placeholder'
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder='Enter your Email'
+                            value={email}
+                            onChange={handleEmailChange}
+                            required
+                        />
+                    </div>
+                    <div className='signup-inner-form'>
+                        <i className="material-icons">person</i>
+                        <input
+                            className='signup-custom-placeholder'
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder='Enter your name'
+                            value={name}
+                            onChange={handleNameChange}
+                            required
+                        />
+                    </div>
+                    <div className='signup-inner-form'>
+                        <i className="material-icons">wc</i>
+                        <input
+                            className='signup-custom-placeholder'
+                            type="text"
+                            id="gender"
+                            name="gender"
+                            placeholder='Select your gender'
+                            value={gender}
+                            onClick={handleGenderClick}
+                            onChange={handleGenderChange}
+                            required
+                            readOnly
+                        />
+                    </div>
+                    <div className='signup-inner-form'>
+                        <i className='material-icons'>vpn_key</i>
+                        <input
+                            className='signup-custom-placeholder'
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder='Enter your PW'
+                            value={password}
+                            onChange={handlePasswordChange}
+                            required
+                        />
+                    </div>
+                    <div className='signup-inner-form'>
+                        <i className='material-icons'>done_all</i>
+                        <input
+                            className='signup-custom-placeholder'
+                            type="password"
+                            id="password-check"
+                            name="password-check"
+                            placeholder='Enter your PW again'
+                            value={passwordCheck}
+                            onChange={handlePasswordCheckChange}
+                            required
+                        />
+                        {!match && ( <p className='warning-text'>Passwords do not match!</p> )}
+                    </div>
+                    
+                    <button type="submit" className='signup-btn'>
+                        <i className='material-icons'>group_add</i>
+                        JOIN NOW
+                    </button>
+                    
+                </form>
+            </div>
 
-                <label htmlFor="password">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={password}
-                    onChange={handlePasswordChange}
-                    required
-                />
+            <hr/>
 
-                <label htmlFor="name">Name</label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={name}
-                    onChange={handleNameChange}
-                    required
-                />
-
-                <label htmlFor="gender">Gender</label>
-                <select id="gender" name="gender" value={gender} onChange={handleGenderChange} required>
-                    <option value="">Select</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
-
-                <button type="submit">Join</button>
-            </form>
+            <div className="signup-inside">
+                <div className='signup-lower'>
+                    If you have an account,  <a href="login" className='no-underline'>Sign In</a>
+                </div>
+            </div>
         </div>
     );
 }
