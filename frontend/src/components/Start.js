@@ -27,7 +27,7 @@ function Start() {
             <p className='main-smaill-text-lineheight'>just by taking pictures.</p>
           </div>
         </div>
-        <div className='line main-line'></div>
+        <div className='main-line'></div>
         <div className='main-second'>
           <div className='seasonal-image-container'>
             <img className='seasonal-image' src={seasonal1} alt="" />
@@ -44,7 +44,7 @@ function Start() {
             <p className='main-smaill-text-lineheight'>just by taking pictures.</p>
           </div>
         </div>
-        <div className='line main-line'></div>
+        <div className='main-line'></div>
         <div className='main-third'>
           <img className='buyimage' src={buyimage} alt="" />
           <div className='main-text-container'>
