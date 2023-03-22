@@ -1,6 +1,8 @@
 import { React, useState } from 'react';
+import './Login.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import logo from '../../images/logo.png';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -35,32 +37,61 @@ export default function Login() {
             console.error('로그인 오류 : ', error);
         }
     };
+
+    const handleClickJoinBtn = () => {
+        navigate('/SignUp');
+    }
     
 
     return (
         <div className="login-container">
-            <h1>Sign In</h1>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="email">Email</label>
-                <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={email}
-                    onChange={handleEmailChange}
-                    required
-                />
-                <label htmlFor="password">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={password}
-                    onChange={handlePasswordChange}
-                    required
-                />
-                <button type="submit">Sign In</button>
-            </form>
+            <div className='login-header'>
+                <img src={logo} className='login-logo' alt="로고" />
+            </div>
+            <div className="login-inside">
+                <h1 className="login-title">Sign In</h1>
+                <form onSubmit={handleSubmit} className="login-form">
+                    <div className='login-inner-form'>
+                        <i className="material-icons">alternate_email</i>
+                        <input
+                            className='login-custom-placeholder'
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder='Enter your Email'
+                            value={email}
+                            onChange={handleEmailChange}
+                            required
+                        />
+                    </div>
+                    <div className='login-inner-form'>
+                        <i className='material-icons'>vpn_key</i>
+                        <input
+                            className='login-custom-placeholder'
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder='Enter your PW'
+                            value={password}
+                            onChange={handlePasswordChange}
+                            required
+                        />
+                    </div>
+                    <a href="#" className='login-no-underline'>forgot PW?</a>
+                    <button type="submit" className='login-btn'>Sign In</button>
+                </form>
+            </div>
+
+            <hr/>
+
+            <div className="login-inside">
+                <h1 className="login-title">Sign up</h1>
+                <label htmlFor="joinBtn">If you don't have an account</label>
+                <button id='joinBtn' className='login-btn' onClick={handleClickJoinBtn}>
+                    <i className='material-icons'>group_add</i>
+                    JOIN NOW FOR FREE
+                </button>
+            </div>
         </div>
     );
 }
