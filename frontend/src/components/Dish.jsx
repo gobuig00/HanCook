@@ -2,15 +2,14 @@ import Footer from './Footer';
 import Donut from './Donut';
 import './Dish.css';
 import Table from './Table';
-import Img from '../images/takepicture.jpg';
 import AddShoppingCart from '../icons/AddShoppingCart.svg';
 import logo from '../images/logo.png'
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import {useState, useEffect } from 'react'
 
-export function Youtube() {
-  const target = 'Jeyuk bokkeum';
+export function Youtube(props) {
+  const target = props.target;
   const [videoId, setVideoId] = useState('');
   useEffect(() => { 
     const params = {
@@ -22,8 +21,8 @@ export function Youtube() {
     axios.get('https://www.googleapis.com/youtube/v3/search', { params }
     ).then(function (response) {
       setVideoId(response.data.items[0].id.videoId);
-    }).catch(function () {
-      console.log('유튜브 api 에러!!')
+    }).catch(function (err) {
+      console.log('유튜브 api 에러!!', err)
     })
   }, [target]);
   return(
@@ -41,7 +40,6 @@ function useRecipeAPI() {
   useEffect(() => {
     axios.get('http://localhost:8080/recipe/id', { params })
     .then(function (response) {
-      console.log(response)
       setData(response.data);
     })
     .catch(function (err) {
@@ -63,22 +61,37 @@ function Dish() {
       </header>
       <main>
         <div className='ingredient-container'>
-          <img src={Img} alt="" className='ingredient-image' />
+          {data ? (
+              <img src={data.recipe.img} alt="" className='ingredient-image' />
+          ) : (
+            'Loading...'
+          )}
           <div>
             <img src={AddShoppingCart} alt="" className='add-shopping-cart-icon'/>
-            <div className='ingredient-text'><span className='ingredient-name'>Pork and kimchi stew</span><br /><span className='ingredient-pronunciation'>(dwejigogi kimchijjige)</span></div>
+            {data ? (
+                <>
+                  <span className='ingredient-name'>{data.recipe.name}</span>
+                  <br />
+                  <span className='ingredient-pronunciation'>(dwejigogi kimchijjige)</span>
+                </>
+              ) : (
+                'Loading...'
+              )}
           </div>
         </div>
         <Donut />
         <Table />
         <div className='green-line'></div>
         <div className='related-food-text'>Recipe</div>
-        <Youtube />
+        {data ? (
+          <Youtube target={data.recipe.name}/>
+        ) : (
+          'Loading...'
+        )}
       </main>
       <footer>
         <Footer />
       </footer>
-
     </div>
   );
 }
