@@ -19,6 +19,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/recipe")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class RecipeController {
 
     private final RecipeService recipeService;

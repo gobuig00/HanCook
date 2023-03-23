@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/mart")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MartController {
 
     private final MartService martService;
