@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/crawling")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CrawlingController {
     private final CrawlingService martservice;
     private static final Logger logger = LoggerFactory.getLogger(CrawlingController.class);
