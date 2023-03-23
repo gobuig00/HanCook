@@ -38,7 +38,7 @@ function useRecipeAPI() {
   };
   const [data, setData] = useState(null);
   useEffect(() => {
-    axios.get('http://localhost:8080/recipe/id', { params })
+    axios.get('http://192.168.100.172:8080/recipe/id', { params })
     .then(function (response) {
       setData(response.data);
     })
@@ -47,6 +47,22 @@ function useRecipeAPI() {
     });
   }, []);
   return data;
+}
+
+function RecipeIngredient(props) {
+  let result = ''
+  for (let i=0; i<props.data.length; i++) {
+    if (i !== (props.data.length-1)) {
+      result += props.data[i].name + props.data[i].capacity + ', '
+    } else {
+      result += props.data[i].name + props.data[i].capacity
+    }
+  }
+  return (
+    <div>
+      {result}
+    </div>
+  )
 }
 
 
@@ -66,7 +82,7 @@ function Dish() {
           ) : (
             'Loading...'
           )}
-          <div>
+          <div className='text-center'>
             <img src={AddShoppingCart} alt="" className='add-shopping-cart-icon'/>
             {data ? (
                 <>
@@ -83,8 +99,24 @@ function Dish() {
         <Table />
         <div className='green-line'></div>
         <div className='related-food-text'>Recipe</div>
+        <br />
         {data ? (
-          <Youtube target={data.recipe.name}/>
+          <>
+            <div className='semi-title-text'>Ingredient</div>
+            <RecipeIngredient data={data.ingredient}/>
+            <br />
+            <div className='semi-title-text'>Process</div>
+            <ol>
+              {data.process.map((item, index) => (
+                <li key={index}>
+                  {item.description}
+                </li>
+              ))}
+            </ol>
+            <div className='green-line'></div>
+            <div className='related-food-text'>Video</div>
+            <Youtube target={data.recipe.name}/>
+          </>
         ) : (
           'Loading...'
         )}
