@@ -9,7 +9,7 @@ export default function Profile() {
         name : 'Tom',
         totalCalories : 2184,
         nutrition : {
-            carbonhydrate: 50,
+            carbs: 50,
             protein: 40,
             fat: 10,
         },
@@ -26,6 +26,15 @@ export default function Profile() {
         }
     }
     
+    const newKey = (keyList, valueList) => {
+        let newKeyList = [];
+        for (let i = 0; i < keyList.length; i++) {
+          let strKey = `${keyList[i]} ${valueList[i]}%`;
+          newKeyList.push(strKey);
+        }
+        console.log(newKeyList);
+        return newKeyList;
+    };
     // const [profile, setProfile] = useState({  });
 
     // useEffect(() => {
@@ -65,10 +74,11 @@ export default function Profile() {
                     </div>
                 </div>
                 <div className='profile-nutrition'>
-                    <div className='profile-sub-title'>Daily Nutrition Data</div>
-                    <Donut 
-                        
-                    />
+                        <Donut
+                            keyList = {newKey(Object.keys(profile.nutrition), Object.values(profile.nutrition) )}
+                            valueList = {Object.values(profile.nutrition)}
+                            title = 'Daily Nutrition Data'
+                        />
                 </div>
                 <div className='profile-other'>
                     <div className='profile-sub-title'>Other Ingredients</div>
