@@ -17,6 +17,7 @@ public class RecipeResponseDto {
     private String cal;
     private String quantity;
     private String img;
+    private String youtubeId;
 
     public static RecipeResponseDto of(Recipe recipeEntity){
         RecipeResponseDto recipeResponseDto = ModelMapperUtils.getModelMapper().map(recipeEntity, RecipeResponseDto.class);

@@ -36,6 +36,9 @@ public class Recipe {
     @Column(nullable = false)
     private String img;
 
+    @Column(name = "youtube_id")
+    private String youtubeId;
+
     public static Recipe of(RecipeResponseDto recipeDto){
         Recipe recipeEntity = ModelMapperUtils.getModelMapper().map(recipeDto, Recipe.class);
         return recipeEntity;
