@@ -1,9 +1,30 @@
+import React from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
-export default function Donut({ keyList, valueList, title }) {
+const alwaysDrawCenterText = (centerText) => ({
+  id: 'alwaysDrawCenterText',
+  beforeDraw: (chart) => {
+    if (!centerText) return;
+
+    const ctx = chart.ctx;
+    const chartArea = chart.chartArea;
+    const centerX = (chartArea.left + chartArea.right) / 2;
+    const centerY = (chartArea.top + chartArea.bottom) / 2;
+
+    ctx.restore();
+    ctx.font = '16px semibold';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#000'; // Set the text color
+    ctx.fillText(centerText, centerX, centerY);
+    ctx.save();
+  },
+});
+
+export default function Donut({ keyList, valueList, title, centerText }) {
   const data = {
     labels: keyList,
     datasets: [
@@ -63,7 +84,7 @@ export default function Donut({ keyList, valueList, title }) {
     <Doughnut
       data={data}
       options={options}
+      plugins={[alwaysDrawCenterText(centerText)]}
     />
   );
 }
-

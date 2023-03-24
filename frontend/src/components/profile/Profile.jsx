@@ -32,7 +32,6 @@ export default function Profile() {
           let strKey = `${keyList[i]} ${valueList[i]}%`;
           newKeyList.push(strKey);
         }
-        console.log(newKeyList);
         return newKeyList;
     };
     // const [profile, setProfile] = useState({  });
@@ -78,6 +77,7 @@ export default function Profile() {
                             keyList = {newKey(Object.keys(profile.nutrition), Object.values(profile.nutrition) )}
                             valueList = {Object.values(profile.nutrition)}
                             title = 'Daily Nutrition Data'
+                            // centerText ='210kcal'
                         />
                 </div>
                 <div className='profile-other'>
