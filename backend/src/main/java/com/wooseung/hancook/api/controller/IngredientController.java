@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/ingredient")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class IngredientController {
 
     private final IngredientService ingredientService;
