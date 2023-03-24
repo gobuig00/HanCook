@@ -65,7 +65,7 @@ public class RecipeController {
 
     // 이름이나 재료를 입력받아 포함되어 있는 레시피 데이터 반환
     @GetMapping("/search")
-    public ResponseEntity<List<RecipeResponseDto>> searchRecipe(@RequestParam("ingredient") String name){
+    public ResponseEntity<List<RecipeResponseDto>> searchRecipe(@RequestParam("name") String name){
         List<RecipeResponseDto> recipeResponseDtoListByName = recipeService.getRecipeByName(name);
         List<String> strList = new ArrayList<>();
         strList.add(name);
