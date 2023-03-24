@@ -56,7 +56,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public List<RecipeResponseDto> getRecipeByName(String name) {
         // 이름으로 찾은 레시피 Entity List
-        List<Recipe> recipeEntityList = recipeRepository.findAllByName(name);
+        List<Recipe> recipeEntityList = recipeRepository.findAllByNameContaining(name);
         return recipeEntityList.stream().map(entity -> RecipeResponseDto.of(entity)).collect(Collectors.toList());
     }
 
