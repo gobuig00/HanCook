@@ -77,14 +77,14 @@ public class MultiCrawler implements Runnable {
         String beforePageUrl = "https://at.agromarket.kr/domeinfo/sanRealtime.do?pageNo=";
         String afterPageUrl = "&saledateBefore=" + date +
                 "&largeCdBefore=&midCdBefore=&smallCdBefore=&saledate=" + date +
-                "&whsalCd=&cmpCd=&sanCd=&smallCdSearch=&largeCd=&midCd=&smallCd=";
+                "&whsalCd=&cmpCd=&sanCd=&smallCdSearch=&largeCd=&midCd=&smallCd=&pageSize=10";
 
         // Jsoup을 사용하여 읽은 HTML 문서
         Document doc = null;
 
         try {
             // 크롤링할 페이지 저장
-            while (!flag || page < number + 500) { // 500페이지씩 읽어옴
+            while (page < (number * 500) + 500) { // 500페이지씩 읽어옴
                 // 1일치 만큼만 데이터 읽어오기
                 String url = beforePageUrl + page++ + afterPageUrl;
                 System.out.println(url); // 어떤 페이지를 읽고있는지 확인하기 위해 필요
@@ -205,7 +205,7 @@ public class MultiCrawler implements Runnable {
         try {
             TimeUnit.MILLISECONDS.sleep(10);
             RestTemplate restTemplate = new RestTemplate();
-            restTemplate.getForObject(uri + date, String.class);
+            restTemplate.getForObject(uri + sb.toString(), String.class);
 //            writeFile(date, sb);
             System.out.println(sb.toString());
         } catch (Exception e) {
@@ -213,12 +213,12 @@ public class MultiCrawler implements Runnable {
         }
     }
 
-    private void writeFile(String date, StringBuilder sb) {
-        try (PrintWriter writer = new PrintWriter(new File("./src/main/resources/" + date + "_" + number + ".csv"))) {
-            writer.write(sb.toString());
-            writer.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+//    private void writeFile(String date, StringBuilder sb) {
+//        try (PrintWriter writer = new PrintWriter(new File("./src/main/resources/" + date + "_" + number + ".csv"))) {
+//            writer.write(sb.toString());
+//            writer.close();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }
