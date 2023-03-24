@@ -31,14 +31,14 @@ export default function Donut({ keyList, valueList, title, centerText }) {
       {
         data: valueList,
         backgroundColor: [
-          'rgba(55, 183, 255, 1)',
-          'rgba(105, 181, 80, 1)',
-          'rgba(218, 162, 79, 1)',
+          '#37b7ff',
+          '#69b550',
+          '#daa24f',
         ],
         borderColor: [
-          'rgba(55, 183, 255, 1)',
-          'rgba(105, 181, 80, 1)',
-          'rgba(218, 162, 79, 1)',
+          '#37b7ff',
+          '#69b550',
+          '#daa24f',
         ],
         borderWidth: 1,
       },
