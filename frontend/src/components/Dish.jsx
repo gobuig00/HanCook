@@ -10,24 +10,12 @@ import {useState, useEffect } from 'react'
 
 export function Youtube(props) {
   const target = props.target;
-  const [videoId, setVideoId] = useState('');
+  // const [videoId, setVideoId] = useState('');
   useEffect(() => { 
-    const params = {
-      key: process.env.REACT_APP_YOUTUBE_API_KEY,
-      part: 'snippet',
-      q: `${target} recipe`,
-      type: 'video'
-    };
-    axios.get('https://www.googleapis.com/youtube/v3/search', { params }
-    ).then(function (response) {
-      setVideoId(response.data.items[0].id.videoId);
-    }).catch(function (err) {
-      console.log('유튜브 api 에러!!', err)
-    })
   }, [target]);
   return(
     <div className='video-container'>
-      <iframe width="560" height="315" src={`https://www.youtube.com/embed/${videoId}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
+      <iframe width="560" height="315" src={`https://www.youtube.com/embed/${props.target}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
     </div>
   );
 }
@@ -115,7 +103,7 @@ function Dish() {
             </ol>
             <div className='green-line'></div>
             <div className='related-food-text'>Video</div>
-            <Youtube target={data.recipe.name}/>
+            <Youtube target={data.recipe.youtubeId}/>
           </>
         ) : (
           'Loading...'
