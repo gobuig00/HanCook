@@ -1,57 +1,64 @@
 import Table from 'react-bootstrap/Table';
-import './Table.css'
+import './Table.css';
 
-function TableChart() {
+function TableChart({ data }) {
+    const createTableHeader = () => {
+        if (!data.head || data.head.length === 0) {
+          return null;
+        }
+    
+        return (
+          <thead>
+            <tr>
+              {data.head.map((column, index) => (
+                <th key={index} className="key-cell head-cell">
+                  {column}
+                </th>
+              ))}
+            </tr>
+          </thead>
+        );
+    };
+    
+
+    const createTableBody = () => {
+        if (!data.body) {
+          return (
+            <tbody>
+              <tr>
+                <td colSpan={data.head ? data.head.length : 1}>
+                  <span className="table-no-data">데이터가 없습니다</span>
+                </td>
+              </tr>
+            </tbody>
+          );
+        }
+      
+        return (
+          <tbody>
+            {Object.entries(data.body).map(([key, values], rowIndex) => (
+              <tr key={rowIndex}>
+                <td className="key-cell">{key}</td>
+                {Array.isArray(values) ? values.map((value, cellIndex) => (
+                  <td key={cellIndex} className="value-cell">{value}</td>
+                )) : <td className="value-cell">{values}</td>}
+              </tr>
+            ))}
+          </tbody>
+        );
+      };
+  
+
   return (
-    <Table striped bordered className='table-text'>
-        <thead>
-            <tr>
-                <th className='title-middle border-right-none'><div>Nutrients</div></th>
-                <th>Amount<br />(% Daily value)</th>
-                <th className='title-middle border-left-none'><div>Per 100g</div></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Calories(kcal)</td>
-                <td>1(1%)</td>
-                <td>1(1%)</td>
-            </tr>
-            <tr>
-                <td>Carbohydrate(g)</td>
-                <td>1(1%)</td>
-                <td>1(1%)</td>
-            </tr>
-            <tr>
-                <td>Protein(g)</td>
-                <td>1(1%)</td>
-                <td>1(1%)</td>
-            </tr>
-            <tr>
-                <td>Fat(g)</td>
-                <td>1(1%)</td>
-                <td>1(1%)</td>
-            </tr>
-            <tr>
-                <td>Sodium(mg)</td>
-                <td>1(1%)</td>
-                <td>1(1%)</td>
-            </tr>
-            <tr>
-                <td>Cholesterol(mg)</td>
-                <td>1(1%)</td>
-                <td>1(1%)</td>
-            </tr>
-            <tr>
-                <td>Sugar(g)</td>
-                <td>1(1%)</td>
-                <td>1(1%)</td>
-            </tr>
-        </tbody>
+    <Table striped bordered className="table-text">
+      {createTableHeader()}
+      {createTableBody()}
     </Table>
   );
-};
+}
 
-export default function NutritionTable() {
-    return <TableChart />;
+export default function TableComponent({ head, body }) {
+  const data = { head, body };
+
+  return <TableChart data={data} />;
 }
