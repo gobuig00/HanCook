@@ -11,5 +11,4 @@ import java.util.List;
 public interface MartRepository extends JpaRepository<Mart, Long> {
 
     List<Mart> findAllByIngredientAndMartAndItemNameIsNotNull(Ingredient ingredient, int mart);
-
 }
