@@ -14,6 +14,8 @@ public interface RecipeService {
 
     RecipeResponseDto getRecipeById(Long recipeId);
 
+    List<RecipeResponseDto> getRecipeByName(String name);
+
     List<RecipeResponseDto> getRecipeByIngredient(List<String> ingredient);
 
     List<ComponentResponseDto> getIngredientByRecipeId(Long recipeId);
