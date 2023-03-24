@@ -14,15 +14,15 @@ export default function Profile() {
             fat: 10,
         },
         other : {
-            cholesterol: 42.28,
-            salt: 3828,
-            sugar: 156.4
+            'cholesterol (mg)': 42.28,
+            'salt (mg)': 3828,
+            'sugar (g)': 156.4
         },
         ingestedFood : {
             food1 : 120.51,
             food2 : 185.67,
             food3 : 60.56,
-            food4 : 120.55,
+            'seafood Spring Onion Pancake' : 120.55,
         }
     }
     
@@ -34,6 +34,7 @@ export default function Profile() {
         }
         return newKeyList;
     };
+
     // const [profile, setProfile] = useState({  });
 
     // useEffect(() => {
@@ -82,17 +83,20 @@ export default function Profile() {
                 </div>
                 <div className='profile-other'>
                     <div className='profile-sub-title'>Other Ingredients</div>
-                    <Table/>
+                    <Table
+                        body={profile.other}
+                    />
                 </div>
             </div>
             <div className='profile-section'>
                 <h2>Ingested Food</h2>
                 <div className='profile-ingested-food'>
                     <p htmlFor="ingestedTable">(kcal/100g)</p>
-                    <Table label="(kcal/100g)"/>
+                    <Table
+                        body={profile.ingestedFood}
+                    />
                 </div>
             </div>
         </div>
     );
 };
-
