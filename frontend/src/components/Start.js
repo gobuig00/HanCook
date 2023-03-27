@@ -1,5 +1,5 @@
 import './Start.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {Button} from 'react-bootstrap';
 import logo from '../images/logo.png';
 import seasonal1 from '../images/seasonal1.jpg';
@@ -8,8 +8,17 @@ import seasonal3 from '../images/seasonal3.jpg';
 import seasonal4 from '../images/seasonal4.jpg';
 import takepicture from '../images/takepicture.jpg';
 import buyimage from '../images/buyimage.jpg';
+import { useEffect } from 'react';
 
 function Start() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('hancook-token');
+    if (token) {
+      navigate('/main')
+    }
+  }, [navigate]);
   return (
     <div className="start">
       <header className="start-header">

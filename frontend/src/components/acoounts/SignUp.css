@@ -65,13 +65,10 @@
 }
 
 .signup-inner-form .material-icons {
-  position: absolute;
-  left: 10%; 
-  top: 15%;
   font-size: 20px;
   color: #4d820e;
   font-size: xx-large;
-  margin: 0;
+  margin: 0 1vw 0 10vw;
   padding: 0;
 }
 

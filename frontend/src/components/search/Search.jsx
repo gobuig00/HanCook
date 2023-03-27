@@ -1,11 +1,20 @@
 import SearchBar from './SearchBar';
 import axios from 'axios'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './Search.css'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 export default function Search() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('hancook-token');
+    if (!token) {
+      navigate('/login')
+    }
+  }, [navigate]);
+
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
 
