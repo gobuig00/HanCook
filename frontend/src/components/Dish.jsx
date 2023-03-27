@@ -1,12 +1,17 @@
+import AddShoppingCart from '../icons/AddShoppingCart.svg';
+import AddEatingFood from '../icons/AddEatingFood.png';
+import MinusButtom from '../icons/MinusButton.png';
+import { Link, useParams } from 'react-router-dom';
+import PlusButton from '../icons/PlusButton.png';
+import Button from 'react-bootstrap/Button';
+import {useState, useEffect } from 'react';
+import Modal from 'react-bootstrap/Modal';
+import logo from '../images/logo.png';
 import Footer from './Footer';
 import Donut from './Donut';
-import './Dish.css';
 import Table from './Table';
-import AddShoppingCart from '../icons/AddShoppingCart.svg';
-import logo from '../images/logo.png'
-import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
-import {useState, useEffect } from 'react'
+import './Dish.css';
 
 export function Youtube(props) {
   const target = props.target;
@@ -56,6 +61,66 @@ function RecipeIngredient(props) {
 
 function Dish() {
   const data = useRecipeAPI();
+  const [addNumber, setAddNumber] = useState(0);
+  const [modal, setModal] = useState(false);
+  const [shoppingCartModal, setShoppingCartModal] = useState(false);
+
+  const increaseAddNumber = () => {
+    if (addNumber < 9) {
+      setAddNumber(addNumber + 1);
+    }
+  }
+
+  const decreaseAddNumber = () => {
+    if (addNumber > 0) {
+      setAddNumber(addNumber - 1);
+    }
+  }
+
+  const openEatConfirmModal = () => {
+    setModal(true);
+  }
+
+  const closeEatConfirmModal = () => {
+    setModal(false);
+  }
+
+  const openShoppingCartModal = () => {
+    setShoppingCartModal(true);
+  }
+
+  const closeShoppingCartModal = () => {
+    setShoppingCartModal(false);
+  }
+
+  const addShoppingCart = () => {
+    const params = {
+      id : ''
+    }
+    axios.get('', params)
+    .then((res) => {
+      console.log(res.data)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+
+  const addEatFood = () => {
+    const params = {
+      addnumber : addNumber,
+    }
+    axios.get('', params)
+    .then((res) => {
+      console.log(res.data)
+      setModal(false);
+    })
+    .catch((err) => {
+      console.log(err)
+      setModal(false);
+    })
+  }
+
   return (
     <div className='background-green'>
       <header>
@@ -71,16 +136,23 @@ function Dish() {
             'Loading...'
           )}
           <div className='text-center'>
-            <img src={AddShoppingCart} alt="" className='add-shopping-cart-icon'/>
+            <img src={AddShoppingCart} alt="" className='add-shopping-cart-icon' onClick={openShoppingCartModal}/>
             {data ? (
-                <>
-                  <span className='ingredient-name'>{data.recipe.name}</span>
-                  <br />
-                  <span className='ingredient-pronunciation'>(dwejigogi kimchijjige)</span>
-                </>
+              <>
+                <span className='ingredient-name'>{data.recipe.name}</span>
+                <br />
+                <span className='ingredient-pronunciation'>(dwejigogi kimchijjige)</span>
+              </>
               ) : (
                 'Loading...'
-              )}
+              )
+            }
+            <div className='add-eat-food-container'>
+              <img src={PlusButton} alt="" className='plus-minus-button' onClick={increaseAddNumber} />
+              <span className='add-number'>{addNumber}</span>
+              <img src={MinusButtom} alt="" className='plus-minus-button' onClick={decreaseAddNumber}/>
+              <img src={AddEatingFood} alt=""className='add-eat-food' onClick={openEatConfirmModal}/>
+            </div>
           </div>
         </div>
         <Donut />
@@ -109,6 +181,40 @@ function Dish() {
           'Loading...'
         )}
       </main>
+      <Modal
+        show={shoppingCartModal}
+        onHide={closeShoppingCartModal}
+        backdrop="static"
+        keyboard={false}
+        centered
+      >
+        <Modal.Body>
+          Would you like to add ingredients to your shopping cart?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeShoppingCartModal}>
+            No
+          </Button>
+          <Button className='yes-button' onClick={addShoppingCart}>Yes</Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        show={modal}
+        onHide={closeShoppingCartModal}
+        backdrop="static"
+        keyboard={false}
+        centered
+      >
+        <Modal.Body>
+          Would you like to add this menu to the list you ate today? (Add {addNumber})
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeEatConfirmModal}>
+            No
+          </Button>
+          <Button className='yes-button' onClick={addEatFood}>Yes</Button>
+        </Modal.Footer>
+      </Modal>
       <footer>
         <Footer />
       </footer>
