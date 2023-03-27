@@ -1,12 +1,17 @@
+import AddShoppingCart from '../icons/AddShoppingCart.svg';
+import AddEatingFood from '../icons/AddEatingFood.png';
+import MinusButtom from '../icons/MinusButton.png';
+import { Link, useParams } from 'react-router-dom';
+import PlusButton from '../icons/PlusButton.png';
+import Button from 'react-bootstrap/Button';
+import {useState, useEffect } from 'react';
+import Modal from 'react-bootstrap/Modal';
+import logo from '../images/logo.png';
 import Footer from './Footer';
 import Donut from './Donut';
-import './Dish.css';
 import Table from './Table';
-import AddShoppingCart from '../icons/AddShoppingCart.svg';
-import logo from '../images/logo.png'
-import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
-import {useState, useEffect } from 'react'
+import './Dish.css';
 
 export function Youtube(props) {
   const target = props.target;
@@ -56,6 +61,57 @@ function RecipeIngredient(props) {
 
 function Dish() {
   const data = useRecipeAPI();
+  const [addNumber, setAddNumber] = useState(0);
+  const [modal, setModal] = useState(false);
+
+  const increaseAddNumber = () => {
+    if (addNumber < 9) {
+      setAddNumber(addNumber + 1);
+    }
+  }
+
+  const decreaseAddNumber = () => {
+    if (addNumber > 0) {
+      setAddNumber(addNumber - 1);
+    }
+  }
+
+  const openConfirmModal = () => {
+    setModal(true);
+  }
+
+  const closeConfirmModal = () => {
+    setModal(false);
+  }
+
+  const addShoppingCart = () => {
+    const params = {
+      id : ''
+    }
+    axios.get('', params)
+    .then((res) => {
+      console.log(res.data)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+
+  const addEatFood = () => {
+    const params = {
+      addnumber : addNumber,
+    }
+    axios.get('', params)
+    .then((res) => {
+      console.log(res.data)
+      setModal(false);
+    })
+    .catch((err) => {
+      console.log(err)
+      setModal(false);
+    })
+  }
+
   return (
     <div className='background-green'>
       <header>
@@ -71,16 +127,23 @@ function Dish() {
             'Loading...'
           )}
           <div className='text-center'>
-            <img src={AddShoppingCart} alt="" className='add-shopping-cart-icon'/>
+            <img src={AddShoppingCart} alt="" className='add-shopping-cart-icon' onClick={addShoppingCart}/>
             {data ? (
-                <>
-                  <span className='ingredient-name'>{data.recipe.name}</span>
-                  <br />
-                  <span className='ingredient-pronunciation'>(dwejigogi kimchijjige)</span>
-                </>
+              <>
+                <span className='ingredient-name'>{data.recipe.name}</span>
+                <br />
+                <span className='ingredient-pronunciation'>(dwejigogi kimchijjige)</span>
+              </>
               ) : (
                 'Loading...'
-              )}
+              )
+            }
+            <div className='add-eat-food-container'>
+              <img src={PlusButton} alt="" className='plus-minus-button' onClick={increaseAddNumber} />
+              <span className='add-number'>{addNumber}</span>
+              <img src={MinusButtom} alt="" className='plus-minus-button' onClick={decreaseAddNumber}/>
+              <img src={AddEatingFood} alt=""className='add-eat-food' onClick={openConfirmModal}/>
+            </div>
           </div>
         </div>
         <Donut />
@@ -109,6 +172,22 @@ function Dish() {
           'Loading...'
         )}
       </main>
+      <Modal
+        show={modal}
+        onHide={closeConfirmModal}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Body>
+          Would you like to add this menu to the list you ate today? (Add {addNumber})
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeConfirmModal}>
+            No
+          </Button>
+          <Button className='yes-button' onClick={addEatFood}>Yes</Button>
+        </Modal.Footer>
+      </Modal>
       <footer>
         <Footer />
       </footer>
