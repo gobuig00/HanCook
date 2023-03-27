@@ -15,15 +15,15 @@ const SearchBar = ({ onSearch }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className='login-inner-form'>
+    <form onSubmit={handleSubmit} className='search-inner-form'>
       <input
         className='login-custom-placeholder'
         type="text"
-        placeholder="검색어 입력"
+        placeholder="Enter keyword to search"
         value={searchTerm}
         onChange={handleChange}
       />
-      <button type="submit">검색</button>
+      <button type="submit">Search</button>
     </form>
   );
 };
