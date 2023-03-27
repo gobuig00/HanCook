@@ -21,7 +21,7 @@ dependencies {
 	implementation 'org.apache.spark:spark-sql_2.12:3.2.0'
 	implementation 'org.apache.spark:spark-streaming_2.12:3.2.0'
 	implementation 'com.mysql:mysql-connector-j:8.0.32'
-	implementation 'org.codehaus.janino:janino:3.1.6'
+	implementation 'org.codehaus.janino:janino:3.0.16'
 
 }
 

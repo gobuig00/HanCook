@@ -50,22 +50,6 @@ public class CsvToMysql {
         }
 
 
-        // CSV 파일 처리
-//        File[] directories = new File(fileDirectory).listFiles(File::isDirectory);
-//        File[] csvFiles = new File(fileDirectory).listFiles(file -> file.isFile() && file.getName().toLowerCase().endsWith(".csv"));
-//
-//
-//        System.out.println(csvFiles.length);
-//        if (csvFiles != null) {
-//            for (File directory : csvFiles) {
-//                File[] files = directory.listFiles((dir, name) -> name.toLowerCase().endsWith(".csv"));
-//                if (files != null) {
-//                    for (File file : files) {
-//                        System.out.println("llllll");
-//                        processCsvFile(spark, file.getPath(), jdbcOptions);
-//                    }
-//                }
-//            }
         }
 
 
@@ -73,19 +57,20 @@ public class CsvToMysql {
         // CSV 파일 읽기
 
         StructType schema = new StructType()
-                        .add("date", DataTypes.StringType, true)
+                        .add("deal_date", DataTypes.StringType, true)
                         .add("large", DataTypes.StringType, true)
-                        .add("middle", DataTypes.StringType, true)
-                        .add("small", DataTypes.StringType, true)
+                        .add("medium", DataTypes.StringType, true)
+                        .add("min", DataTypes.StringType, true)
                         .add("isIncome", DataTypes.StringType, true)
                         .add("isKg", DataTypes.StringType, true)
                         .add("price", DataTypes.StringType, true);
 //Dataset<Row> df = spark.read().schema(schema).csv(input);
-        Dataset<Row> csvData = spark.read()
+        Dataset<Row> csvData = spark.read().schema(schema)
                 .format("csv")
                 .option("header", "true")
                 .option("inferSchema", "true")
                 .load(filePath);
+
 
         // MySQL 데이터베이스에 저장
         csvData.write()
