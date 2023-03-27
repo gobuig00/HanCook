@@ -1,5 +1,6 @@
 .start {
   background-color: #F1F7EB;
+  min-height: max-content;
   height: 300vh;
 }
 
