@@ -1,10 +1,19 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import './SignUp.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../images/logo.png';
 
 export default function SignUp() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem('hancook-token');
+        if (token) {
+            navigate('/main')
+        }
+    }, [navigate]);
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
@@ -12,7 +21,6 @@ export default function SignUp() {
     const [name, setName] = useState('');
     const [gender, setGender] = useState('FEMALE');
     const [genderClick, setGenderClick] = useState(false)
-    const navigate = useNavigate();
     
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
