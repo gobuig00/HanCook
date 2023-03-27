@@ -7,6 +7,9 @@ export default function Footer({ toggleModal }) {
     const moveToProfile = () => {
         navigate('/profile');
     }
+    const moveToCart = () => {
+        navigate('/cart');
+    }
     return (
         <div className='footer'>
             <span
@@ -15,12 +18,17 @@ export default function Footer({ toggleModal }) {
             >
                 photo_camera
             </span>
-            <div className='profile-button'>
+            <span
+                class="material-symbols-outlined"
                 onClick={moveToProfile}
-
-            </div>
-            <span class="material-symbols-outlined">
+            >
                 person
+            </span>
+            <span
+                class="material-symbols-outlined"
+                onClick={moveToCart}
+            >
+                shopping_cart
             </span>
         </div>
     );
