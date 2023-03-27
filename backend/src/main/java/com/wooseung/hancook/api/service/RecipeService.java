@@ -11,8 +11,10 @@ public interface RecipeService {
 //    List<RecipeResponseDto> getRecipeByVeg(String category);
 
     List<RecipeResponseDto> getRandomRecipe();
+    List<RecipeResponseDto> getRandomEngRecipe();
 
     RecipeResponseDto getRecipeById(Long recipeId);
+    RecipeResponseDto getEngRecipeById(Long recipeId);
 
     List<RecipeResponseDto> getRecipeByName(String name);
 

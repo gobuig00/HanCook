@@ -38,6 +38,13 @@ public class RecipeController {
         List<RecipeResponseDto> recipeResponseDtoList = recipeService.getRandomRecipe();
         return ResponseEntity.status(HttpStatus.OK).body(recipeResponseDtoList);
     }
+
+    // 랜덤으로 영어 레시피 3개 받아오기
+    @GetMapping("/random/eng")
+    public ResponseEntity<List<RecipeResponseDto>> getRandomEngRecipe(){
+        List<RecipeResponseDto> recipeResponseDtoList = recipeService.getRandomEngRecipe();
+        return ResponseEntity.status(HttpStatus.OK).body(recipeResponseDtoList);
+    }
     
     // 이름을 입력받아 일치하는 레시피 검색
     @GetMapping("/name")
@@ -83,6 +90,29 @@ public class RecipeController {
             if (!answerList.contains(recipeResponseDto)) answerList.add(recipeResponseDto);
         }
 
+        return ResponseEntity.status(HttpStatus.OK).body(answerList);
+    }
+
+    // 레시피나 재료를 입력받아 포함되어 있는 레시피 데이터를 영어로 반환
+    // 우선 이렇게 구현했는데 프론트에서 리턴값을 한글로 받을지 영문으로 받을지 정해야 함.
+    @GetMapping("/search/eng")
+    public ResponseEntity<List<RecipeResponseDto>> searchEngRecipe(@RequestParam("name") String name) {
+        List<RecipeResponseDto> recipeResponseDtoListByName = recipeService.getRecipeByName(name);
+        List<String> strList = new ArrayList<>();
+        strList.add(name);
+        List<RecipeResponseDto> recipeResponseDtoListByIngredient = recipeService.getRecipeByIngredient(strList);
+
+        List<RecipeResponseDto> answerList = new ArrayList<>();
+        // 이름을 입력받아 일치한 레시피 데이터 리스트
+        for (RecipeResponseDto recipeResponseDto : recipeResponseDtoListByName) {
+            // 중복 제거
+            if (!answerList.contains(recipeResponseDto)) answerList.add(recipeResponseDto);
+        }
+        // 재료명을 입력받아 일치한 레시피 데이터 리스트
+        for (RecipeResponseDto recipeResponseDto : recipeResponseDtoListByIngredient) {
+            // 중복 제거
+            if (!answerList.contains(recipeResponseDto)) answerList.add(recipeResponseDto);
+        }
         return ResponseEntity.status(HttpStatus.OK).body(answerList);
     }
 

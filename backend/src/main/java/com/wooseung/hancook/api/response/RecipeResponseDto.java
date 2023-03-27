@@ -1,5 +1,6 @@
 package com.wooseung.hancook.api.response;
 
+import com.wooseung.hancook.api.service.PapagoTranslationService;
 import com.wooseung.hancook.db.entity.Recipe;
 import com.wooseung.hancook.utils.ModelMapperUtils;
 import lombok.*;
@@ -19,8 +20,10 @@ public class RecipeResponseDto {
     private String img;
     private String youtubeId;
 
+
     public static RecipeResponseDto of(Recipe recipeEntity){
         RecipeResponseDto recipeResponseDto = ModelMapperUtils.getModelMapper().map(recipeEntity, RecipeResponseDto.class);
         return recipeResponseDto;
     }
+
 }
