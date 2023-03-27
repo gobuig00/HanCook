@@ -29,6 +29,32 @@ public class RecipeServiceImpl implements RecipeService {
     private final ProcessRepository processRepository;
     private final IngredientRepository ingredientRepository;
 
+    private final PapagoTranslationService papagoTranslationService;
+
+    static String english = "en";
+    static String korean = "ko";
+
+    // 문자열을 문자 단위로 검사하여 한글 문자 또는 영어 문자가 포함되어 있는지 확인
+    // 한글 : 0, 영어 : 1, 모두 포함 안되면 : -1
+    public static int detectLanguage(String input) {
+        boolean containsKorean = false;
+        boolean containsEnglish = false;
+
+        for (char ch : input.toCharArray()) {
+            if (Character.UnicodeBlock.of(ch) == Character.UnicodeBlock.HANGUL_SYLLABLES ||
+                    Character.UnicodeBlock.of(ch) == Character.UnicodeBlock.HANGUL_JAMO ||
+                    Character.UnicodeBlock.of(ch) == Character.UnicodeBlock.HANGUL_COMPATIBILITY_JAMO) {
+                containsKorean = true;
+            } else if (ch >= 'A' && ch <= 'Z' || ch >= 'a' && ch <= 'z') {
+                containsEnglish = true;
+            }
+        }
+
+        if (containsKorean) return 0;
+        else if (containsEnglish) return 1;
+        else return -1;
+    }
+
     @Override
     public List<RecipeResponseDto> getRandomRecipe() {
         // 레시피에 포함된 전체 재료 정보 Entity List
@@ -46,15 +72,62 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    public List<RecipeResponseDto> getRandomEngRecipe() {
+        // 레시피에 포함된 전체 재료 정보 Entity List
+        List<Recipe> recipeEntityList = recipeRepository.findRandomRecipe();
+
+        // 반환할 레시피 Dto List
+        List<RecipeResponseDto> recipeResponseDtoList = new ArrayList<>();
+
+        for (Recipe recipeEntity : recipeEntityList) {
+            RecipeResponseDto recipeResponseDto = RecipeResponseDto.builder()
+                    .recipeId(recipeEntity.getRecipeId())
+                    .name(papagoTranslationService.translate(korean, english, recipeEntity.getName()))
+                    .description(papagoTranslationService.translate(korean, english, recipeEntity.getDescription()))
+                    .time(recipeEntity.getTime())
+                    .cal(recipeEntity.getCal())
+                    .quantity(recipeEntity.getQuantity())
+                    .img(recipeEntity.getImg())
+                    .youtubeId(recipeEntity.getYoutubeId())
+                    .build();
+
+            // 반환할 DtoList에 현재 RecipeEntity를 Dto로 변환하여 추가
+            recipeResponseDtoList.add(recipeResponseDto);
+        }
+        return recipeResponseDtoList;
+    }
+
+    @Override
     public RecipeResponseDto getRecipeById(Long recipeId) {
         Recipe recipeEntity = recipeRepository.getReferenceById(recipeId);
-        RecipeResponseDto recipeDto = RecipeResponseDto.of(recipeEntity);
-        return recipeDto;
+        RecipeResponseDto recipeResponseDto = RecipeResponseDto.of(recipeEntity);
+        return recipeResponseDto;
+    }
+
+    @Override
+    public RecipeResponseDto getEngRecipeById(Long recipeId) {
+        Recipe recipeEntity = recipeRepository.getReferenceById(recipeId);
+        RecipeResponseDto recipeResponseDto = RecipeResponseDto.builder()
+                .recipeId(recipeEntity.getRecipeId())
+                .name(papagoTranslationService.translate(korean, english, recipeEntity.getName()))
+                .description(papagoTranslationService.translate(korean, english, recipeEntity.getDescription()))
+                .time(recipeEntity.getTime())
+                .cal(recipeEntity.getCal())
+                .quantity(recipeEntity.getQuantity())
+                .img(recipeEntity.getImg())
+                .youtubeId(recipeEntity.getYoutubeId())
+                .build();
+        return recipeResponseDto;
     }
 
     // 이름으로 검색해서 레시피 목록 가져오기
     @Override
     public List<RecipeResponseDto> getRecipeByName(String name) {
+        int flag = detectLanguage(name);
+
+        // 입력받은 이름이 영어라면 한글로 변환
+        if (flag == 1) name = papagoTranslationService.translate(english, korean, name);
+
         // 이름으로 찾은 레시피 Entity List
         List<Recipe> recipeEntityList = recipeRepository.findAllByNameContaining(name);
         return recipeEntityList.stream().map(entity -> RecipeResponseDto.of(entity)).collect(Collectors.toList());
@@ -93,6 +166,11 @@ public class RecipeServiceImpl implements RecipeService {
             int count = 0;
             HashSet<String> ingredientSet = new HashSet<>();
             for (String ingredientStr : ingredient) {
+                int flag = detectLanguage(ingredientStr);
+
+                // 입력받은 재료가 영어라면 한글로 변환
+                if (flag == 1) ingredientStr = papagoTranslationService.translate(english, korean, ingredientStr);
+
                 ingredientSet.add(ingredientStr);
             }
             // 전체 재료 정보 Entity List를 돌면서 레시피 ID가 같고, 선택된 재료들 중 현재 재료 Entity의 이름이 포함되어있는 경우 count++
