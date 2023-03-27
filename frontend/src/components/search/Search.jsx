@@ -24,7 +24,7 @@ export default function Search() {
     })
   }
   return (
-    <div>
+    <div className='background-green screen-full'>
       <SearchBar onSearch={handleSearch} />
       <div className='search-result-container'>
         {loading ? 'Loading...' : result ? (result.map((item, index) => (
