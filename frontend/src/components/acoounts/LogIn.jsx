@@ -1,13 +1,21 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import './Login.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../images/logo.png';
 
 export default function Login() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem('hancook-token');
+        if (token) {
+            navigate('/main')
+        }
+    }, [navigate]);
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate();
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
