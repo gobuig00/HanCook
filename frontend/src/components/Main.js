@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {Button} from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 // 컴포넌트 import
 import CamModal from './Camera/CamModal';
@@ -17,6 +18,15 @@ import logo from '../images/logo.png';
 
 
 function Main() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('hancook-token');
+    if (!token) {
+      navigate('/login')
+    }
+  }, [navigate]);
+
   // 카메라 키는데 필요한 것
   const [isVisible, setIsVisible] = useState(false);
   const [isVideoStart, setIsVideoStart] = useState(false);

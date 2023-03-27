@@ -1,7 +1,7 @@
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import AddShoppingCart from '../icons/AddShoppingCart.svg';
 import AddEatingFood from '../icons/AddEatingFood.png';
 import MinusButtom from '../icons/MinusButton.png';
-import { Link, useParams } from 'react-router-dom';
 import PlusButton from '../icons/PlusButton.png';
 import Button from 'react-bootstrap/Button';
 import {useState, useEffect } from 'react';
@@ -60,6 +60,15 @@ function RecipeIngredient(props) {
 
 
 function Dish() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('hancook-token');
+    if (!token) {
+      navigate('/login')
+    }
+  }, [navigate]);
+
   const data = useRecipeAPI();
   const [addNumber, setAddNumber] = useState(0);
   const [modal, setModal] = useState(false);
