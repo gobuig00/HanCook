@@ -52,6 +52,14 @@ public class RecipeServiceImpl implements RecipeService {
         return recipeDto;
     }
 
+    // 이름으로 검색해서 레시피 목록 가져오기
+    @Override
+    public List<RecipeResponseDto> getRecipeByName(String name) {
+        // 이름으로 찾은 레시피 Entity List
+        List<Recipe> recipeEntityList = recipeRepository.findAllByNameContaining(name);
+        return recipeEntityList.stream().map(entity -> RecipeResponseDto.of(entity)).collect(Collectors.toList());
+    }
+
     @Override
     public List<RecipeResponseDto> getRecipeByIngredient(List<String> ingredient) {
         // 전체 레시피 Entity List
@@ -126,7 +134,5 @@ public class RecipeServiceImpl implements RecipeService {
         List<Process> processEntityList = processRepository.findAllByRecipeId(recipeId);
         return processEntityList.stream().map(entity -> ProcessResponseDto.of(entity)).collect(Collectors.toList());
     }
-
-
 
 }
