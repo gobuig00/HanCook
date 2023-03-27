@@ -77,7 +77,8 @@ public class MultiCrawler implements Runnable {
         String beforePageUrl = "https://at.agromarket.kr/domeinfo/sanRealtime.do?pageNo=";
         String afterPageUrl = "&saledateBefore=" + date +
                 "&largeCdBefore=&midCdBefore=&smallCdBefore=&saledate=" + date +
-                "&whsalCd=&cmpCd=&sanCd=&smallCdSearch=&largeCd=&midCd=&smallCd=&pageSize=10";
+                "&whsalCd=&cmpCd=&sanCd=&smallCdSearch=&largeCd=&midCd=&smallCd=";
+        //&pageSize=10
 
         // Jsoup을 사용하여 읽은 HTML 문서
         Document doc = null;
