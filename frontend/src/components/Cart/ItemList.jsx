@@ -8,11 +8,15 @@ export default function ItemList({ title, price, index }) {
     const backgroundImage = index === 0 ? emart : (index === 1 ? lottemart : (index === 2 ? homeplus : ''));
 
     return (
-        <div>
-            <div className="item-mart-image" style={{ backgroundImage: `url(${backgroundImage})` }}>
+        <div className='item-container'>
+            <div className='item-title'>
+                <p>{title}</p>
             </div>
-            {title}
-            {price}
+            <div className='item-price'>
+                <div className="item-mart-image" style={{ backgroundImage: `url(${backgroundImage})` }}>
+                </div>
+                <p>{price}₩</p>
+            </div>
         </div>
     );
 }
