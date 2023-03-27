@@ -12,7 +12,7 @@ export default function Search() {
   const handleSearch = (searchTerm) => {
     setLoading(true);
     const params = {
-      ingredient: searchTerm,
+      name: searchTerm,
     };
     axios.get('http://192.168.100.172:8080/recipe/search', { params })
     .then(response => {
@@ -28,7 +28,7 @@ export default function Search() {
       <SearchBar onSearch={handleSearch} />
       <div className='search-result-container'>
         {loading ? 'Loading...' : result ? (result.map((item, index) => (
-          <Link to={'/dish/'+item.recipeId} key={index}>
+          <Link to={'/dish/'+item.recipeId} key={index} className={`search-result-link ${index % 3 !== 0 ? 'link-margin' : ''}`}>
             <div className='search-result-image-container'>
               <img src={item.img} alt="" className='search-result-image'/>
             </div>
