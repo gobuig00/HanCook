@@ -63,6 +63,7 @@ function Dish() {
   const data = useRecipeAPI();
   const [addNumber, setAddNumber] = useState(0);
   const [modal, setModal] = useState(false);
+  const [shoppingCartModal, setShoppingCartModal] = useState(false);
 
   const increaseAddNumber = () => {
     if (addNumber < 9) {
@@ -76,12 +77,20 @@ function Dish() {
     }
   }
 
-  const openConfirmModal = () => {
+  const openEatConfirmModal = () => {
     setModal(true);
   }
 
-  const closeConfirmModal = () => {
+  const closeEatConfirmModal = () => {
     setModal(false);
+  }
+
+  const openShoppingCartModal = () => {
+    setShoppingCartModal(true);
+  }
+
+  const closeShoppingCartModal = () => {
+    setShoppingCartModal(false);
   }
 
   const addShoppingCart = () => {
@@ -127,7 +136,7 @@ function Dish() {
             'Loading...'
           )}
           <div className='text-center'>
-            <img src={AddShoppingCart} alt="" className='add-shopping-cart-icon' onClick={addShoppingCart}/>
+            <img src={AddShoppingCart} alt="" className='add-shopping-cart-icon' onClick={openShoppingCartModal}/>
             {data ? (
               <>
                 <span className='ingredient-name'>{data.recipe.name}</span>
@@ -142,7 +151,7 @@ function Dish() {
               <img src={PlusButton} alt="" className='plus-minus-button' onClick={increaseAddNumber} />
               <span className='add-number'>{addNumber}</span>
               <img src={MinusButtom} alt="" className='plus-minus-button' onClick={decreaseAddNumber}/>
-              <img src={AddEatingFood} alt=""className='add-eat-food' onClick={openConfirmModal}/>
+              <img src={AddEatingFood} alt=""className='add-eat-food' onClick={openEatConfirmModal}/>
             </div>
           </div>
         </div>
@@ -173,16 +182,34 @@ function Dish() {
         )}
       </main>
       <Modal
-        show={modal}
-        onHide={closeConfirmModal}
+        show={shoppingCartModal}
+        onHide={closeShoppingCartModal}
         backdrop="static"
         keyboard={false}
+        centered
+      >
+        <Modal.Body>
+          Would you like to add ingredients to your shopping cart?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={closeShoppingCartModal}>
+            No
+          </Button>
+          <Button className='yes-button' onClick={addShoppingCart}>Yes</Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        show={modal}
+        onHide={closeShoppingCartModal}
+        backdrop="static"
+        keyboard={false}
+        centered
       >
         <Modal.Body>
           Would you like to add this menu to the list you ate today? (Add {addNumber})
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={closeConfirmModal}>
+          <Button variant="secondary" onClick={closeEatConfirmModal}>
             No
           </Button>
           <Button className='yes-button' onClick={addEatFood}>Yes</Button>
