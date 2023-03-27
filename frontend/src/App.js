@@ -6,6 +6,8 @@ import Login from './components/acoounts/LogIn';
 import Signup from './components/acoounts/SignUp';
 import Ingredient from './components/Ingredient';
 import Dish from './components/Dish'
+import Profile from './components/profile/Profile';
+import Search from './components/search/Search'
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
       <Route path='/signup' element={<Signup />} />
       <Route path='/ingredient/:id' element={<Ingredient />} />
       <Route path='/dish/:id' element={<Dish />} />
+      <Route path='/profile/' element={<Profile />} />
+      <Route path='/search' element={<Search />} />
     </Routes>
   );
 }

@@ -6,9 +6,49 @@ import LineChart from './LineChart';
 import Img from '../images/takepicture.jpg';
 import AddShoppingCart from '../icons/AddShoppingCart.svg';
 import logo from '../images/logo.png'
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import Card from './Card/Card';
+import {useState, useEffect } from 'react';
+import axios from 'axios';
+
+function useRelatedFoodAPI() {
+  const params = {
+    ingredient: '양파',
+  };
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    axios.get('http://192.168.100.172:8080/recipe/ingredient', { params })
+    .then(function (response) {
+      setData(response.data);
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+  }, []);
+  return data;
+}
+// 나중에 백 되면 한번에
+// function useIngredient() {
+//   const params = {
+//     recipeId: useParams().id,
+//   };
+//   const [data, setData] = useState(null);
+//   useEffect(() => {
+//     axios.get('http://192.168.100.172:8080/ingredient', { params })
+//     .then(function (response) {
+//       setData(response.data);
+//     })
+//     .catch(function (err) {
+//       console.log(err);
+//     });
+//   }, []);
+//   return data;
+// }
+
 
 function Ingredient() {
+  const data = useRelatedFoodAPI()
+  console.log(data)
   return (
     <div className='background-green'>
       <header>
@@ -32,6 +72,10 @@ function Ingredient() {
         </div>
         <div className='green-line'></div>
         <div className='related-food-text'>Related food</div>
+        {data ? (data.map((item, index) => (
+          <Card key={index} cardName={item.name} cardImage={item.img} cardIndex={index} usedPart='related-food' cardUrl={'/dish/' + item.recipeId} size='small'/>
+        ))) : ('Loading...')}
+        
       </main>
       <footer>
         <Footer />
