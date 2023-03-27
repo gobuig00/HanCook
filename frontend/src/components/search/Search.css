@@ -22,3 +22,8 @@
 .link-margin {
   margin-left: 0.5vw;
 }
+
+.screen-full {
+  min-height: 100vh;
+  max-height: max-content;
+}
