@@ -65,6 +65,7 @@ public class MultiCrawler implements Runnable {
         String afterPageUrl = "&saledateBefore=" + date +
                 "&largeCdBefore=&midCdBefore=&smallCdBefore=&saledate=" + date +
                 "&whsalCd=&cmpCd=&sanCd=&smallCdSearch=&largeCd=&midCd=&smallCd=";
+        //&pageSize=10
 
         Document doc = null;
 
