@@ -1,4 +1,9 @@
 @font-face {
+	font-family: "light";
+	src: url("./fonts/Poppins-Light.ttf");
+}
+
+@font-face {
 	font-family: "semibold";
 	src: url("./fonts/Poppins-SemiBold.ttf");
 }

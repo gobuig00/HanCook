@@ -1,17 +1,17 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import './Card.css';
 
+
 export default function Card({ cardName, cardImage, cardIndex, usedPart, cardUrl, size }) {
-    const itemClassName = ''
+    let itemClassName = ''
 
     if (size==='small') {
-        const itemClassName = `${usedPart}-${cardIndex} small`
+        itemClassName = `${usedPart}-${cardIndex} small`
     } else if (size==='large') {
-        const itemClassName = `${usedPart}-${cardIndex} large`
+        itemClassName = `${usedPart}-${cardIndex} large`
     } else {
-        const itemClassName = `${usedPart}-${cardIndex}`
+        itemClassName = `${usedPart}-${cardIndex}`
     }   
 
     const cardImageStyle = {
@@ -32,7 +32,6 @@ export default function Card({ cardName, cardImage, cardIndex, usedPart, cardUrl
         <div className={itemClassName} onClick={clickCard}>
             <div className='card-image' style={cardImageStyle}>
             </div>
-
             <div className='card-name'>
                 {cardName}
             </div>

@@ -1,16 +1,27 @@
 import React from 'react';
 import './Footer.css';
+import { useNavigate } from 'react-router-dom';
 
 export default function Footer({ toggleModal }) {
-    
+    const navigate = useNavigate();
+    const moveToProfile = () => {
+        navigate('/profile');
+    }
     return (
         <div className='footer'>
-            <button
-                className='Camera-button'
+            <span
+                className="material-symbols-outlined Camera-button"
                 onClick={toggleModal}
             >
-                Camera
-            </button>
+                photo_camera
+            </span>
+            <div className='profile-button'>
+                onClick={moveToProfile}
+
+            </div>
+            <span class="material-symbols-outlined">
+                person
+            </span>
         </div>
     );
 }

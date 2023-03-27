@@ -1,10 +1,21 @@
 package com.wooseung.hancook.api.service;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.wooseung.hancook.api.response.CrawlingPriceResponseDto;
 import com.wooseung.hancook.api.response.CrawlingResponseDto;
+import com.wooseung.hancook.api.response.MartResponseDto;
+import com.wooseung.hancook.db.entity.Ingredient;
+import com.wooseung.hancook.db.entity.Mart;
+import com.wooseung.hancook.db.repository.IngredientRepository;
+import com.wooseung.hancook.db.repository.MartRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -23,31 +34,17 @@ import java.util.List;
 public class CrawlingServiceImpl implements CrawlingService {
 
     private WebDriver driver;
-    private static final String hompPlus = "https://front.homeplus.co.kr/search?keyword=";
-    private static final String emart = "https://emart.ssg.com/search.ssg?sort=best&count=3&query=";
+    private static final String homePlus = "https://front.homeplus.co.kr/search?keyword=";
+    private static final String emart = "https://emart.ssg.com/search.ssg?target=all&count=3&query=";
     private static final String lotte = "https://www.lotteon.com/search/search/search.ecn?render=search&platform=pc&mallId=4&q=";
+    private final MartRepository martRepository;
+    private final IngredientRepository ingredientRepository;
 
     @Override
-    public CrawlingResponseDto craw(String keyword) {
-        File file = new File("C:\\\\Users\\\\SSAFY\\\\Downloads\\\\ingre.txt");
-        FileReader fileReader = null;
-
-        // 파일 입력
-        String filepath = "C:\\\\Users\\\\SSAFY\\\\Downloads\\\\ingre_csv.csv";
-        File wFile = new File(filepath);
-
-        String NEWLINE = System.lineSeparator();
+    public CrawlingResponseDto craw() {
 
         try {
-            fileReader = new FileReader(file);
-            BufferedReader bufReader = new BufferedReader(fileReader);
 
-            //파일 입력
-            BufferedWriter bw = new BufferedWriter(new FileWriter(wFile));
-            bw.write("번호,재료명,아이템명,가격,아이템번호,마트번호");
-            bw.write(NEWLINE);
-
-            String ingreName = null;
             System.setProperty("webdriver.chrome.driver", "src\\main\\resources\\crawling\\chromedriver.exe");
             ChromeOptions options = new ChromeOptions();
 
@@ -60,12 +57,11 @@ public class CrawlingServiceImpl implements CrawlingService {
             WebDriver driver = new ChromeDriver(options);
 
             int index = 1;
+            List<Ingredient> ingredientList = ingredientRepository.findAll();
+            for (Ingredient ingredient : ingredientList) {
+                String ingreName = ingredient.getName();
 
-            while ((ingreName = bufReader.readLine()) != null) {
-                List<CrawlingPriceResponseDto> homeplusList = new ArrayList<>();
-                List<CrawlingPriceResponseDto> emartList = new ArrayList<>();
-                List<CrawlingPriceResponseDto> lotteList = new ArrayList<>();
-                String homePlusUrl = hompPlus + ingreName;
+                String homePlusUrl = homePlus + ingreName;
                 String emartUrl = emart + ingreName;
                 String lotteUrl = lotte + ingreName;
 
@@ -81,29 +77,46 @@ public class CrawlingServiceImpl implements CrawlingService {
                     }
                     String name = element.findElement(By.cssSelector("a >.css-12cdo53-defaultStyle-Typography-ellips")).getText();
                     String price = element.findElement(By.cssSelector("div > div > .priceValue")).getText();
-                    homeplusList.add(new CrawlingPriceResponseDto(name, price));
-                    name = name.replaceAll(",","");
-                    price =price.replaceAll(",", "");
+                    name = name.replaceAll(",", "");
+                    price = price.replaceAll(",", "");
                     System.out.println(name + " " + price);
-                    bw.write(index+","+ingreName+","+name+","+price+","+Integer.toString(cnt)+","+"1");
-                    bw.write(NEWLINE);
+                    Mart mart = Mart.builder()
+                            .ingredient(ingredient)
+                            .ingreName(ingreName)
+                            .itemNo(cnt)
+                            .itemName(name)
+                            .itemPrice(price)
+                            .itemUrl("http")
+                            .mart(2)
+                            .build();
+                    martRepository.save(mart);
                     cnt++;
                 }
-
+//이마트
                 driver.get(emartUrl);
                 Thread.sleep(1000);
-                cnt=1;
+                cnt = 1;
                 elements = driver.findElements(By.cssSelector("#idProductImg > li"));
                 for (WebElement element : elements) {
                     String name = element.findElement(By.cssSelector(".mnemitem_goods_tit")).getText();
                     String price = element.findElement(By.cssSelector(".ssg_price")).getText();
-                    emartList.add(new CrawlingPriceResponseDto(name, price));
-                    name = name.replaceAll(",","");                    price =price.replaceAll(",", "");
-                    bw.write(index+","+ingreName+","+name+","+price+","+Integer.toString(cnt)+","+"2");
-                    bw.write(NEWLINE);
+                    name = name.replaceAll(",", "");
+                    price = price.replaceAll(",", "");
+
                     System.out.println(name + " " + price);
+                    Mart mart = Mart.builder()
+                            .ingredient(ingredient)
+                            .ingreName(ingreName)
+                            .itemNo(cnt)
+                            .itemName(name)
+                            .itemPrice(price)
+                            .itemUrl("http")
+                            .mart(3)
+                            .build();
+                    martRepository.save(mart);
                     cnt++;
                 }
+
 
                 driver.get(lotteUrl);
                 Thread.sleep(1000);
@@ -116,19 +129,25 @@ public class CrawlingServiceImpl implements CrawlingService {
                     }
                     String name = element.findElement(By.cssSelector(".srchProductUnitTitle")).getText();
                     String price = element.findElement(By.cssSelector(".s-product-price__final > .s-product-price__number")).getText();
-                    lotteList.add(new CrawlingPriceResponseDto(name, price));
-                    name = name.replaceAll(",","");
-                    price =price.replaceAll(",", "");
+                    name = name.replaceAll(",", "");
+                    price = price.replaceAll(",", "");
                     System.out.println(name + " " + price);
-                    bw.write(index+","+ingreName+","+name+","+price+","+Integer.toString(cnt)+","+"3");
-                    bw.write(NEWLINE);
+                    Mart mart = Mart.builder()
+                            .ingredient(ingredient)
+                            .ingreName(ingreName)
+                            .itemNo(cnt)
+                            .itemName(name)
+                            .itemPrice(price)
+                            .itemUrl("http")
+                            .mart(1)
+                            .build();
+                    martRepository.save(mart);
                     cnt++;
                 }
 
                 index++;
             }
-            bw.flush();
-            bw.close();
+
             System.out.println(index);
         } catch (Exception e) {
             e.printStackTrace();
