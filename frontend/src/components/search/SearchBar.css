@@ -1,0 +1,29 @@
+.search-inner-form{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-inner-form input {
+  background-color: #C4E1C5;
+  height: 10vw;
+  border-radius: 10px 0 0 10px;
+  font-size: 17px;
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  color: #4d820e;
+  margin-bottom: 0 !important;
+  padding-left: 10px;
+  width: 70vw;
+}
+
+.search-inner-form button {
+  width: 20vw;
+  font-size: 18px;
+  border: none;
+  height: 10vw;
+  background-color: #4d820e;
+  color: white;
+  font-family: 'semibold';
+}
