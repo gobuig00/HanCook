@@ -20,14 +20,14 @@ export default function Login() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post("http://localhost:8080/user/login", {
+            const response = await axios.post("http://192.168.100.172:8080/user/login", {
                 email,
                 password,
             });
 
             if (response.status === 200) {
                 // 로그인 성공 시 할 일
-                console.log('로그인 성공', response.data);
+                localStorage.setItem('hancook-token', response.data.accessToken);
                 navigate('/main');
             } else {
                 // 로그인 실패 시 할 일
