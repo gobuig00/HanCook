@@ -1,63 +1,90 @@
+import React from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
-export const data = {
-  labels: ['Carbohydrate', 'Protein', 'Fat'],
-  datasets: [
-    {
-      // data에 탄수화물, 단백질, 지방 순서로 변수 할당
-      data: [96, 2, 3],
-      backgroundColor: [
-        'rgba(55, 183, 255, 1)',
-        'rgba(105, 181, 80, 1)',
-        'rgba(218, 162, 79, 1)',
-      ],
-      borderColor: [
-        'rgba(55, 183, 255, 1)',
-        'rgba(105, 181, 80, 1)',
-        'rgba(218, 162, 79, 1)',
-      ],
-      borderWidth: 1,
-    },
-  ],
-};
+const alwaysDrawCenterText = (centerText) => ({
+  id: 'alwaysDrawCenterText',
+  beforeDraw: (chart) => {
+    if (!centerText) return;
 
-export const options = {
-  plugins: {
-    title: {
-      display: true,
-      text: 'Nutrition',
-      align: 'start',
-      font: {
-        size: 30,
-        family: 'bold',
+    const ctx = chart.ctx;
+    const chartArea = chart.chartArea;
+    const centerX = (chartArea.left + chartArea.right) / 2;
+    const centerY = (chartArea.top + chartArea.bottom) / 2;
+
+    ctx.restore();
+    ctx.font = '16px semibold';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#000'; // Set the text color
+    ctx.fillText(centerText, centerX, centerY);
+    ctx.save();
+  },
+});
+
+export default function Donut({ keyList, valueList, title, centerText }) {
+  const data = {
+    labels: keyList,
+    datasets: [
+      {
+        data: valueList,
+        backgroundColor: [
+          '#37b7ff',
+          '#69b550',
+          '#daa24f',
+        ],
+        borderColor: [
+          '#37b7ff',
+          '#69b550',
+          '#daa24f',
+        ],
+        borderWidth: 1,
       },
-      color: 'black',
-    },
-    tooltip: {
-      callbacks: {
-        label: function (context) {
-          const value = context.parsed || 0;
-          return `${value}% `;
+    ],
+  };
+
+  const options = {
+    maintainAspectRatio: false,
+    plugins: {
+      title: {
+        display: true,
+        text: title,
+        align: 'start',
+        font: {
+          size: 24,
+          family: 'bold',
+        },
+        color: '#4d820e',
+      },
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            const value = context.parsed || 0;
+            return `${value}% `;
+          },
+        },
+      },
+      legend: {
+        position: 'right',
+        labels: {
+          boxWidth: 15,
+          boxHeight: 15,
+          font: {
+            size: 15,
+            family: 'semibold',
+          },
         },
       },
     },
-    legend: {
-      position: 'right',
-      labels: {
-        boxWidth: 15,
-        boxHeight: 15,
-        font: {
-          size: 15,
-          family: 'semibold',
-        }
-      }
-    }
-  },
-};
+  };
 
-export default function Donut() {
-  return <Doughnut data={data} options={options} />;
+  return (
+    <Doughnut
+      data={data}
+      options={options}
+      plugins={[alwaysDrawCenterText(centerText)]}
+    />
+  );
 }
