@@ -1,18 +1,26 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import './SignUp.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../images/logo.png';
 
 export default function SignUp() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem('hancook-token');
+        if (token) {
+            navigate('/main')
+        }
+    }, [navigate]);
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
     const [match, setMatch] = useState(true);
     const [name, setName] = useState('');
-    const [gender, setGender] = useState('');
+    const [gender, setGender] = useState('FEMALE');
     const [genderClick, setGenderClick] = useState(false)
-    const navigate = useNavigate();
     
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
@@ -34,9 +42,9 @@ export default function SignUp() {
     const handleGenderClick = (event) => {
         setGenderClick(!genderClick);
         if (genderClick) {
-            setGender('male')
+            setGender('MALE')
         } else {
-            setGender('female')
+            setGender('FEMALE')
         }
     }
 
@@ -46,16 +54,20 @@ export default function SignUp() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        const data = {
+            email,
+
+        }
 
         try {
-            const response = await axios.post("http://localhost:8080/user/join", {
+            const response = await axios.post("http://192.168.100.172:8080/user/join", {
                 email,
                 password,
                 name,
                 gender,
             });
 
-            if (response.status === 200) {
+            if (response.status === 201) {
                 // 회원가입 성공 시 할 일
                 console.log('회원가입 성공', response.data);
                 navigate('/login');
@@ -67,7 +79,7 @@ export default function SignUp() {
             console.error('회원가입 오류 : ', error);
         }
 
-        console.log('회원가입 정보: ', { email, password, name, gender })
+        // console.log('회원가입 정보: ', { email, password, name, gender })
     }
     return (
         <div className="signup-container">
