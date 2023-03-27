@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Cart.css';
 import ItemList from './ItemList';
-import emart from '../../images/emart.png';
-import lottemart from '../../images/lottemart.png';
-import homeplus from '../../images/homeplus.png';
 
 export default function Cart() {
   const [cartItems, setCartItems] = useState({
@@ -84,10 +81,11 @@ export default function Cart() {
 
   return (
     <div className='cart-container'>
-      <div className='cart-ingredient'>
+      <div className='cart-ingredients'>
+        <div className='cart-header'><b>{Object.keys(cartItems).length}</b> ingredient(s) selected</div>
         {Object.entries(cartItems).map(([ingredient, items]) => (
-          <div key={ingredient} className='cart-ingredient'>
-            <div>
+          <div key={ingredient} className='cart-ingredien-part'>
+            <div className='cart-ingredien-part-header'>
               <i className="material-icons" onClick={() => toggleExpand(ingredient)}>
                 {expanded[ingredient] ? "expand_less" : "expand_more"}
               </i>
@@ -109,8 +107,9 @@ export default function Cart() {
           <h3>receipt</h3>
           <i className="material-icons">share</i>
         </div>
+          <hr />
         <div className="receipt-body">
-          {['emart', 'lottemart', 'homeplus'].map((martName, index) => {
+          {['E-Mart', 'Lotte-Mart', 'Home-Plus'].map((martName, index) => {
             const selectedMartItems = selectedItems[index];
   
             return (
@@ -122,23 +121,27 @@ export default function Cart() {
                 <div className={`receipt-body-${martName}-body`}>
                   {selectedMartItems.map((item, itemIndex) => (
                     <div key={item.title} className="selected-item">
-                      <i className="material-icons" onClick={() => deleteSelectedItem(index, itemIndex)}>close</i>
-                      <p>{item.title}</p>
-                      <p>{item.price}</p>
+                        <div className='selected-item-title'>
+                            <i className="material-icons" onClick={() => deleteSelectedItem(index, itemIndex)}>close</i>
+                            <p>{item.title}</p>
+
+                        </div>
+                        <p className='selected-item-price'>{item.price}₩</p>
                     </div>
                   ))}
                 </div>
                 <div className={`receipt-body-${martName}-footer`}>
-                  <p>Total:</p>
-                  <p>{getTotalPriceByMart(selectedItems[index])}</p>
+                  <p className={`receipt-body-${martName}-footer-title`}>Total:</p>
+                  <p className={`receipt-body-${martName}-footer-price`}>{getTotalPriceByMart(selectedItems[index])}₩</p>
                 </div>
+                    <hr />
               </div>
             );
           })}
         </div>
         <div className='receipt-footer'>
-          <p>Total Price:</p>
-          <p>{totalPrice}</p>
+          <p className='receipt-footer-title'>Total Price:</p>
+          <p className='receipt-footer-price'>{totalPrice}₩</p>
         </div>
       </div>
     </div>
