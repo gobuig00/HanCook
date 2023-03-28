@@ -3,7 +3,8 @@ import axios from 'axios';
 import './Profile.css';
 import Donut from '../Donut';
 import Table from '../Table';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import Footer from '../Footer';
 
 export default function Profile() {
     const navigate = useNavigate();
@@ -107,6 +108,9 @@ export default function Profile() {
                     />
                 </div>
             </div>
+            <footer>
+                <Footer />
+            </footer>
         </div>
     );
 };

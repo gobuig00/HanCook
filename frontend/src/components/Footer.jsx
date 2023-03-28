@@ -1,26 +1,45 @@
 import React from 'react';
 import './Footer.css';
 import { useNavigate } from 'react-router-dom';
+import shoppingcart from '../icons/ShoppingCart.svg';
+import camera from '../icons/Camera.svg';
+import home from '../icons/Home.svg';
+import search from '../icons/Search.svg';
+import person from '../icons/Person.svg';
 
 export default function Footer({ toggleModal }) {
     const navigate = useNavigate();
+    const moveToSearch = () => {
+        navigate('/search');
+    }
+    const moveToHome = () => {
+        navigate('/home');
+    }
+    const moveToCamera = () => {
+        navigate('/camera');
+    }
+    const moveToShoppingCart = () => {
+        navigate('/cart');
+    }
     const moveToProfile = () => {
         navigate('/profile');
     }
     return (
         <div className='footer'>
-            <span
-                className="material-symbols-outlined Camera-button"
-                onClick={toggleModal}
-            >
-                photo_camera
+            <span onClick={moveToSearch}>
+                <img src={search} alt="search button" />
             </span>
-            <div className='profile-button'>
-                onClick={moveToProfile}
-
-            </div>
-            <span class="material-symbols-outlined">
-                person
+            <span onClick={moveToHome}>
+                <img src={home} alt="home button" />
+            </span>
+            <span onClick={moveToCamera}>
+                <img src={camera} alt="camera button" />
+            </span>
+            <span onClick={moveToShoppingCart}>
+                <img src={shoppingcart} alt="shoppingcart button" />
+            </span>
+            <span onClick={moveToProfile}>
+                <img src={person} alt="" />
             </span>
         </div>
     );
