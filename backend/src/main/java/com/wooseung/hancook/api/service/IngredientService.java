@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface IngredientService {
 
-    List<IngredientResponseDto> getRandomIngredient();
+    List<IngredientResponseDto> getRandomIngredient(int lan);
 
-    List<String> getLargeList();
+    List<String> getLargeList(int lan);
 
-    List<String> getMediumList(String large);
+    List<String> getMediumList(String large, int lan);
 
-    List<String> getNameList(String medium);
+    List<String> getNameList(String medium, int lan);
 
     int searchName(String name);
 
