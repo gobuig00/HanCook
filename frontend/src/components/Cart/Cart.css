@@ -121,13 +121,17 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 3vw 5vw 3vw 10vw;
+    margin: 3vw 5vw 3vw 5vw;
 }
 .selected-item-title{
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.5rem;
+    font-size: 1rem;
+    overflow: hidden;
+    white-space: normal;
+    word-break: break-all;
+    margin: 0 2vw 0 0;
 }
 .selected-item-title i{
     margin: 0 2vw 0 0;

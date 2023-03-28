@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import html2canvas from 'html2canvas';
+
 import './Cart.css';
 import ItemList from './ItemList';
+
+// Utility functions
+import {
+  toggleExpandUtil,
+  deleteIngredientUtil,
+  selectItemUtil,
+  deleteSelectedItemUtil,
+  getTotalPriceByMartUtil,
+  getTotalPriceUtil,
+} from './CartUtils';
 
 export default function Cart() {
   const [cartItems, setCartItems] = useState({
     Radish: [
-      { title: 'title1', price: 100 }, // e-mart
+      { title: 'title1title1title1title1title1title1title1title1title1title1title1title1title1title1title1title1title1', price: 100 }, // e-mart
       { title: 'title2', price: 200 }, // lotte-mart
       { title: 'title3', price: 300 }, // home-plus
     ],
@@ -19,7 +31,8 @@ export default function Cart() {
 
   const [expanded, setExpanded] = useState({});
   const [selectedItems, setSelectedItems] = useState([[], [], []]);
-
+  const Kakao = window.Kakao;
+  
   useEffect(() => {
     async function fetchCartItems() {
       try {
@@ -34,50 +47,61 @@ export default function Cart() {
   }, []);
 
   const toggleExpand = (ingredient) => {
-    setExpanded((prevExpanded) => ({
-      ...prevExpanded,
-      [ingredient]: !prevExpanded[ingredient],
-    }));
+    setExpanded((prevExpanded) => toggleExpandUtil(prevExpanded, ingredient));
   };
 
   const deleteIngredient = (ingredient) => {
-    setCartItems((prevCartItems) => {
-      const newCartItems = { ...prevCartItems };
-      delete newCartItems[ingredient];
-      return newCartItems;
-    });
+    setCartItems((prevCartItems) => deleteIngredientUtil(prevCartItems, ingredient));
   };
 
   const selectItem = (item, index) => {
-    setSelectedItems((prevSelectedItems) => {
-      // 항목이 이미 추가된 경우, 추가하지 않고 이전 상태를 그대로 반환합니다.
-      if (prevSelectedItems[index].some((selectedItem) => selectedItem.title === item.title)) {
-        console.log('Item already added.');
-        return prevSelectedItems;
-      }
-      const newSelectedItems = [...prevSelectedItems];
-      newSelectedItems[index].push(item);
-      return newSelectedItems;
-    });
+    setSelectedItems((prevSelectedItems) => selectItemUtil(prevSelectedItems, item, index));
   };
 
   const deleteSelectedItem = (martIndex, itemIndex) => {
-    setSelectedItems((prevSelectedItems) => {
-      const newSelectedItems = [...prevSelectedItems];
-      newSelectedItems[martIndex].splice(itemIndex, 1);
-      return newSelectedItems;
-    });
+    setSelectedItems((prevSelectedItems) => deleteSelectedItemUtil(prevSelectedItems, martIndex, itemIndex));
   };
 
-  const getTotalPriceByMart = (items) => {
-    return items.reduce((totalPrice, currentItem) => {
-      return totalPrice + parseInt(currentItem.price);
-    }, 0);
-  };
+  const totalPrice = getTotalPriceUtil(selectedItems, getTotalPriceByMartUtil);
 
-  const totalPrice = selectedItems.reduce((totalPrice, currentMartItems) => {
-    return totalPrice + getTotalPriceByMart(currentMartItems);
-  }, 0);
+  async function uploadImageToServer(base64Image) {
+    try {
+      const response = await axios.post('/api/upload-image', {
+        image: base64Image,
+      });
+  
+      return response.data.url;
+    } catch (error) {
+      console.error('Error uploading image to server:', error);
+      return null;
+    }
+  }
+
+  const handleShareClick = async () => {
+    const receipt = document.querySelector('.cart-receipt');
+    const canvas = await html2canvas(receipt);
+    const base64Image = canvas.toDataURL('image/png');
+    
+    // Upload the captured image to the Spring server
+    const imageUrl = await uploadImageToServer(base64Image);
+
+    if (imageUrl) {
+      // Use Kakao.Link.sendDefault() to share the image URL
+      Kakao.Link.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: 'Receipt',
+          imageUrl,
+          link: {
+            mobileWebUrl: imageUrl,
+            webUrl: imageUrl,
+          },
+        },
+      });
+    } else {
+      console.error('Failed to upload image to Server');
+    }
+  };
 
   return (
     <div className='cart-container'>
@@ -89,7 +113,7 @@ export default function Cart() {
               <i className="material-icons" onClick={() => toggleExpand(ingredient)}>
                 {expanded[ingredient] ? "expand_less" : "expand_more"}
               </i>
-              <h3>{ingredient}</h3>
+              <h3 onClick={() => toggleExpand(ingredient)}>{ingredient}</h3>
               <button onClick={() => deleteIngredient(ingredient)}>del</button>
             </div>
             {expanded[ingredient] &&
@@ -105,13 +129,13 @@ export default function Cart() {
       <div className="cart-receipt">
         <div className="receipt-header">
           <h3>receipt</h3>
-          <i className="material-icons">share</i>
+          <i className="material-icons" onClick={handleShareClick}>share</i>
         </div>
           <hr />
         <div className="receipt-body">
           {['E-Mart', 'Lotte-Mart', 'Home-Plus'].map((martName, index) => {
             const selectedMartItems = selectedItems[index];
-  
+
             return (
               <div key={index} className={`receipt-body-${martName}`}>
                 <div className={`receipt-body-${martName}-header`}>
@@ -124,7 +148,6 @@ export default function Cart() {
                         <div className='selected-item-title'>
                             <i className="material-icons" onClick={() => deleteSelectedItem(index, itemIndex)}>close</i>
                             <p>{item.title}</p>
-
                         </div>
                         <p className='selected-item-price'>{item.price}₩</p>
                     </div>
@@ -132,7 +155,7 @@ export default function Cart() {
                 </div>
                 <div className={`receipt-body-${martName}-footer`}>
                   <p className={`receipt-body-${martName}-footer-title`}>Total:</p>
-                  <p className={`receipt-body-${martName}-footer-price`}>{getTotalPriceByMart(selectedItems[index])}₩</p>
+                  <p className={`receipt-body-${martName}-footer-price`}>{getTotalPriceByMartUtil(selectedItems[index])}₩</p>
                 </div>
                     <hr />
               </div>
@@ -146,4 +169,4 @@ export default function Cart() {
       </div>
     </div>
   );
-}  
+}

@@ -12,6 +12,9 @@
 }
 .item-title {
     width: 70%;
+    overflow: hidden;
+    white-space: normal;
+    word-break: break-all;
 }
 .item-title p{
     font-family: semibold;

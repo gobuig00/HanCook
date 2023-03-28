@@ -9,6 +9,8 @@ import Dish from './components/Dish'
 import Profile from './components/profile/Profile';
 import Search from './components/search/Search';
 import Cart from './components/Cart/Cart';
+const Kakao = window.Kakao;
+Kakao.init(process.env.REACT_APP_KAKAO_APP_KEY); 
 
 function App() {
   return (
