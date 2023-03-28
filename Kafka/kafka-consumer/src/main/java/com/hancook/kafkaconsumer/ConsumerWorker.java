@@ -58,7 +58,7 @@ public class ConsumerWorker implements Runnable {
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(50)); // 0.5 초마다 하나씩 poll 한다.
 
                 for(ConsumerRecord<String, String> record : records) { // ConsumerRecords implements Iterable
-                    addHdfsFileBuffer(record); // HDFS에 버퍼의 크기만큼 각각의 레코드를 저장시킨다.
+                    addLocalFileBuffer(record); // HDFS에 버퍼의 크기만큼 각각의 레코드를 저장시킨다.
                 }
             }
         } catch(WakeupException e) { // 정해진 Duration 동안 데이터 읽어오는 것을 실패하면 실행하던 consumer를 안전하게 종료시킨다.
@@ -69,12 +69,8 @@ public class ConsumerWorker implements Runnable {
             consumer.close();
         }
     }
-
-    /**
-     * Hdfs에 파일을 저장할 때 2 가지 방식이 존재한다
-     * - append, flush (후자 선택)
-     */
-    private void addHdfsFileBuffer(ConsumerRecord<String, String> record) {
+    // asdfsda
+    private void addLocalFileBuffer(ConsumerRecord<String, String> record) {
 
         List<String> buffer = bufferString.getOrDefault(record.partition(), new ArrayList<>());
         buffer.add(record.value());
@@ -84,13 +80,33 @@ public class ConsumerWorker implements Runnable {
             currentFileOffset.put(record.partition(), record.offset());
         }
 
-        // consumer에 할당된 파티션 정보를 얻어 파티션마다 할당된 버퍼의 크기가 다 채워졌을 때 파일을 저장(flush)한다.
-        saveBufferToHdfsFile(consumer.assignment());
+        saveBufferToLocalFile(consumer.assignment());
     }
-
-    private void saveBufferToHdfsFile(Set<TopicPartition> partitions) {
+    private void saveBufferToLocalFile(Set<TopicPartition> partitions) {
         partitions.forEach(p -> checkFlushCount(p.partition()));
     }
+    // sdfsad
+    /**
+     * Hdfs에 파일을 저장할 때 2 가지 방식이 존재한다
+     * - append, flush (후자 선택)
+     */
+//    private void addHdfsFileBuffer(ConsumerRecord<String, String> record) {
+//
+//        List<String> buffer = bufferString.getOrDefault(record.partition(), new ArrayList<>());
+//        buffer.add(record.value());
+//        bufferString.put(record.partition(), buffer);
+//
+//        if(buffer.size() == 1) {
+//            currentFileOffset.put(record.partition(), record.offset());
+//        }
+//
+//        // consumer에 할당된 파티션 정보를 얻어 파티션마다 할당된 버퍼의 크기가 다 채워졌을 때 파일을 저장(flush)한다.
+//        saveBufferToHdfsFile(consumer.assignment());
+//    }
+//
+//    private void saveBufferToHdfsFile(Set<TopicPartition> partitions) {
+//        partitions.forEach(p -> checkFlushCount(p.partition()));
+//    }
 
     private void checkFlushCount(int partitionNo) {
         if(bufferString.get(partitionNo) != null) {

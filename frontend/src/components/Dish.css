@@ -63,3 +63,31 @@
   font-family: 'semibold';
   font-size: 20px;
 }
+
+.plus-minus-button {
+  width: 10vw;
+}
+
+.add-eat-food {
+  width: 10vw;
+  margin-left: 10px;
+}
+
+.add-eat-food-container {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 45vw;
+  right: 2vw;
+}
+
+.add-number {
+  font-family: 'semibold';
+  width: 15px;
+  font-size: 20px;
+}
+
+.yes-button {
+  background-color: #69B550;
+}

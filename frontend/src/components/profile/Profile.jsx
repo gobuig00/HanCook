@@ -3,8 +3,18 @@ import axios from 'axios';
 import './Profile.css';
 import Donut from '../Donut';
 import Table from '../Table';
+import { useNavigate } from 'react-router-dom'
 
 export default function Profile() {
+    const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('hancook-token');
+    if (!token) {
+      navigate('/login')
+    }
+  }, [navigate]);
+
     const profile = {
         name : 'Tom',
         totalCalories : 2184,
