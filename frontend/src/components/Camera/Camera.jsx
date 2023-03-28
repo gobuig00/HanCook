@@ -1,8 +1,131 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import axios from 'axios';
 import Footer from '../Footer';
+import { useNavigate } from 'react-router-dom';
+import './Camera.css';
+
+// function SwipeMenu() {
+//   const [selected, setSelected] = useState('Dish');
+//   const menuRef = useRef(null);
+
+//   const handleTouchStart = (e) => {
+//     e.currentTarget.dataset.startX = e.touches[0].clientX;
+//   };
+
+//   const handleTouchEnd = (e) => {
+//     const startX = parseFloat(e.currentTarget.dataset.startX);
+//     const endX = e.changedTouches[0].clientX;
+//     const diffX = startX - endX;
+
+//     if (Math.abs(diffX) > 50) {
+//       if (diffX > 0) {
+//         setSelected('Text');
+//         menuRef.current.style.transform = 'translateX(-50%)';
+//       } else {
+//         setSelected('Dish');
+//         menuRef.current.style.transform = 'translateX(0%)';
+//       }
+//     }
+//   };
+
+//   const handleTouchMove = (e) => {
+//     const startX = parseFloat(e.currentTarget.dataset.startX);
+//     const currentX = e.touches[0].clientX;
+//     const diffX = startX - currentX;
+  
+//     const percentage = (diffX / window.innerWidth) * 100;
+  
+//     // 선택된 메뉴에 따라 드래그 방향 조정
+//     const adjustedPercentage = selected === 'Text' ? -percentage : 50 - percentage;
+
+//   if (selected === 'Text' && percentage > 0) return;
+//   if (selected === 'Dish' && percentage < 0) return;
+  
+//     if (Math.abs(percentage) <= 50) {
+//       menuRef.current.style.transform = `translateX(${adjustedPercentage}%)`;
+//     }
+//   };
+
+//   return (
+//     <div
+//       className="swipe-menu"
+//       ref={menuRef}
+//       onTouchStart={handleTouchStart}
+//       onTouchMove={handleTouchMove}
+//       onTouchEnd={handleTouchEnd}
+//     >
+//       <div className='menu-selected-background'></div>
+//       <div className={`menu-item ${selected === 'Dish' ? 'selected' : ''}`}>
+//         Dish
+//       </div>
+//       <div className={`menu-item ${selected === 'Text' ? 'selected' : ''}`}>
+//         Text
+//       </div>
+//     </div>
+//   );
+// }
+
+const Menu = () => {
+  const [dragging, setDragging] = useState(false);
+  const [translateX, setTranslateX] = useState(0);
+  const [startX, setStartX] = useState(0);
+
+  const menuRef = useRef(null);
+
+  const handleMouseDown = (e) => {
+    setDragging(true);
+    setStartX(e.clientX);
+  };
+
+  const handleMouseMove = (e) => {
+    if (dragging) {
+      const diffX = e.clientX - startX;
+      setTranslateX(translateX + diffX);
+      setStartX(e.clientX);
+    }
+  };
+
+  const handleMouseUp = () => {
+    setDragging(false);
+  };
+
+  const getStyle = () => {
+    return {
+      transform: `translateX(${translateX}px)`,
+      transition: dragging ? 'none' : 'transform 0.3s',
+    };
+  };
+
+  return (
+    <div
+      className="menu"
+      ref={menuRef}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+      style={getStyle()}
+    >
+      <div className="menuItem">Menu Item 1</div>
+      <div className="menuItem">Menu Item 2</div>
+      <div className="menuItem">Menu Item 3</div>
+      <div className="menuItem">Menu Item 4</div>
+      <div className="menuItem">Menu Item 5</div>
+    </div>
+  );
+};
+
 
 export default function Camera() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('hancook-token');
+    if (!token) {
+      navigate('/login')
+    }
+  }, [navigate]);
+
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -19,7 +142,9 @@ export default function Camera() {
         const video = videoRef.current;
         if (video) {
           video.srcObject = stream;
-          video.play();
+          video.onloadedmetadata = () => {
+            video.play();
+          };
         }
     } catch (err) {
       console.error(err);
@@ -69,21 +194,38 @@ export default function Camera() {
     
     
   }
-   
 
   return (
-    <div>
-      <div>
-        <video ref={videoRef} />
+    <div className='background-black'>
+      <div className='total-container'>
+        <video ref={videoRef} className='camera-container'/>
+        <div className='camera-menu-container'>
+          <Menu />
+          <button type="button" onClick={getCapture}> capture </button>
+        </div>
       </div>
-
-      <div>
-        <button type="button" onClick={getCapture}> capture </button>
-        <canvas ref={canvasRef} style={{display: 'none'}} />
-      </div>
+      <canvas ref={canvasRef} style={{display: 'none'}} />
       <footer>
         <Footer />
       </footer>
     </div>
   );
+   
+
+  // return (
+  //   <div className='background-black'>
+  //     <div>
+  //       <video ref={videoRef} />
+  //     </div>
+  //     <div>
+  //       <div className='camera-menu-container'>
+  //         <button type="button" onClick={getCapture}> capture </button>
+  //       </div>
+  //       <canvas ref={canvasRef} style={{display: 'none'}} />
+  //     </div>
+  //     <footer>
+  //       <Footer />
+  //     </footer>
+  //   </div>
+  // );
 }
