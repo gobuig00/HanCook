@@ -33,18 +33,18 @@ export default function Cart() {
   const [selectedItems, setSelectedItems] = useState([[], [], []]);
   const Kakao = window.Kakao;
   
-  useEffect(() => {
-    async function fetchCartItems() {
-      try {
-        const response = await axios.get('/api/cart-items');
-        setCartItems(response.data);
-      } catch (error) {
-        console.error('Error fetching cart items:', error);
-      }
-    }
+  // useEffect(() => {
+  //   async function fetchCartItems() {
+  //     try {
+  //       const response = await axios.get('/api/cart-items');
+  //       setCartItems(response.data);
+  //     } catch (error) {
+  //       console.error('Error fetching cart items:', error);
+  //     }
+  //   }
 
-    fetchCartItems();
-  }, []);
+  //   fetchCartItems();
+  // }, []);
 
   const toggleExpand = (ingredient) => {
     setExpanded((prevExpanded) => toggleExpandUtil(prevExpanded, ingredient));
@@ -66,13 +66,13 @@ export default function Cart() {
 
   async function uploadImageToServer(base64Image) {
     try {
-      const response = await axios.post('/api/upload-image', {
+      const response = await axios.post('/cart/upload-image', {
         image: base64Image,
       });
-  
+      console.log(response)
       return response.data.url;
     } catch (error) {
-      console.error('Error uploading image to server:', error);
+        console.error('Error uploading image to server:', error);
       return null;
     }
   }
