@@ -1,7 +1,8 @@
 import React, { useRef, useEffect } from 'react';
 import axios from 'axios';
+import Footer from '../Footer';
 
-export default function Camera({isVideoStart}) {
+export default function Camera() {
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -12,7 +13,6 @@ export default function Camera({isVideoStart}) {
 
   const getVideo = async () => {
     try {
-      if (isVideoStart) {
         const stream = await navigator.mediaDevices.getUserMedia({
           video: true,
         });
@@ -21,7 +21,6 @@ export default function Camera({isVideoStart}) {
           video.srcObject = stream;
           video.play();
         }
-      }
     } catch (err) {
       console.error(err);
     }
@@ -58,7 +57,7 @@ export default function Camera({isVideoStart}) {
     const formData = new FormData();
     formData.append('image', imageFile);
 
-    axios.post('http://localhost:8080/food/recognize', formData)
+    axios.post('http://192.168.100.172:8080/food/recognize', formData)
       .then(response => {
         // API 요청 성공 시 처리할 코드
         console.log(response.data);
@@ -82,7 +81,9 @@ export default function Camera({isVideoStart}) {
         <button type="button" onClick={getCapture}> capture </button>
         <canvas ref={canvasRef} style={{display: 'none'}} />
       </div>
-      
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 }
