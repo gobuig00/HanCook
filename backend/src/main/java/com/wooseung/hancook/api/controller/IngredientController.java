@@ -18,29 +18,29 @@ public class IngredientController {
     private final IngredientService ingredientService;
 
     @GetMapping("/random")
-    public ResponseEntity<List<IngredientResponseDto>> getRandomIngredient() {
-        List<IngredientResponseDto> ingredientResponseDtoList = ingredientService.getRandomIngredient();
+    public ResponseEntity<List<IngredientResponseDto>> getRandomIngredient(@RequestParam("lan") int lan) {
+        List<IngredientResponseDto> ingredientResponseDtoList = ingredientService.getRandomIngredient(lan);
         return ResponseEntity.status(HttpStatus.OK).body(ingredientResponseDtoList);
     }
 
     // 대분류 반환
     @GetMapping("/large")
-    public ResponseEntity<List<String>> getLarge() {
-        List<String> largeList = ingredientService.getLargeList();
+    public ResponseEntity<List<String>> getLarge(@RequestParam("lan") int lan) {
+        List<String> largeList = ingredientService.getLargeList(lan);
         return ResponseEntity.status(HttpStatus.OK).body(largeList);
     }
 
     // 대분류 입력받아 중분류 반환
     @GetMapping("/medium")
-    public ResponseEntity<List<String>> getMedium(@RequestParam("large") String large) {
-        List<String> mediumList = ingredientService.getMediumList(large);
+    public ResponseEntity<List<String>> getMedium(@RequestParam("large") String large, @RequestParam("lan") int lan) {
+        List<String> mediumList = ingredientService.getMediumList(large, lan);
         return ResponseEntity.status(HttpStatus.OK).body(mediumList);
     }
 
     // 중분류 입력받아 재료명 반환
     @GetMapping("/name")
-    public ResponseEntity<List<String>> getName(@RequestParam("medium") String medium) {
-        List<String> nameList = ingredientService.getNameList(medium);
+    public ResponseEntity<List<String>> getName(@RequestParam("medium") String medium, @RequestParam("lan") int lan) {
+        List<String> nameList = ingredientService.getNameList(medium, lan);
         return ResponseEntity.status(HttpStatus.OK).body(nameList);
     }
 
