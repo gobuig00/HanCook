@@ -20,8 +20,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 public class PapagoTranslationServiceImpl implements PapagoTranslationService {
-    private static final String CLIENT_ID = "YtKB9hRoR31AAAPYfPuR";
-    private static final String CLIENT_SECRET = "vh5BKsU9nD";
+//    private static final String CLIENT_ID = "YtKB9hRoR31AAAPYfPuR";
+//    private static final String CLIENT_SECRET = "vh5BKsU9nD";
+    private static final String CLIENT_ID = "7TaJvP_1du1J6ucbvYGy";
+    private static final String CLIENT_SECRET = "5rFX_BEBOm";
     private static final String API_URL = "https://openapi.naver.com/v1/papago/n2mt";
 
     public String translate(String sourceLang, String targetLang, String text) {
