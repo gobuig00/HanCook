@@ -8,20 +8,15 @@ import com.wooseung.hancook.api.response.RecipeResponseDto;
 import java.util.List;
 
 public interface RecipeService {
-//    List<RecipeResponseDto> getRecipeByVeg(String category);
+    List<RecipeResponseDto> getRandomRecipe(int lan);
 
-    List<RecipeResponseDto> getRandomRecipe();
-    List<RecipeResponseDto> getRandomEngRecipe();
+    RecipeResponseDto getRecipeById(Long recipeId, int lan);
 
-    RecipeResponseDto getRecipeById(Long recipeId);
-    RecipeResponseDto getEngRecipeById(Long recipeId);
+    List<RecipeResponseDto> getRecipeByName(String name, int lan);
 
-    List<RecipeResponseDto> getRecipeByName(String name);
+    List<RecipeResponseDto> getRecipeByIngredient(List<String> ingredient, int lan);
 
-    List<RecipeResponseDto> getRecipeByIngredient(List<String> ingredient);
+    List<ComponentResponseDto> getIngredientByRecipeId(Long recipeId, int lan);
 
-    List<ComponentResponseDto> getIngredientByRecipeId(Long recipeId);
-
-    List<ProcessResponseDto> getProcessByRecipeId(Long recipeId);
-
+    List<ProcessResponseDto> getProcessByRecipeId(Long recipeId, int lan);
 }
