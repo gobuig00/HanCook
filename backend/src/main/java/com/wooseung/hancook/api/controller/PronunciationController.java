@@ -7,10 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/english")
+@RequestMapping("/pronunciation")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class EnglishController {
+public class PronunciationController {
 
     private final PronunciationService pronunciationService;
 

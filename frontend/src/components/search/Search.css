@@ -1,0 +1,29 @@
+.search-result-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.search-result-link {
+  width: 33vw;
+  margin-bottom: 0.5vw;
+}
+
+.search-result-image-container {
+  width: 100%;
+  height: 100%;
+}
+
+.search-result-image {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+.link-margin {
+  margin-left: 0.5vw;
+}
+
+.screen-full {
+  min-height: 100vh;
+  max-height: max-content;
+}

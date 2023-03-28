@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import axios from 'axios';
 
 export default function Camera({isVideoStart}) {
+
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 

@@ -6,7 +6,7 @@ import LineChart from './LineChart';
 import Img from '../images/takepicture.jpg';
 import AddShoppingCart from '../icons/AddShoppingCart.svg';
 import logo from '../images/logo.png'
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Card from './Card/Card';
 import {useState, useEffect } from 'react';
 import axios from 'axios';
@@ -47,6 +47,15 @@ function useRelatedFoodAPI() {
 
 
 function Ingredient() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('hancook-token');
+    if (!token) {
+      navigate('/login')
+    }
+  }, [navigate]);
+
   const data = useRelatedFoodAPI()
   console.log(data)
   return (
