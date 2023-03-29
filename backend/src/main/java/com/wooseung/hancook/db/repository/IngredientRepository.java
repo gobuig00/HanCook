@@ -1,7 +1,6 @@
 package com.wooseung.hancook.db.repository;
 
 import com.wooseung.hancook.db.entity.Ingredient;
-import com.wooseung.hancook.db.entity.Recipe;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
