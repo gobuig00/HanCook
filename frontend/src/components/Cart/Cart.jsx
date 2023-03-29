@@ -64,15 +64,32 @@ export default function Cart() {
 
   const totalPrice = getTotalPriceUtil(selectedItems, getTotalPriceByMartUtil);
 
-  async function uploadImageToServer(base64Image) {
+  function dataURItoBlob(dataURI) {
+    const byteString = atob(dataURI.split(',')[1]);
+    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: mimeString });
+  }
+
+  async function uploadImageToServer(imageBlob) {
     try {
-      const response = await axios.post('/cart/upload-image', {
-        image: base64Image,
+      const formData = new FormData();
+      formData.append('image', imageBlob, 'image.png');
+  
+      const response = await axios.post('http://localhost/cart/upload-image', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
-      console.log(response)
+  
+      console.log(response);
       return response.data.url;
     } catch (error) {
-        console.error('Error uploading image to server:', error);
+      console.error('Error uploading image to server:', error);
       return null;
     }
   }
@@ -81,9 +98,13 @@ export default function Cart() {
     const receipt = document.querySelector('.cart-receipt');
     const canvas = await html2canvas(receipt);
     const base64Image = canvas.toDataURL('image/png');
+  
+    const imageBlob = dataURItoBlob(base64Image);
+    console.log(imageBlob)
     
     // Upload the captured image to the Spring server
-    const imageUrl = await uploadImageToServer(base64Image);
+    const imageUrl = await uploadImageToServer(imageBlob);
+  
 
     if (imageUrl) {
       // Use Kakao.Link.sendDefault() to share the image URL
