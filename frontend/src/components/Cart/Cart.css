@@ -1,0 +1,177 @@
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+
+.cart-ingredients{
+    margin: 10vw 3vw 5vw 3vw;
+    padding: 3vh 5vw;
+    border: none;
+    border-radius: 15px;
+    background-color: #f1f7eb;
+    box-shadow: 0px 7px 6px -1px rgba(0,0,0,0.28);
+    -moz-box-shadow: 0px 7px 6px -1px rgba(0,0,0,0.28);
+    -webkit-box-shadow: 0px 7px 6px -1px rgba(0,0,0,0.28); 
+}
+
+.cart-header {
+    font-family: "semibold";
+    font-size: 1.5rem;
+    text-align: center;
+}
+.cart-header b {
+    font-family: "bold";
+    font-size: 2rem;
+    color: #4d820e;
+}
+
+.cart-ingredien-part-header{
+    font-family: "semibold";
+    font-size: 1.5rem;
+    color: #4d820e;
+    display: flex;
+    align-items: center;
+}
+
+.cart-ingredien-part-header i {
+    font-size: 3rem;
+}
+.cart-ingredien-part-header h3 {
+    margin: 0;
+    padding: 0 5%;
+}
+.cart-ingredien-part-header button {
+    font-size: 0.75rem;
+    margin: 0;
+    padding: 0 2%;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    background-color: red;
+}
+.cart-receipt{
+    border: 6px solid #c4e1c5;
+    border-radius: 15px;
+    margin: 10vw 3vw 5vw 3vw;
+    padding: 3vh 5vw;
+    box-shadow: 0px 7px 6px -1px rgba(0,0,0,0.28);
+    -moz-box-shadow: 0px 7px 6px -1px rgba(0,0,0,0.28);
+    -webkit-box-shadow: 0px 7px 6px -1px rgba(0,0,0,0.28); 
+}
+.receipt-header{
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: bold;
+    color: #4d820e;
+}
+.receipt-header h3{
+    font-size: 2.5rem;
+    margin: 0;
+}
+.receipt-header i {
+    font-size: 2.5rem;
+    margin: 0 2vw 0 0;
+}
+
+.receipt-body{
+    padding: 3vw 0;
+    font-family: "semibold";
+    color: #4d820e;
+}
+.receipt-body-E-Mart, .receipt-body-Lotte-Mart, .receipt-body-Home-Plus{
+    margin: 0;
+}
+.receipt-body-E-Mart-header, .receipt-body-Lotte-Mart-header, .receipt-body-Home-Plus-header{
+    display: flex;
+    align-items: center;
+}
+.receipt-body-E-Mart-header h3, .receipt-body-Lotte-Mart-header h3, .receipt-body-Home-Plus-header h3{
+    padding: 0;
+    margin: 0 0 0 5vw;
+    font-size: 2rem;
+}
+.receipt-body-E-Mart-image{
+    width: 35px;
+    height: 35px;
+    background-image: url('../../images/emart.png');
+    background-size: cover;
+    background-position: center;
+}
+.receipt-body-Lotte-Mart-image{
+    width: 35px;
+    height: 35px;
+    background-image: url('../../images/lottemart.png');
+    background-size: cover;
+    background-position: center;
+}
+.receipt-body-Home-Plus-image{
+    width: 35px;
+    height: 35px;
+    background-image: url('../../images/homeplus.png');
+    background-size: cover;
+    background-position: center;
+}
+
+.selected-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 3vw 5vw 3vw 5vw;
+}
+.selected-item-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    overflow: hidden;
+    white-space: normal;
+    word-break: break-all;
+    margin: 0 2vw 0 0;
+}
+.selected-item-title i{
+    margin: 0 2vw 0 0;
+    font-size: 1.5rem;
+    color: red;
+}
+.selected-item-title p{
+    color: black;
+    margin: 0;
+}
+.selected-item-price{
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.receipt-body-E-Mart-footer, .receipt-body-Lotte-Mart-footer, .receipt-body-Home-Plus-footer{
+    display: flex;
+    justify-content: end;
+    font-size: 1.5rem;
+    margin: 0 5vw 0 0;
+}
+.receipt-body-E-Mart-footer-title, .receipt-body-Lotte-Mart-footer-title, .receipt-body-Home-Plus-footer-title{
+    color: black;
+    margin: 0 3vw;
+}
+.receipt-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.5rem;
+    font-family: "semibold";
+    color: #4d820e;
+    margin: 0 5vw 0 0;
+}
+.receipt-footer-title{
+    color: black;
+    margin: 0 5vw 0 0;
+}
+.receipt-footer-price{
+    
+    font-size: 2rem;
+    margin: 0;
+}
