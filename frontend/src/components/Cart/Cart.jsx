@@ -4,6 +4,8 @@ import html2canvas from 'html2canvas';
 
 import './Cart.css';
 import ItemList from './ItemList';
+import Footer from '../Footer';
+import Spinner from '../Spinner';
 
 // Utility functions
 import {
@@ -47,13 +49,6 @@ export default function Cart() {
 
     // fetchCartItems();
     // Initialize the Kakao SDK with your app's JavaScript key
-
-    // Check if the SDK is initialized
-    if (Kakao.isInitialized()) {
-      console.log('Kakao SDK initialized.');
-    } else {
-      console.error('Failed to initialize Kakao SDK.');
-  }
   }, []);
 
   const toggleExpand = (ingredient) => {
@@ -205,6 +200,9 @@ export default function Cart() {
           <p className='receipt-footer-price'>{totalPrice}₩</p>
         </div>
       </div>
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 }
