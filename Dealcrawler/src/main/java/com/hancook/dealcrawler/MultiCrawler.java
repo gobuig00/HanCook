@@ -180,6 +180,7 @@ public class MultiCrawler implements Runnable {
         // after reading one row of a table, This server should send kafka producer
         try {
             TimeUnit.MILLISECONDS.sleep(10);
+            System.out.println(sb.toString());
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getForObject(uri + sb.toString(), String.class);
         } catch(Exception e) {
