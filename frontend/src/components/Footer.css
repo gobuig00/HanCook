@@ -3,17 +3,11 @@
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: #f5f5f5;
+    height: 8vh;
+    background-color: #ffffff;
+    border-radius: 10px 10px 0 0;
     text-align: center;
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.material-symbols-outlined {
-  font-variation-settings:
-  'FILL' 1,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 48
 }

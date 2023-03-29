@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useState, useEffect } from 'react'
 import './Search.css'
 import { Link, useNavigate } from 'react-router-dom';
+import Footer from '../Footer';
 
 
 export default function Search() {
@@ -22,11 +23,13 @@ export default function Search() {
     setLoading(true);
     const params = {
       name: searchTerm,
+      lan: 0,
     };
     axios.get('http://192.168.100.172:8080/recipe/search', { params })
     .then(response => {
       setResult(response.data)
       setLoading(false)
+      console.log(response.data)
     }).catch(err => {
       console.log(err)
       setLoading(false)
@@ -44,6 +47,9 @@ export default function Search() {
           </Link>
         ))) : ('')}
       </div>
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 }

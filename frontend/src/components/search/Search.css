@@ -25,5 +25,5 @@
 
 .screen-full {
   min-height: 100vh;
-  max-height: max-content;
+  padding-bottom: 8vh;
 }

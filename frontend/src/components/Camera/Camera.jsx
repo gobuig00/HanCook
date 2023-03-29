@@ -1,7 +1,35 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect} from 'react';
 import axios from 'axios';
+import Footer from '../Footer';
+import { useNavigate } from 'react-router-dom';
+import './Camera.css';
+import Menu from './Menu';
+import camera from '../../icons/camera.png';
+import Modal from 'react-bootstrap/Modal';
+import { ModalHeader } from 'react-bootstrap';
 
-export default function Camera({isVideoStart}) {
+
+export default function Camera() {
+  const navigate = useNavigate();
+  const [status, setStatus] = useState(0);
+  const [data, setData ] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem('hancook-token');
+    if (!token) {
+      navigate('/login')
+    }
+  }, [navigate]);
+
+  const handleClose = () => setStatus(0);
+  const handleNext = () => {
+    if (status > 4) {
+      setStatus(0);
+      alert('일치하는 결과가 없습니다.')
+    } else {
+      setStatus(status+1);
+    }
+  }
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -12,16 +40,16 @@ export default function Camera({isVideoStart}) {
 
   const getVideo = async () => {
     try {
-      if (isVideoStart) {
         const stream = await navigator.mediaDevices.getUserMedia({
           video: true,
         });
         const video = videoRef.current;
         if (video) {
           video.srcObject = stream;
-          video.play();
+          video.onloadedmetadata = () => {
+            video.play();
+          };
         }
-      }
     } catch (err) {
       console.error(err);
     }
@@ -58,31 +86,56 @@ export default function Camera({isVideoStart}) {
     const formData = new FormData();
     formData.append('image', imageFile);
 
-    axios.post('http://localhost:8080/food/recognize', formData)
+    axios.post('http://192.168.100.172:8080/food/recognize', formData)
       .then(response => {
         // API 요청 성공 시 처리할 코드
-        console.log(response.data);
+        if (response.data.result.length === 0) {
+          alert('사진을 인식할 수 없습니다.')
+        } else {
+          // 결과 배열이 존재할 경우, ConfirmModal을 띄웁니다.
+          console.log(response.data.result[0].class_info)
+          setData(response.data.result[0].class_info)
+          setStatus(1);
+        }
       })
       .catch(error => {
         // API 요청 실패 시 처리할 코드
-        console.error(error);
+        alert('잠시 후 다시 시도해주세요')
       });
-    
-    
   }
-   
 
   return (
-    <div>
-      <div>
-        <video ref={videoRef} />
+    <div className='background-black'>
+      <div className='total-container'>
+        <video ref={videoRef} className='camera-container'/>
+        <div className='camera-menu-container'>
+          <Menu />
+          <span onClick={getCapture} className='capture-button'><img src={camera} alt="" className='capture-button-image'/></span>
+        </div>
       </div>
-
-      <div>
-        <button type="button" onClick={getCapture}> capture </button>
-        <canvas ref={canvasRef} style={{display: 'none'}} />
-      </div>
-      
+      <canvas ref={canvasRef} style={{display: 'none'}} />
+      <Modal show={status !== 0} onHide={handleClose} backdrop='static' keyboard={false} centered>
+        <ModalHeader closeButton>
+          {data[status-1] ? (
+            <Modal.Title>{data[status-1].food_name}, right?</Modal.Title>
+          ) : ('Nothing')}
+        </ModalHeader>
+        <Modal.Body>
+          {/* <img src={data} alt="" /> */}
+          맞음?
+        </Modal.Body>
+        <Modal.Footer className='confirm-button-container'>
+          <button onClick={handleNext} className='confirm-no-button'>
+            No
+          </button>
+          <button onClick={handleClose} className='confirm-yes-button'>
+            Yes
+          </button>
+        </Modal.Footer>
+      </Modal>
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 }
