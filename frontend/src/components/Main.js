@@ -198,7 +198,7 @@ function Main() {
           </div>
         </div>
       <div className='main-footer'>
-        <Footer toggleModal={toggleModal} />
+        <Footer />
       </div>
     </div>
   );
