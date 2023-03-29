@@ -15,6 +15,8 @@ import {
   getTotalPriceUtil,
 } from './CartUtils';
 
+
+
 export default function Cart() {
   const [cartItems, setCartItems] = useState({
     Radish: [
@@ -33,18 +35,26 @@ export default function Cart() {
   const [selectedItems, setSelectedItems] = useState([[], [], []]);
   const Kakao = window.Kakao;
   
-  // useEffect(() => {
-  //   async function fetchCartItems() {
-  //     try {
-  //       const response = await axios.get('/api/cart-items');
-  //       setCartItems(response.data);
-  //     } catch (error) {
-  //       console.error('Error fetching cart items:', error);
-  //     }
-  //   }
+  useEffect(() => {
+    // async function fetchCartItems() {
+    //   try {
+    //     const response = await axios.get('/api/cart-items');
+    //     setCartItems(response.data);
+    //   } catch (error) {
+    //     console.error('Error fetching cart items:', error);
+    //   }
+    // }
 
-  //   fetchCartItems();
-  // }, []);
+    // fetchCartItems();
+    // Initialize the Kakao SDK with your app's JavaScript key
+
+    // Check if the SDK is initialized
+    if (Kakao.isInitialized()) {
+      console.log('Kakao SDK initialized.');
+    } else {
+      console.error('Failed to initialize Kakao SDK.');
+  }
+  }, []);
 
   const toggleExpand = (ingredient) => {
     setExpanded((prevExpanded) => toggleExpandUtil(prevExpanded, ingredient));
@@ -75,19 +85,17 @@ export default function Cart() {
     return new Blob([ab], { type: mimeString });
   }
 
-  async function uploadImageToServer(imageBlob) {
+  async function uploadImageToImgbb(imageBlob) {
     try {
       const formData = new FormData();
       formData.append('image', imageBlob, 'image.png');
-  
-      const response = await axios.post('http://localhost/cart/upload-image', formData, {
+      const response = await axios.post(`https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_IMGBB_APP_KEY}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-  
-      console.log(response);
-      return response.data.url;
+      
+      return response.data.data.url;
     } catch (error) {
       console.error('Error uploading image to server:', error);
       return null;
@@ -100,27 +108,34 @@ export default function Cart() {
     const base64Image = canvas.toDataURL('image/png');
   
     const imageBlob = dataURItoBlob(base64Image);
-    console.log(imageBlob)
-    
-    // Upload the captured image to the Spring server
-    const imageUrl = await uploadImageToServer(imageBlob);
   
-
+    // Upload the captured image to the Spring server
+    const imageUrl = await uploadImageToImgbb(imageBlob);
+    console.log(imageUrl)
+    
     if (imageUrl) {
-      // Use Kakao.Link.sendDefault() to share the image URL
       Kakao.Link.sendDefault({
         objectType: 'feed',
         content: {
-          title: 'Receipt',
-          imageUrl,
+          title: 'Check out my shopping list!',
+          imageUrl: imageUrl,
           link: {
-            mobileWebUrl: imageUrl,
-            webUrl: imageUrl,
+            mobileWebUrl: `${window.location.origin}/image/${encodeURIComponent(imageUrl)}`,
+            webUrl: `${window.location.origin}/image/${encodeURIComponent(imageUrl)}`,
           },
         },
+        buttons: [
+          {
+            title: 'View Shopping List',
+            link: {
+              mobileWebUrl: `${window.location.origin}/image/${encodeURIComponent(imageUrl)}`,
+              webUrl: `${window.location.origin}/image/${encodeURIComponent(imageUrl)}`,
+            },
+          },
+        ],
       });
     } else {
-      console.error('Failed to upload image to Server');
+      alert('Failed to share the shopping list. Please try again.');
     }
   };
 
@@ -150,7 +165,9 @@ export default function Cart() {
       <div className="cart-receipt">
         <div className="receipt-header">
           <h3>receipt</h3>
+          {/* <i className="material-icons" onClick={handleShareClick}>share</i> */}
           <i className="material-icons" onClick={handleShareClick}>share</i>
+  <div id="kakao-link-btn" style={{ display: 'none' }}></div>
         </div>
           <hr />
         <div className="receipt-body">
