@@ -13,7 +13,7 @@ export default function Footer({ toggleModal }) {
         navigate('/search');
     }
     const moveToHome = () => {
-        navigate('/home');
+        navigate('/main');
     }
     const moveToCamera = () => {
         navigate('/camera');

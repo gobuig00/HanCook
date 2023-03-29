@@ -23,7 +23,7 @@ export default function Search() {
     setLoading(true);
     const params = {
       name: searchTerm,
-      lan: 1,
+      lan: 0,
     };
     axios.get('http://192.168.100.172:8080/recipe/search', { params })
     .then(response => {
