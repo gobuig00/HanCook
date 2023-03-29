@@ -28,6 +28,12 @@ public class SchedulerController {
             t.start();
         }
     }
+    @GetMapping("beef")
+    public void beef(){
+       Runnable runnable = new BeefCrawler();
+       Thread t= new Thread(runnable);
+       t.start();
+    }
 }
 
 
