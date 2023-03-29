@@ -1,13 +1,18 @@
-import React, { useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect} from 'react';
 import axios from 'axios';
 import Footer from '../Footer';
 import { useNavigate } from 'react-router-dom';
 import './Camera.css';
 import Menu from './Menu';
+import camera from '../../icons/camera.png';
+import Modal from 'react-bootstrap/Modal';
+import { ModalHeader } from 'react-bootstrap';
 
 
 export default function Camera() {
   const navigate = useNavigate();
+  const [status, setStatus] = useState(0);
+  const [data, setData ] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('hancook-token');
@@ -16,6 +21,15 @@ export default function Camera() {
     }
   }, [navigate]);
 
+  const handleClose = () => setStatus(0);
+  const handleNext = () => {
+    if (status > 4) {
+      setStatus(0);
+      alert('일치하는 결과가 없습니다.')
+    } else {
+      setStatus(status+1);
+    }
+  }
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -75,14 +89,19 @@ export default function Camera() {
     axios.post('http://192.168.100.172:8080/food/recognize', formData)
       .then(response => {
         // API 요청 성공 시 처리할 코드
-        console.log(response.data);
+        if (response.data.result.length === 0) {
+          alert('사진을 인식할 수 없습니다.')
+        } else {
+          // 결과 배열이 존재할 경우, ConfirmModal을 띄웁니다.
+          console.log(response.data.result[0].class_info)
+          setData(response.data.result[0].class_info)
+          setStatus(1);
+        }
       })
       .catch(error => {
         // API 요청 실패 시 처리할 코드
-        console.error(error);
+        alert('잠시 후 다시 시도해주세요')
       });
-    
-    
   }
 
   return (
@@ -91,31 +110,32 @@ export default function Camera() {
         <video ref={videoRef} className='camera-container'/>
         <div className='camera-menu-container'>
           <Menu />
-          <button type="button" onClick={getCapture}> capture </button>
+          <span onClick={getCapture} className='capture-button'><img src={camera} alt="" className='capture-button-image'/></span>
         </div>
       </div>
       <canvas ref={canvasRef} style={{display: 'none'}} />
+      <Modal show={status !== 0} onHide={handleClose} backdrop='static' keyboard={false} centered>
+        <ModalHeader closeButton>
+          {data[status-1] ? (
+            <Modal.Title>{data[status-1].food_name}, right?</Modal.Title>
+          ) : ('Nothing')}
+        </ModalHeader>
+        <Modal.Body>
+          {/* <img src={data} alt="" /> */}
+          맞음?
+        </Modal.Body>
+        <Modal.Footer className='confirm-button-container'>
+          <button onClick={handleNext} className='confirm-no-button'>
+            No
+          </button>
+          <button onClick={handleClose} className='confirm-yes-button'>
+            Yes
+          </button>
+        </Modal.Footer>
+      </Modal>
       <footer>
         <Footer />
       </footer>
     </div>
   );
-   
-
-  // return (
-  //   <div className='background-black'>
-  //     <div>
-  //       <video ref={videoRef} />
-  //     </div>
-  //     <div>
-  //       <div className='camera-menu-container'>
-  //         <button type="button" onClick={getCapture}> capture </button>
-  //       </div>
-  //       <canvas ref={canvasRef} style={{display: 'none'}} />
-  //     </div>
-  //     <footer>
-  //       <Footer />
-  //     </footer>
-  //   </div>
-  // );
 }
