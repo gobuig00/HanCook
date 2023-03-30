@@ -28,11 +28,12 @@ export function Youtube(props) {
 function useRecipeAPI() {
   const params = {
     recipeId: useParams().id,
-    lan: 1,
+    lan: 0,
   };
   const [data, setData] = useState(null);
+  const [nutrient, setNutrient] = useState(null);
   useEffect(() => {
-    axios.get('http://192.168.100.172:8080/recipe/id', { params })
+    axios.get(`${process.env.REACT_APP_API_URL}/recipe/id`, { params })
     .then(function (response) {
       setData(response.data);
     })
@@ -40,16 +41,53 @@ function useRecipeAPI() {
       console.log(err);
     });
   }, []);
-  return data;
+
+  useEffect(() => {
+    if (data) {
+      const foodname = data.recipe.name;
+      axios
+        .get(`${process.env.REACT_APP_API_URL}/nutrient/food/${foodname}`)
+        .then(function (response) {
+          const size = response.data.servingSize / 100;
+          const nutrientData = {
+            nutrient: {
+              carbs: response.data.carb,
+              fat: response.data.fat,
+              protein: response.data.protein,
+            },
+            other: {
+              carbs: [`${response.data.carb}(${(response.data.carb/3.25).toFixed(2)}%)`, `${(response.data.carb / size).toFixed(2)}(${(response.data.carb / size/3.25).toFixed(2)})%`],
+              fat: [`${response.data.fat}(${(response.data.fat/5).toFixed(2)}%)`, `${(response.data.fat / size).toFixed(2)}(${(response.data.fat / size/5).toFixed(2)})%`],
+              protein: [`${response.data.protein}(${(response.data.protein*2).toFixed(2)}%)`, `${(response.data.protein / size).toFixed(2)}(${(response.data.protein*2 / size).toFixed(2)})%`],
+              cholesterol: [`${response.data.cholesterol}(${(response.data.cholesterol/2).toFixed(2)}%)`, `${(response.data.cholesterol / size).toFixed(2)}(${(response.data.cholesterol / size/2).toFixed(2)})%`],
+              kcal: [`${response.data.kcal}(${(response.data.kcal/22).toFixed(2)}%)`, `${(response.data.kcal / size).toFixed(2)}(${(response.data.kcal / size/22).toFixed(2)})%`],
+              sugar: [`${response.data.sugar}(${(response.data.sugar).toFixed(2)}%)`, `${(response.data.sugar / size).toFixed(2)}(${(response.data.sugar / size).toFixed(2)})%`],
+              salt: [`${response.data.salt}(${(response.data.salt/20).toFixed(2)}%)`, `${(response.data.salt / size).toFixed(2)}(${(response.data.salt / size/20).toFixed(2)})%`],
+            },
+          };
+          setNutrient(nutrientData);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    }
+  }, [data]);
+
+  let result = [data, nutrient];
+  return result;
 }
+
+
 
 function RecipeIngredient(props) {
   let result = ''
-  for (let i=0; i<props.data.length; i++) {
-    if (i !== (props.data.length-1)) {
-      result += props.data[i].name + props.data[i].capacity + ', '
-    } else {
-      result += props.data[i].name + props.data[i].capacity
+  if (props.data) {
+    for (let i=0; i<props.data.length; i++) {
+      if (i !== (props.data.length-1)) {
+        result += props.data[i].name + props.data[i].capacity + ', '
+      } else {
+        result += props.data[i].name + props.data[i].capacity
+      }
     }
   }
   return (
@@ -63,6 +101,7 @@ function RecipeIngredient(props) {
 function Dish() {
   const navigate = useNavigate();
 
+
   useEffect(() => {
     const token = localStorage.getItem('hancook-token');
     if (!token) {
@@ -70,11 +109,14 @@ function Dish() {
     }
   }, [navigate]);
 
-  const data = useRecipeAPI();
+
+  const result = useRecipeAPI();
+  const data = result[0];
   const [addNumber, setAddNumber] = useState(0);
   const [modal, setModal] = useState(false);
   const [shoppingCartModal, setShoppingCartModal] = useState(false);
 
+  
   const increaseAddNumber = () => {
     if (addNumber < 9) {
       setAddNumber(addNumber + 1);
@@ -165,8 +207,15 @@ function Dish() {
             </div>
           </div>
         </div>
-        <Donut />
-        <Table />
+        <div className='profile-nutrition dish-donut'>
+          <Donut
+            keyList={result[1] ? Object.keys(result[1].nutrient) : []}
+            valueList={result[1] ? Object.values(result[1].nutrient).map((value) => parseInt(value, 10)) : []}
+            title="Nutrition"
+            centerText={result[1] ? `${result[1].other.kcal} kcal` : ''}
+          />
+        </div>
+        <Table body={result[1] ? result[1].other : []} head={['nutrients', 'amount/(% daily value)', 'per 100g']}/>
         <div className='green-line'></div>
         <div className='related-food-text'>Recipe</div>
         <br />
