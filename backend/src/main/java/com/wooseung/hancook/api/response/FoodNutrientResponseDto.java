@@ -19,6 +19,7 @@ public class FoodNutrientResponseDto {
     private double protein;
     private double fat;
     private double sugar;
+    private double salt;
     private double cholesterol;
 
     public static FoodNutrientResponseDto of(FoodNutrient foodNutrientEntity) {
