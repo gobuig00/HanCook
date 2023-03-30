@@ -6,17 +6,40 @@ public class Beef {
     private String large;
     private String medium;
     private String origin;
+    private String small;
     private int isKg;
     private int income;
     private String price;
 
-    public Beef(String date, String large, String medium, String origin, int isKg, int income, String price) {
+    public void setDate(String date) {
         this.date = date;
+    }
+
+    public void setLarge(String large) {
         this.large = large;
+    }
+
+    public void setMedium(String medium) {
         this.medium = medium;
+    }
+
+    public void setOrigin(String origin) {
         this.origin = origin;
+    }
+
+    public void setSmall(String small) {
+        this.small = small;
+    }
+
+    public void setIsKg(int isKg) {
         this.isKg = isKg;
+    }
+
+    public void setIncome(int income) {
         this.income = income;
+    }
+
+    public void setPrice(String price) {
         this.price = price;
     }
 
@@ -36,6 +59,10 @@ public class Beef {
         return origin;
     }
 
+    public String getSmall() {
+        return small;
+    }
+
     public int getIsKg() {
         return isKg;
     }
@@ -46,34 +73,6 @@ public class Beef {
 
     public String getPrice() {
         return price;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public void setLarge(String large) {
-        this.large = large;
-    }
-
-    public void setMedium(String medium) {
-        this.medium = medium;
-    }
-
-    public void setOrigin(String origin) {
-        this.origin = origin;
-    }
-
-    public void setIsKg(int isKg) {
-        this.isKg = isKg;
-    }
-
-    public void setIncome(int income) {
-        this.income = income;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
     }
 
     public Beef() {

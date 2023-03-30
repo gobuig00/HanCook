@@ -27,6 +27,7 @@ public class FoodNutrient {
     private double protein;
     private double fat;
     private double sugar;
+    private double salt;
     private double cholesterol;
 
     public static FoodNutrient of(FoodNutrientResponseDto foodNutrientResponseDto){
