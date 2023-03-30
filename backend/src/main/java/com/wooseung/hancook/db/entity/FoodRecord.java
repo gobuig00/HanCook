@@ -35,12 +35,13 @@ public class FoodRecord {
     private double protein;
     private double fat;
     private double sugar;
+    private double salt;
     private double cholesterol;
 
     @Column(nullable = false, name = "eat_date")
     LocalDateTime eatDate;
 
-    public FoodRecord(User user, String foodName, int servingSize, String unit, double kcal, double carb, double protein, double fat, double sugar, double cholesterol, LocalDateTime eatDate) {
+    public FoodRecord(User user, String foodName, int servingSize, String unit, double kcal, double carb, double protein, double fat, double sugar, double salt, double cholesterol, LocalDateTime eatDate) {
         this.user = user;
         this.foodName = foodName;
         this.servingSize = servingSize;
@@ -50,6 +51,7 @@ public class FoodRecord {
         this.protein = protein;
         this.fat = fat;
         this.sugar = sugar;
+        this.salt = salt;
         this.cholesterol = cholesterol;
         this.eatDate = eatDate;
     }
