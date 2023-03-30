@@ -8,7 +8,6 @@ import Footer from '../Footer';
 
 export default function Profile() {
     const navigate = useNavigate();
-    const [data, setData] = useState(null);
     const [profile, setProfile] = useState({});
 
     const newKey = (keyList, valueList) => {
@@ -33,6 +32,7 @@ export default function Profile() {
     };
     
     const createProfile = (responseData) => {
+        console.log('1111111111111111111111111111111111111111111111111111111111111111111111111111')
         const today = getToday();
         const todaysData = responseData.filter((entry) => new Date(entry.eat_date) >= today);
       
@@ -56,13 +56,14 @@ export default function Profile() {
         }, {});
       
         return {
-            name: 'Tom', // 사용자 이름이 서버에서 받아온 데이터에 포함되어 있지 않으므로, 여기서는 예시 이름 'Tom'을 사용합니다.
+            name: responseData[0].user_id,
             totalCalories,
             nutrition,
             other,
             ingestedFood,
         };
     };
+
     useEffect(() => {
         fetchProfile();
     }, []);
@@ -72,20 +73,17 @@ export default function Profile() {
         const token = localStorage.getItem("hancook-token");
 
         if (token) {
-            const response = await axios.get("http://localhost:8080/profile", {
+            const response = await axios.get("http://localhost:8080/record/get", {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 }
             });
-            setData(response.data);
-
-            let totalCalories, totalCarb, totalProtein, totalFat, totalCholesterol, totalSalt, totalSugar
-            // 여기에 토탈들 구하는 게 들어가야함
-
+            
+            console.log(response.data)
             setProfile(createProfile(response.data));
         }
         } catch (error) {
-            navigate('/login')
+            // navigate('/login')
         }
     };
     
@@ -106,12 +104,12 @@ export default function Profile() {
                     </div>
                 </div>
                 <div className='profile-nutrition'>
-                        <Donut
+                        {/* <Donut
                             keyList = {newKey(Object.keys(profile.nutrition), Object.values(profile.nutrition) )}
                             valueList = {Object.values(profile.nutrition)}
                             title = 'Daily Nutrition Data'
                             // centerText ='210kcal'
-                        />
+                        /> */}
                 </div>
                 <div className='profile-other'>
                     <div className='profile-sub-title'>Other Ingredients</div>

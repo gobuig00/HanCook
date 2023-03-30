@@ -33,7 +33,7 @@ function useRecipeAPI() {
   const [data, setData] = useState(null);
   const [nutrient, setNutrient] = useState(null);
   useEffect(() => {
-    axios.get('http://192.168.100.172:8080/recipe/id', { params })
+    axios.get(`${process.env.REACT_APP_API_URL}/recipe/id`, { params })
     .then(function (response) {
       setData(response.data);
     })
@@ -46,7 +46,7 @@ function useRecipeAPI() {
     if (data) {
       const foodname = data.recipe.name;
       axios
-        .get(`http://192.168.100.172:8080/nutrient/food/${foodname}`)
+        .get(`${process.env.REACT_APP_API_URL}/nutrient/food/${foodname}`)
         .then(function (response) {
           const size = response.data.servingSize / 100;
           const nutrientData = {
@@ -56,12 +56,13 @@ function useRecipeAPI() {
               protein: response.data.protein,
             },
             other: {
-              carbs: [`${response.data.carb} (${(response.data.carb/3.25).toFixed(0)}%)`, (response.data.carb / size).toFixed(2)],
-              fat: [`${response.data.fat} (${(response.data.fat/5).toFixed(0)}%)`, (response.data.fat / size).toFixed(2)],
-              protein: [`${response.data.protein} (${(response.data.protein*2).toFixed(0)}%)`, (response.data.protein / size).toFixed(2)],
-              cholesterol: [`${response.data.cholesterol} (${(response.data.cholesterol/2).toFixed(0)}%)`, (response.data.cholesterol / size).toFixed(2)],
-              kcal: [`${response.data.kcal} (${(response.data.kcal/22).toFixed(0)}%)`, (response.data.kcal / size).toFixed(2)],
-              sugar: [`${response.data.sugar} (${(response.data.sugar).toFixed(0)}%)`, (response.data.sugar / size).toFixed(2)],
+              carbs: [`${response.data.carb}(${(response.data.carb/3.25).toFixed(2)}%)`, `${(response.data.carb / size).toFixed(2)}(${(response.data.carb / size/3.25).toFixed(2)})%`],
+              fat: [`${response.data.fat}(${(response.data.fat/5).toFixed(2)}%)`, `${(response.data.fat / size).toFixed(2)}(${(response.data.fat / size/5).toFixed(2)})%`],
+              protein: [`${response.data.protein}(${(response.data.protein*2).toFixed(2)}%)`, `${(response.data.protein / size).toFixed(2)}(${(response.data.protein*2 / size).toFixed(2)})%`],
+              cholesterol: [`${response.data.cholesterol}(${(response.data.cholesterol/2).toFixed(2)}%)`, `${(response.data.cholesterol / size).toFixed(2)}(${(response.data.cholesterol / size/2).toFixed(2)})%`],
+              kcal: [`${response.data.kcal}(${(response.data.kcal/22).toFixed(2)}%)`, `${(response.data.kcal / size).toFixed(2)}(${(response.data.kcal / size/22).toFixed(2)})%`],
+              sugar: [`${response.data.sugar}(${(response.data.sugar).toFixed(2)}%)`, `${(response.data.sugar / size).toFixed(2)}(${(response.data.sugar / size).toFixed(2)})%`],
+              salt: [`${response.data.salt}(${(response.data.salt/20).toFixed(2)}%)`, `${(response.data.salt / size).toFixed(2)}(${(response.data.salt / size/20).toFixed(2)})%`],
             },
           };
           setNutrient(nutrientData);
@@ -214,7 +215,7 @@ function Dish() {
             centerText={result[1] ? `${result[1].other.kcal} kcal` : ''}
           />
         </div>
-        <Table body={result[1] ? result[1].other : []} head={['nutrients', 'amount(%daily value)', 'per 100g']}/>
+        <Table body={result[1] ? result[1].other : []} head={['nutrients', 'amount/(% daily value)', 'per 100g']}/>
         <div className='green-line'></div>
         <div className='related-food-text'>Recipe</div>
         <br />
