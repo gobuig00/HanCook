@@ -33,7 +33,7 @@ function useRecipeAPI() {
   const [data, setData] = useState(null);
   const [nutrient, setNutrient] = useState(null);
   useEffect(() => {
-    axios.get('http://192.168.100.172:8080/recipe/id', { params })
+    axios.get(`${process.env.REACT_APP_API_URL}/recipe/id`, { params })
     .then(function (response) {
       setData(response.data);
     })
@@ -46,7 +46,7 @@ function useRecipeAPI() {
     if (data) {
       const foodname = data.recipe.name;
       axios
-        .get(`http://192.168.100.172:8080/nutrient/food/${foodname}`)
+        .get(`${process.env.REACT_APP_API_URL}/nutrient/food/${foodname}`)
         .then(function (response) {
           const size = response.data.servingSize / 100;
           const nutrientData = {

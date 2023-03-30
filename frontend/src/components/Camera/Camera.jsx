@@ -90,7 +90,7 @@ export default function Camera() {
     const formData = new FormData();
     formData.append('image', imageFile);
 
-    axios.post('http://192.168.100.172:8080/food/recognize', formData)
+    axios.post(`${process.env.REACT_APP_API_URL}/food/recognize`, formData)
       .then(response => {
         // API 요청 성공 시 처리할 코드
         if (response.data.result.length === 0) {
