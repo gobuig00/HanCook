@@ -11,6 +11,58 @@ export default function Profile() {
     const [data, setData] = useState(null);
     const [profile, setProfile] = useState({});
 
+    const newKey = (keyList, valueList) => {
+        let newKeyList = [];
+        for (let i = 0; i < keyList.length; i++) {
+            let strKey = `${keyList[i]} ${valueList[i]}%`;
+            newKeyList.push(strKey);
+        }
+        return newKeyList;
+    };
+
+    const getToday = () => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return today;
+    };
+      
+    const isWithinLastWeek = (date) => {
+        const today = getToday();
+        const oneWeekAgo = new Date(today - 7 * 24 * 60 * 60 * 1000);
+        return date >= oneWeekAgo && date <= today;
+    };
+    
+    const createProfile = (responseData) => {
+        const today = getToday();
+        const todaysData = responseData.filter((entry) => new Date(entry.eat_date) >= today);
+      
+        const totalCalories = todaysData.reduce((total, entry) => total + entry.calo_calo, 0);
+        const nutrition = {
+            carbs: todaysData.reduce((total, entry) => total + entry.carbs, 0),
+            protein: todaysData.reduce((total, entry) => total + entry.protein, 0),
+            fat: todaysData.reduce((total, entry) => total + entry.fat, 0),
+        };
+        const other = {
+            'cholesterol (mg)': todaysData.reduce((total, entry) => total + entry.cholesterol, 0),
+            'salt (mg)': todaysData.reduce((total, entry) => total + entry.salt, 0),
+            'sugar (g)': todaysData.reduce((total, entry) => total + entry.sugar, 0),
+        };
+      
+        const lastWeeksData = responseData.filter((entry) => isWithinLastWeek(new Date(entry.eat_date)));
+        const ingestedFood = lastWeeksData.reduce((acc, entry) => {
+            const kcalPer100g = entry.calo_calo / (entry.serving_size / 100);
+            acc[entry.food_name] = kcalPer100g;
+            return acc;
+        }, {});
+      
+        return {
+            name: 'Tom', // 사용자 이름이 서버에서 받아온 데이터에 포함되어 있지 않으므로, 여기서는 예시 이름 'Tom'을 사용합니다.
+            totalCalories,
+            nutrition,
+            other,
+            ingestedFood,
+        };
+    };
     useEffect(() => {
         fetchProfile();
     }, []);
@@ -20,42 +72,24 @@ export default function Profile() {
         const token = localStorage.getItem("hancook-token");
 
         if (token) {
-            const response = await axios.get("http://localhost:8080/profile");
-            setData(response.data);
-            setProfile({
-                name : data.food_record_id,
-                totalCalories : data.kcal,
-                nutrition : {
-                    carbs: data.carb,
-                    protein: data.protein,
-                    fat: data.fat,
-                },
-                other : {
-                    'cholesterol (mg)': data.cholesterol,
-                    'salt (mg)': data.salt,
-                    'sugar (g)': data.sugar,
-                },
-                ingestedFood : {
-                    food1 : [120.51,  1212],
-                    food2 : 185.67,
-                    food3 : 60.56,
-                    'seafood Spring Onion Pancake' : 120.55,
+            const response = await axios.get("http://localhost:8080/profile", {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
                 }
-            })
+            });
+            setData(response.data);
+
+            let totalCalories, totalCarb, totalProtein, totalFat, totalCholesterol, totalSalt, totalSugar
+            // 여기에 토탈들 구하는 게 들어가야함
+
+            setProfile(createProfile(response.data));
         }
         } catch (error) {
             navigate('/login')
         }
     };
     
-    const newKey = (keyList, valueList) => {
-        let newKeyList = [];
-        for (let i = 0; i < keyList.length; i++) {
-          let strKey = `${keyList[i]} ${valueList[i]}%`;
-          newKeyList.push(strKey);
-        }
-        return newKeyList;
-    };
+    
     
     return (
         <div className='profile-container'>
