@@ -60,7 +60,7 @@ export default function SignUp() {
         }
 
         try {
-            const response = await axios.post("http://192.168.100.172:8080/user/join", {
+            const response = await axios.post("http://localhost:8080/user/join", {
                 email,
                 password,
                 name,
