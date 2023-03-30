@@ -36,7 +36,7 @@ export default function Profile() {
             'seafood Spring Onion Pancake' : 120.55,
         }
     }
-    
+
     const newKey = (keyList, valueList) => {
         let newKeyList = [];
         for (let i = 0; i < keyList.length; i++) {
