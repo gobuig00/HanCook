@@ -44,12 +44,6 @@ export default function Footer({ toggleModal }) {
             <span onClick={moveToProfile}>
                 <img src={person} alt="" />
             </span>
-            <span
-                class="material-symbols-outlined"
-                onClick={moveToCart}
-            >
-                shopping_cart
-            </span>
         </div>
     );
 }
