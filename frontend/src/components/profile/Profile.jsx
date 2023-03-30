@@ -10,15 +10,6 @@ export default function Profile() {
     const navigate = useNavigate();
     const [profile, setProfile] = useState({});
 
-    const newKey = (keyList, valueList) => {
-        let newKeyList = [];
-        for (let i = 0; i < keyList.length; i++) {
-            let strKey = `${keyList[i]} ${valueList[i]}%`;
-            newKeyList.push(strKey);
-        }
-        return newKeyList;
-    };
-
     const getToday = () => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -28,13 +19,13 @@ export default function Profile() {
     const isWithinLastWeek = (date) => {
         const today = getToday();
         const oneWeekAgo = new Date(today - 7 * 24 * 60 * 60 * 1000);
-        return date >= oneWeekAgo && date <= today;
+        return date >= oneWeekAgo && date < new Date(today.valueOf() + 24 * 60 * 60 * 1000);
     };
     
     const createProfile = (responseData) => {
         const today = getToday();
-        const todaysData = responseData.filter((entry) => new Date(entry.createdAt) >= today);
-      
+        const todaysData = responseData.filter((entry) => new Date(entry.eatDate) >= today);
+          
         const totalCalories = todaysData.reduce((total, entry) => total + entry.kcal, 0);
         const nutrition = {
             carbs: todaysData.reduce((total, entry) => total + entry.carb, 0),
@@ -44,15 +35,23 @@ export default function Profile() {
         const other = {
             'cholesterol (mg)': todaysData.reduce((total, entry) => total + entry.cholesterol, 0),
             'sugar (g)': todaysData.reduce((total, entry) => total + entry.sugar, 0),
+            'salt (mg)': todaysData.reduce((total, entry) => total + entry.salt, 0),
         };
-      
-        const lastWeeksData = responseData.filter((entry) => isWithinLastWeek(new Date(entry.createdAt)));
+          
+        const lastWeeksData = responseData.filter((entry) => isWithinLastWeek(new Date(entry.eatDate)));
         const ingestedFood = lastWeeksData.reduce((acc, entry) => {
             const kcalPer100g = entry.kcal / (entry.servingSize / 100);
-            acc[entry.foodName] = kcalPer100g;
+            let foodName = entry.foodName;
+            let index = 1;
+
+            while (acc[foodName]) {
+                foodName = `${entry.foodName}-${index}`;
+                index++;
+            }
+
+            acc[foodName] = kcalPer100g;
             return acc;
         }, {});
-      
         return {
             name: responseData[0].user.name,
             totalCalories,
@@ -61,12 +60,12 @@ export default function Profile() {
             ingestedFood,
         };
     };
+    
       
 
     useEffect(() => {
         fetchProfile();
-        console.log(profile);
-    }, [profile]);
+    }, []);
 
     const fetchProfile = async () => {
         try {
@@ -104,12 +103,12 @@ export default function Profile() {
                             </div>
                         </div>
                         <div className='profile-nutrition'>
-                                {/* <Donut
-                                    keyList = {newKey(Object.keys(profile.nutrition), Object.values(profile.nutrition) )}
+                                <Donut
+                                    keyList = {Object.keys(profile.nutrition)}
                                     valueList = {Object.values(profile.nutrition)}
                                     title = 'Daily Nutrition Data'
                                     // centerText ='210kcal'
-                                /> */}
+                                />
                         </div>
                         <div className='profile-other'>
                             <div className='profile-sub-title'>Other Ingredients</div>
