@@ -25,11 +25,10 @@ export default function Search() {
       name: searchTerm,
       lan: 0,
     };
-    axios.get('http://192.168.100.172:8080/recipe/search', { params })
+    axios.get(`${process.env.REACT_APP_API_URL}/recipe/search`, { params })
     .then(response => {
       setResult(response.data)
       setLoading(false)
-      console.log(response.data)
     }).catch(err => {
       console.log(err)
       setLoading(false)

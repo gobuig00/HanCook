@@ -10,11 +10,14 @@ function TableChart({ data }) {
         return (
           <thead>
             <tr>
-              {data.head.map((column, index) => (
-                <th key={index} className="key-cell head-cell">
-                  {column}
-                </th>
-              ))}
+              {data.head.map((column, index) => {
+                const columnWithBreak = column.replace('/', '<br>');
+                return (
+                  <th key={index} className="key-cell head-cell">
+                    <div dangerouslySetInnerHTML={{ __html: columnWithBreak }} />
+                  </th>
+                );
+              })}
             </tr>
           </thead>
         );
