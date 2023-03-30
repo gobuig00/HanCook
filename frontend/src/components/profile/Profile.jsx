@@ -8,23 +8,6 @@ import Footer from '../Footer';
 
 export default function Profile() {
     const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem('hancook-token');
-    if (!token) {
-      navigate('/login')
-    }
-  }, [navigate]);
-    
-    const newKey = (keyList, valueList) => {
-        let newKeyList = [];
-        for (let i = 0; i < keyList.length; i++) {
-          let strKey = `${keyList[i]} ${valueList[i]}%`;
-          newKeyList.push(strKey);
-        }
-        return newKeyList;
-    };
-
     const [data, setData] = useState(null);
     const [profile, setProfile] = useState({});
 
@@ -50,7 +33,7 @@ export default function Profile() {
                 other : {
                     'cholesterol (mg)': data.cholesterol,
                     'salt (mg)': data.salt,
-                    'sugar (g)': 156.4
+                    'sugar (g)': data.sugar,
                 },
                 ingestedFood : {
                     food1 : [120.51,  1212],
@@ -61,10 +44,19 @@ export default function Profile() {
             })
         }
         } catch (error) {
-        console.error("Error fetching profile:", error);
+            navigate('/login')
         }
     };
-
+    
+    const newKey = (keyList, valueList) => {
+        let newKeyList = [];
+        for (let i = 0; i < keyList.length; i++) {
+          let strKey = `${keyList[i]} ${valueList[i]}%`;
+          newKeyList.push(strKey);
+        }
+        return newKeyList;
+    };
+    
     return (
         <div className='profile-container'>
             <div className='profile-header'>
