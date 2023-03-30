@@ -32,41 +32,41 @@ export default function Profile() {
     };
     
     const createProfile = (responseData) => {
-        console.log('1111111111111111111111111111111111111111111111111111111111111111111111111111')
         const today = getToday();
-        const todaysData = responseData.filter((entry) => new Date(entry.eat_date) >= today);
+        const todaysData = responseData.filter((entry) => new Date(entry.createdAt) >= today);
       
-        const totalCalories = todaysData.reduce((total, entry) => total + entry.calo_calo, 0);
+        const totalCalories = todaysData.reduce((total, entry) => total + entry.kcal, 0);
         const nutrition = {
-            carbs: todaysData.reduce((total, entry) => total + entry.carbs, 0),
+            carbs: todaysData.reduce((total, entry) => total + entry.carb, 0),
             protein: todaysData.reduce((total, entry) => total + entry.protein, 0),
             fat: todaysData.reduce((total, entry) => total + entry.fat, 0),
         };
         const other = {
             'cholesterol (mg)': todaysData.reduce((total, entry) => total + entry.cholesterol, 0),
-            'salt (mg)': todaysData.reduce((total, entry) => total + entry.salt, 0),
             'sugar (g)': todaysData.reduce((total, entry) => total + entry.sugar, 0),
         };
       
-        const lastWeeksData = responseData.filter((entry) => isWithinLastWeek(new Date(entry.eat_date)));
+        const lastWeeksData = responseData.filter((entry) => isWithinLastWeek(new Date(entry.createdAt)));
         const ingestedFood = lastWeeksData.reduce((acc, entry) => {
-            const kcalPer100g = entry.calo_calo / (entry.serving_size / 100);
-            acc[entry.food_name] = kcalPer100g;
+            const kcalPer100g = entry.kcal / (entry.servingSize / 100);
+            acc[entry.foodName] = kcalPer100g;
             return acc;
         }, {});
       
         return {
-            name: responseData[0].user_id,
+            name: responseData[0].user.name,
             totalCalories,
             nutrition,
             other,
             ingestedFood,
         };
     };
+      
 
     useEffect(() => {
         fetchProfile();
-    }, []);
+        console.log(profile);
+    }, [profile]);
 
     const fetchProfile = async () => {
         try {
@@ -87,50 +87,54 @@ export default function Profile() {
         }
     };
     
-    
-    
     return (
         <div className='profile-container'>
-            <div className='profile-header'>
-                <h1>{profile.name}</h1><p>'s Profile</p>
-            </div>
-            <div className='profile-section'>
-                <h2>Daily Record</h2>
-                <div className='profile-calories'>
-                    <span className='profile-sub-title'> kcal / day</span>
-                    <div style={{margin: '3vh'}}>
-                        <span className='profile-big-font'>{profile.totalCalories}</span>
-                        <span className='profile-kcal'>kcal</span>
+            {profile.name ? (
+                <>
+                    <div className='profile-header'>
+                        <h1>{profile.name}</h1><p>'s Profile</p>
                     </div>
-                </div>
-                <div className='profile-nutrition'>
-                        {/* <Donut
-                            keyList = {newKey(Object.keys(profile.nutrition), Object.values(profile.nutrition) )}
-                            valueList = {Object.values(profile.nutrition)}
-                            title = 'Daily Nutrition Data'
-                            // centerText ='210kcal'
-                        /> */}
-                </div>
-                <div className='profile-other'>
-                    <div className='profile-sub-title'>Other Ingredients</div>
-                    <Table
-                        body={profile.other}
-                    />
-                </div>
-            </div>
-            <div className='profile-section'>
-                <h2>Ingested Food</h2>
-                <div className='profile-ingested-food'>
-                    <p htmlFor="ingestedTable">(kcal/100g)</p>
-                    <Table
-                        head= {['000','8999']}
-                        body={profile.ingestedFood}
-                    />
-                </div>
-            </div>
-            <footer>
-                <Footer />
-            </footer>
+                    <div className='profile-section'>
+                        <h2>Daily Record</h2>
+                        <div className='profile-calories'>
+                            <span className='profile-sub-title'> kcal / day</span>
+                            <div style={{margin: '3vh'}}>
+                                <span className='profile-big-font'>{profile.totalCalories}</span>
+                                <span className='profile-kcal'>kcal</span>
+                            </div>
+                        </div>
+                        <div className='profile-nutrition'>
+                                {/* <Donut
+                                    keyList = {newKey(Object.keys(profile.nutrition), Object.values(profile.nutrition) )}
+                                    valueList = {Object.values(profile.nutrition)}
+                                    title = 'Daily Nutrition Data'
+                                    // centerText ='210kcal'
+                                /> */}
+                        </div>
+                        <div className='profile-other'>
+                            <div className='profile-sub-title'>Other Ingredients</div>
+                            <Table
+                                body={profile.other}
+                            />
+                        </div>
+                    </div>
+                    <div className='profile-section'>
+                        <h2>Ingested Food</h2>
+                        <div className='profile-ingested-food'>
+                            <p htmlFor="ingestedTable">(kcal/100g)</p>
+                            <Table
+                                head= {['000','8999']}
+                                body={profile.ingestedFood}
+                            />
+                        </div>
+                    </div>
+                    <footer>
+                        <Footer />
+                    </footer>
+                </>
+            ) : (
+                <div>Loading...</div>
+            )}
         </div>
-    );
+    );    
 };
