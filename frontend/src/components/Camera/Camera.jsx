@@ -7,12 +7,15 @@ import Menu from './Menu';
 import camera from '../../icons/camera.png';
 import Modal from 'react-bootstrap/Modal';
 import { ModalHeader } from 'react-bootstrap';
+import Toast from 'react-bootstrap/Toast';
 
 
 export default function Camera() {
   const navigate = useNavigate();
   const [status, setStatus] = useState(0);
   const [data, setData ] = useState('');
+  const [show, setShow] = useState(false);
+  const [toastdata, setToastData] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('hancook-token');
@@ -25,7 +28,8 @@ export default function Camera() {
   const handleNext = () => {
     if (status > 4) {
       setStatus(0);
-      alert('일치하는 결과가 없습니다.')
+      setToastData('다시 한 번 사진을 찍어주세요.');
+      setShow(0);
     } else {
       setStatus(status+1);
     }
@@ -90,7 +94,8 @@ export default function Camera() {
       .then(response => {
         // API 요청 성공 시 처리할 코드
         if (response.data.result.length === 0) {
-          alert('사진을 인식할 수 없습니다.')
+          setToastData('일치하는 음식이 없습니다.')
+          setShow(true);
         } else {
           // 결과 배열이 존재할 경우, ConfirmModal을 띄웁니다.
           console.log(response.data.result[0].class_info)
@@ -100,7 +105,8 @@ export default function Camera() {
       })
       .catch(error => {
         // API 요청 실패 시 처리할 코드
-        alert('잠시 후 다시 시도해주세요')
+        setToastData('오류가 발생했습니다.');
+        setShow(true);
       });
   }
 
@@ -133,6 +139,9 @@ export default function Camera() {
           </button>
         </Modal.Footer>
       </Modal>
+      <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
+        <Toast.Body>{toastdata}</Toast.Body>
+      </Toast>
       <footer>
         <Footer />
       </footer>
