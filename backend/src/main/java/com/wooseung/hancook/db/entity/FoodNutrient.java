@@ -20,7 +20,6 @@ public class FoodNutrient {
     private String name;
     @Column(name = "serving_size")
     private int servingSize;
-
     private String unit;
     private double kcal;
     private double carb;
