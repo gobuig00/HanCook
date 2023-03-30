@@ -17,5 +17,6 @@ public class FoodRecordRequestDto {
     private double protein;
     private double fat;
     private double sugar;
+    private double salt;
     private double cholesterol;
 }

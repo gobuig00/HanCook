@@ -1,15 +1,11 @@
 package com.wooseung.hancook.api.response;
 
-import com.wooseung.hancook.db.entity.FoodNutrient;
 import com.wooseung.hancook.db.entity.FoodRecord;
 import com.wooseung.hancook.db.entity.User;
 import com.wooseung.hancook.utils.ModelMapperUtils;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -27,7 +23,9 @@ public class FoodRecordResponseDto {
     private double protein;
     private double fat;
     private double sugar;
+    private double salt;
     private double cholesterol;
+    LocalDateTime eatDate;
     public static FoodRecordResponseDto of(FoodRecord foodRecordEntity) {
         FoodRecordResponseDto foodRecordResponseDto = ModelMapperUtils.getModelMapper().map(foodRecordEntity, FoodRecordResponseDto.class);
         return foodRecordResponseDto;
