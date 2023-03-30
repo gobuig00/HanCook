@@ -41,11 +41,16 @@ public class FoodRecordServiceImpl implements FoodRecordService {
         double cholesterol = foodRecordRequestDto.getCholesterol();
         LocalDateTime date = LocalDateTime.now();
 
+        int cnt = foodRecordRequestDto.getCnt();
+
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION));
 
         FoodRecord foodRecord = new FoodRecord(user, foodName, servingSize, unit, kcal, carb, protein, fat, sugar, salt, cholesterol, date);
-        foodRecordRepository.save(foodRecord);
+
+        for (int i = 0; i < cnt; i++) {
+            foodRecordRepository.save(foodRecord);
+        }
     }
 
     @Override
