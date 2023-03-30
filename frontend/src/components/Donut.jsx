@@ -25,8 +25,19 @@ const alwaysDrawCenterText = (centerText) => ({
 });
 
 export default function Donut({ keyList, valueList, title, centerText }) {
+  const percentage = function() {
+    const sum = valueList.reduce((a, b) => a + b, 0);
+    const array = []
+    valueList.map((item) => {
+      array.push((item/sum*100).toFixed(0))
+    })
+    return array
+  }
+  const combine = keyList.map((value, index) => {
+    return `${value}: ${percentage()[index]}%`;
+  })
   const data = {
-    labels: keyList,
+    labels: combine,
     datasets: [
       {
         data: valueList,
@@ -61,8 +72,7 @@ export default function Donut({ keyList, valueList, title, centerText }) {
       tooltip: {
         callbacks: {
           label: function (context) {
-            const value = context.parsed || 0;
-            return `${value}% `;
+            return ``;
           },
         },
       },
