@@ -34,6 +34,12 @@ public class SchedulerController {
        Thread t= new Thread(runnable);
        t.start();
     }
+    @GetMapping("sea")
+    public void sea(){
+        Runnable runnable = new SeaCrawler();
+        Thread t = new Thread(runnable);
+        t.start();
+    }
 }
 
 
