@@ -8,34 +8,45 @@ import Footer from '../Footer';
 
 export default function Profile() {
     const navigate = useNavigate();
+    const [data, setData] = useState(null);
+    const [profile, setProfile] = useState({});
 
-  useEffect(() => {
-    const token = localStorage.getItem('hancook-token');
-    if (!token) {
-      navigate('/login')
-    }
-  }, [navigate]);
+    useEffect(() => {
+        fetchProfile();
+    }, []);
 
-    const profile = {
-        name : 'Tom',
-        totalCalories : 2184,
-        nutrition : {
-            carbs: 50,
-            protein: 40,
-            fat: 10,
-        },
-        other : {
-            'cholesterol (mg)': 42.28,
-            'salt (mg)': 3828,
-            'sugar (g)': 156.4
-        },
-        ingestedFood : {
-            food1 : 120.51,
-            food2 : 185.67,
-            food3 : 60.56,
-            'seafood Spring Onion Pancake' : 120.55,
+    const fetchProfile = async () => {
+        try {
+        const token = localStorage.getItem("hancook-token");
+
+        if (token) {
+            const response = await axios.get("http://localhost:8080/profile");
+            setData(response.data);
+            setProfile({
+                name : data.food_record_id,
+                totalCalories : data.kcal,
+                nutrition : {
+                    carbs: data.carb,
+                    protein: data.protein,
+                    fat: data.fat,
+                },
+                other : {
+                    'cholesterol (mg)': data.cholesterol,
+                    'salt (mg)': data.salt,
+                    'sugar (g)': data.sugar,
+                },
+                ingestedFood : {
+                    food1 : [120.51,  1212],
+                    food2 : 185.67,
+                    food3 : 60.56,
+                    'seafood Spring Onion Pancake' : 120.55,
+                }
+            })
         }
-    }
+        } catch (error) {
+            navigate('/login')
+        }
+    };
     
     const newKey = (keyList, valueList) => {
         let newKeyList = [];
@@ -45,31 +56,7 @@ export default function Profile() {
         }
         return newKeyList;
     };
-
-    // const [profile, setProfile] = useState({  });
-
-    // useEffect(() => {
-    //     fetchProfile();
-    // }, []);
-
-    // const fetchProfile = async () => {
-    //     try {
-    //     const token = localStorage.getItem("authToken");
-
-    //     if (token) {
-    //         const response = await axios.get("http://localhost:8080/profile", {
-    //         headers: {
-    //             Authorization: `Bearer ${token}`,
-    //         },
-    //         });
-
-    //         setProfile(response.data);
-    //     }
-    //     } catch (error) {
-    //     console.error("Error fetching profile:", error);
-    //     }
-    // };
-
+    
     return (
         <div className='profile-container'>
             <div className='profile-header'>
@@ -104,6 +91,7 @@ export default function Profile() {
                 <div className='profile-ingested-food'>
                     <p htmlFor="ingestedTable">(kcal/100g)</p>
                     <Table
+                        head= {['000','8999']}
                         body={profile.ingestedFood}
                     />
                 </div>
