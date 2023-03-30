@@ -28,9 +28,9 @@ public class FoodNutrient {
     private double sugar;
     private double salt;
     private double cholesterol;
-
     public static FoodNutrient of(FoodNutrientResponseDto foodNutrientResponseDto){
         FoodNutrient foodNutrientEntity = ModelMapperUtils.getModelMapper().map(foodNutrientResponseDto, FoodNutrient.class);
         return foodNutrientEntity;
     }
+
 }

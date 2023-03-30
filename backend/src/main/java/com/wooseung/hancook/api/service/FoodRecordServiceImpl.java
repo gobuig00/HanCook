@@ -36,14 +36,15 @@ public class FoodRecordServiceImpl implements FoodRecordService {
         double carb = foodRecordRequestDto.getCarb();
         double protein = foodRecordRequestDto.getProtein();
         double fat = foodRecordRequestDto.getFat();
-        double sugar = foodRecordRequestDto.getSugar();
+        double sugar = foodRecordRequestDto.getSugar();;
+        double salt = foodRecordRequestDto.getSalt();
         double cholesterol = foodRecordRequestDto.getCholesterol();
         LocalDateTime date = LocalDateTime.now();
 
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION));
 
-        FoodRecord foodRecord = new FoodRecord(user, foodName, servingSize, unit, kcal, carb, protein, fat, sugar, cholesterol, date);
+        FoodRecord foodRecord = new FoodRecord(user, foodName, servingSize, unit, kcal, carb, protein, fat, sugar, salt, cholesterol, date);
         foodRecordRepository.save(foodRecord);
     }
 
@@ -55,7 +56,6 @@ public class FoodRecordServiceImpl implements FoodRecordService {
         List<FoodRecordResponseDto> foodRecordResponseDtoList = new ArrayList<>();
 
         for (FoodRecord foodRecordEntity : foodRecordEntityList) {
-            System.out.println(foodRecordEntity.getServingSize());
             FoodRecordResponseDto foodRecordResponseDto = FoodRecordResponseDto.of(foodRecordEntity);
             foodRecordResponseDtoList.add(foodRecordResponseDto);
         }
