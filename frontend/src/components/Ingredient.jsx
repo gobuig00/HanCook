@@ -17,7 +17,7 @@ function useRelatedFoodAPI() {
   };
   const [data, setData] = useState(null);
   useEffect(() => {
-    axios.get('http://192.168.100.172:8080/recipe/ingredient', { params })
+    axios.get(`${process.env.REACT_APP_API_URL}/recipe/ingredient`, { params })
     .then(function (response) {
       setData(response.data);
     })
@@ -73,8 +73,8 @@ function Ingredient() {
             <div className='ingredient-text'><span className='ingredient-name'>Apple</span><br /><span className='ingredient-pronunciation'>(sa-gwa)</span></div>
           </div>
         </div>
-        <Donut />
-        <Table />
+        {/* <Donut /> */}
+        {/* <Table /> */}
         <div className='green-line'></div>
         <div className='line-chart'>
           <LineChart />
