@@ -25,6 +25,7 @@ public class FoodRecordResponseDto {
     private double sugar;
     private double salt;
     private double cholesterol;
+    private int cnt;
     LocalDateTime eatDate;
     public static FoodRecordResponseDto of(FoodRecord foodRecordEntity) {
         FoodRecordResponseDto foodRecordResponseDto = ModelMapperUtils.getModelMapper().map(foodRecordEntity, FoodRecordResponseDto.class);
