@@ -46,7 +46,7 @@ public class SparkController {
 
                 JavaSparkContext sc = new JavaSparkContext(spark.sparkContext());
 
-                JavaRDD<String> inputRdd = sc.textFile("src/main/data/"+fileName);
+                JavaRDD<String> inputRdd = sc.textFile("./data/agri/"+fileName);
                 StructType schema = new StructType()
                         .add("deal_date", DataTypes.StringType)
                         .add("large", DataTypes.StringType)
