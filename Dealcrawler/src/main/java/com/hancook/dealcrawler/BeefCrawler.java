@@ -63,24 +63,43 @@ public class BeefCrawler implements Runnable {
 //        String outputDateFormatStr = date.replace("-", "");
 //
         try {
-            String filepath = "src\\main\\resources\\beef.csv";
+            Date day = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000);
+            String filepath = "./data/beef/";
             File wFile = new File(filepath);
             String NEWLINE = System.lineSeparator();
             BufferedWriter bw = new BufferedWriter(new FileWriter(wFile));
             bw.write("deal_date,large,medium,소,origin,income,가격");
             bw.write(NEWLINE);
 
-            Date day = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000);
+
 
             // 날짜 포매팅
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             date = dateFormat.format(day);
 
 
-            File file = new File("src\\main\\resources\\search.txt");
-            FileReader fileReader = null;
-            fileReader = new FileReader(file);
-            BufferedReader bufReader = new BufferedReader(fileReader);
+//            File file = new File("src\\main\\resources\\search.txt");
+//            FileReader fileReader = null;
+//            fileReader = new FileReader(file);
+//            BufferedReader bufReader = new BufferedReader(fileReader);
+            String code="4301 21\n" +
+                    "4301 22\n" +
+                    "4301 36\n" +
+                    "4301 40\n" +
+                    "4301 50\n" +
+                    "4304 25\n" +
+                    "4304 27\n" +
+                    "4304 28\n" +
+                    "4304 68\n" +
+                    "4401 31\n" +
+                    "4401 37\n" +
+                    "4402 27\n" +
+                    "9901 99\n" +
+                    "9903 21\n" +
+                    "9903 23\n" +
+                    "9908 01";
+
+            BufferedReader bufReader = new BufferedReader(new StringReader(code));
 
             String list = "";
             while ((list = bufReader.readLine()) != null) {
