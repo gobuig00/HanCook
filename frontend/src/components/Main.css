@@ -1,3 +1,13 @@
+.main-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0 8vh 0;
+}
+.main-header  {
+    margin: 3vw 0 8vw 3vw
+}
 .main-logo {
     width: 52%;
 }
@@ -13,10 +23,38 @@
 .main-title{
     font-family: "bold";
     color: #4d820e;
+    margin: auto;
 }
 
 .more-button{
     background-color: #69B550;
     border-color: #69B550;
     width: 90vw;
+}
+.dish-cards {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.ingredient-cards {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.ingredient-dish-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: calc(2 * 45% + 5vw);
+    margin: 0 0 5vw 3vw;
+}
+
+.ingredient-dish-cards > * {
+    margin-right: 3vw;
+    margin-bottom: 0;
+  }
+
+.main-dish{
+    margin: 0;    
 }
