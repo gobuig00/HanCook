@@ -10,8 +10,19 @@
 
 .card-name{
   width: 100%;
+  margin : 2vw 0 0 0;
   color: #4d820e;
   font-family: "semibold";
   text-align: center;
-  font-size: 16px;
+  font-size: 12px;
+}
+.custom-card {
+  margin : 0 1vw 0 1vw;
+  border : none;
+  border-radius: 5%;
+}
+.card-image {
+  box-shadow: 0px 7px 6px -1px rgba(0,0,0,0.28);
+  -moz-box-shadow: 0px 7px 6px -1px rgba(0,0,0,0.28);
+  -webkit-box-shadow: 0px 7px 6px -1px rgba(0,0,0,0.28); 
 }

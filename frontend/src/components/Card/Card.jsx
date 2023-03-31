@@ -3,15 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import './Card.css';
 
 
-export default function Card({ cardName, cardImage, cardIndex, usedPart, cardUrl, size }) {
+export default function Card({ cardName, cardImage, usedPart, size, onClick }) {
     let itemClassName = ''
 
     if (size==='small') {
-        itemClassName = `${usedPart}-${cardIndex} small`
+        itemClassName = `custom-card ${usedPart} small`
     } else if (size==='large') {
-        itemClassName = `${usedPart}-${cardIndex} large`
+        itemClassName = `custom-card ${usedPart} large`
     } else {
-        itemClassName = `${usedPart}-${cardIndex}`
+        itemClassName = `custom-card ${usedPart}`
     }   
 
     const cardImageStyle = {
@@ -22,14 +22,12 @@ export default function Card({ cardName, cardImage, cardIndex, usedPart, cardUrl
         backgroundSize: 'cover',
         overflow: 'hidden',
         backgroundImage: `url(${cardImage})`,
+        border: 'none',
+        borderRadius: '5%',
     };
 
-    const navigate = useNavigate();
-    const clickCard = () => {
-        navigate(cardUrl);
-    }
     return (
-        <div className={itemClassName} onClick={clickCard}>
+        <div className={itemClassName} onClick={onClick}>
             <div className='card-image' style={cardImageStyle}>
             </div>
             <div className='card-name'>
