@@ -43,7 +43,7 @@ function Main() {
       };
       const dishAxios = await axios.get('http://localhost:8080/recipe/random', {params});
       setDish(dishAxios.data)
-      const ingreAxios = await axios.get('http://localhost:8080/ingredient/random', {params});
+      const ingreAxios = await axios.get('http://localhost:8080/component/random', {params});
       setIngredients(ingreAxios.data)
 
       //console
@@ -66,9 +66,10 @@ function Main() {
       console.error('Error fetching data: ', error);
     }
   };
-
+  const moveToRecipe = (recipeId) => {
+    navigate(`/dish/${recipeId}`)
+  }
   const fetchIngreDish = async (ingredientName) => {
-    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
     try {
       const params = {
         ingredient: ingredientName,
@@ -83,12 +84,12 @@ function Main() {
   };
 
   return (
-    <div>
-        <div className='header'>
+    <div className="main-container">
+        <div className='main-header'>
           <img className="main-logo" src={logo} alt="로고"/><br/>
           <img className='main-image' src='' alt="메인이미지"/>
         </div>
-        <div className='article'>
+        <div className='main-article'>
           <div className='main-dish'>
             <h1 className='main-title'>Dish</h1>
 
@@ -108,13 +109,12 @@ function Main() {
                     cardImage={dishItem.img}
                     usedPart='dish'
                     size='small'
-                    // cardUrl={dishItem.recipeId}
-                    // onClick={검색 후 레시피로 넘어가는 함수필요}
+                    onClick={() => moveToRecipe(dishItem.recipeId)}
                   />
                 ))}
             </div>
           </div>
-
+          <hr/>
           <div className='main-ingredient'>
             <h1 className='main-title'>Ingredient</h1>
             <Category
@@ -136,22 +136,22 @@ function Main() {
                 />
                 
               ))}
-
             </div>
+
             <div className='ingredient-dish-cards'>
             {ingreDish.map((ingreDishItem, index) => (
                 <Card
                   key={index}
                   cardImage={ingreDishItem.img}
-                  cardIndex={index}
                   usedPart='ingredient'
-                  cardUrl={ingreDishItem.recipeId}
                   size='large'
+                  onClick={() => moveToRecipe(ingreDishItem.recipeId)}
                 />
               ))}
             </div>
             <Button className="more-button">more</Button>
           </div>
+          <hr/>
         </div>
     </div>
           

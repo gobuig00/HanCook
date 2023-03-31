@@ -6,12 +6,12 @@ export default function Category({ categoryList, isChosen, setIsChosen, setPart,
   const clickDishCat = async (event) => {
     const chosen = event.target.textContent;
     setIsChosen(chosen);
-
+    const params = {
+      lan: 0,
+    };
     if (usedPart==="mainDish"){
       try {
-        const params = {
-          lan: 0,
-        };
+        
         const dishAxios = await axios.get(`http://localhost:8080/recipe/${chosen}`, {params});
         setPart(dishAxios.data)
       } catch (error) {
@@ -19,10 +19,7 @@ export default function Category({ categoryList, isChosen, setIsChosen, setPart,
       }
     } else if (usedPart==="mainIngredient"){
       try {
-        const params = {
-          lan: 0,
-        };
-        const ingreAxios = await axios.get(`http://localhost:8080/recipe/${chosen}`, {params});
+        const ingreAxios = await axios.get(`http://localhost:8080/component/${chosen}`, {params});
         setPart(ingreAxios.data)
       } catch (error) {
         console.error('Error fetching data: ', error);
