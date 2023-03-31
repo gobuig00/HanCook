@@ -13,10 +13,24 @@
 .main-title{
     font-family: "bold";
     color: #4d820e;
+    margin: auto;
 }
 
 .more-button{
     background-color: #69B550;
     border-color: #69B550;
     width: 90vw;
+}
+.dish-cards {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.ingredient-cards {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.ingreddient-food-cards{
+
 }

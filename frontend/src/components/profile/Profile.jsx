@@ -74,7 +74,6 @@ export default function Profile() {
                 }
             });
             
-            console.log(response.data)
             setProfile(createProfile(response.data));
         }
         } catch (error) {
