@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface CartService {
     void addIngredientToCartByRecipeId(Long recipeId, String email);
+    void addIngredientToCartByComponentId(Long componentId, String email);
+
 //    List<CartResponseDto> getCartById(Long id);
 
 }
