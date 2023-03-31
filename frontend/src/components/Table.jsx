@@ -11,7 +11,7 @@ function TableChart({ data }) {
           <thead>
             <tr>
               {data.head.map((column, index) => {
-                const columnWithBreak = column.replace('/', '<br>');
+                const columnWithBreak = column.replace('@', '<br>');
                 return (
                   <th key={index} className="key-cell head-cell">
                     <div dangerouslySetInnerHTML={{ __html: columnWithBreak }} />
