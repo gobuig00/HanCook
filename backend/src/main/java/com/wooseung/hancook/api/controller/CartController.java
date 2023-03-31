@@ -25,8 +25,8 @@ public class CartController {
     private final CartService cartService;
 
     @PostMapping("/add")
-    public ResponseEntity<BaseResponseBody> addToCartByRecipeId(@RequestParam("recipeId") Long recipeId, @AuthenticationPrincipal UserDetails userDetails) {
-        cartService.addIngredientToCartByRecipeId(recipeId, userDetails.getEmail());
+    public ResponseEntity<BaseResponseBody> addToCartByRecipeId(@RequestParam("recipeId") String recipeId, @AuthenticationPrincipal UserDetails userDetails) {
+        cartService.addIngredientToCartByRecipeId(Long.parseLong(recipeId), userDetails.getEmail());
         return new ResponseEntity<>(new BaseResponseBody("SUCCESS", 201), HttpStatus.CREATED);
     }
 

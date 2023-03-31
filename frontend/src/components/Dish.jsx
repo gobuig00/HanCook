@@ -12,6 +12,8 @@ import Donut from './Donut';
 import Table from './Table';
 import axios from 'axios';
 import './Dish.css';
+import Toast from 'react-bootstrap/Toast';
+import ToastContainer from 'react-bootstrap/ToastContainer';
 
 export function Youtube(props) {
   const target = props.target;
@@ -103,6 +105,7 @@ function RecipeIngredient(props) {
 
 function Dish() {
   const navigate = useNavigate();
+  const recipeId = useParams().id;
 
 
   useEffect(() => {
@@ -117,6 +120,8 @@ function Dish() {
   const data = result[0];
   const [addNumber, setAddNumber] = useState(1);
   const [modal, setModal] = useState(false);
+  const [show, setShow] = useState(false);
+  const [toastdata, setToastData] = useState('')
   const [shoppingCartModal, setShoppingCartModal] = useState(false);
 
   
@@ -149,15 +154,23 @@ function Dish() {
   }
 
   const addShoppingCart = () => {
-    const params = {
-      id : ''
+    const data = {
+      recipeId: recipeId,
     }
-    axios.get('', params)
-    .then((res) => {
-      console.log(res.data)
+    const headers = {
+      'Authorization' : `Bearer ${localStorage.getItem('hancook-token')}`,
+      'Content-Type': 'application/json',
+    }
+    axios.post(`${process.env.REACT_APP_API_URL}/cart/add/?recipeId=${recipeId}`, data,  { headers: headers })
+    .then(() => {
+      setShoppingCartModal(false);
+      setToastData('Add ingredients to your shopping cart');
+      setShow(true);
     })
-    .catch((err) => {
-      console.log(err)
+    .catch(() => {
+      setShoppingCartModal(false);
+      setToastData('Fail');
+      setShow(true);
     })
   }
 
@@ -174,10 +187,14 @@ function Dish() {
     .then((res) => {
       console.log(res)
       setModal(false);
+      setToastData('Add this menu to the list you ate today');
+      setShow(true);
     })
     .catch((err) => {
       console.log(err)
       setModal(false);
+      setToastData('Fail');
+      setShow(true);
     })
   }
 
@@ -282,6 +299,11 @@ function Dish() {
           <Button className='dish-yes-button' onClick={useAddEatFood}>Yes</Button>
         </Modal.Footer>
       </Modal>
+      <ToastContainer position='bottom-center' className='camera-toast'>
+        <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide bg='dark'>
+          <Toast.Body>{toastdata}</Toast.Body>
+        </Toast>
+      </ToastContainer>
       <footer>
         <Footer />
       </footer>
