@@ -60,7 +60,7 @@ export default function SignUp() {
         }
 
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/join`, {
+            const response = await axios.post("http://localhost:8080/user/join", {
                 email,
                 password,
                 name,

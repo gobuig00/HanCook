@@ -20,7 +20,6 @@ public class FoodNutrient {
     private String name;
     @Column(name = "serving_size")
     private int servingSize;
-
     private String unit;
     private double kcal;
     private double carb;
@@ -29,9 +28,9 @@ public class FoodNutrient {
     private double sugar;
     private double salt;
     private double cholesterol;
-
     public static FoodNutrient of(FoodNutrientResponseDto foodNutrientResponseDto){
         FoodNutrient foodNutrientEntity = ModelMapperUtils.getModelMapper().map(foodNutrientResponseDto, FoodNutrient.class);
         return foodNutrientEntity;
     }
+
 }

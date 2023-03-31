@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service("foodNutrientServiceService")
 @RequiredArgsConstructor
@@ -39,6 +41,15 @@ public class FoodNutrientServiceImpl implements FoodNutrientService {
         if (containsKorean) return 0;
         else if (containsEnglish) return 1;
         else return -1;
+    }
+
+    @Override
+    public FoodNutrientResponseDto getNutrientById(Long id) {
+        // 이름으로 찾은 레시피 Entity List
+        Optional<FoodNutrient> foodNutrientEntity = foodNutrientRepository.findById(id);
+        FoodNutrientResponseDto foodNutrientResponseDto = FoodNutrientResponseDto.of(foodNutrientEntity.get());
+
+        return foodNutrientResponseDto;
     }
 
     @Override
