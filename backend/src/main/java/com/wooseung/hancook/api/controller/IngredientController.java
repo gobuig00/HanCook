@@ -23,6 +23,18 @@ public class IngredientController {
         return ResponseEntity.status(HttpStatus.OK).body(ingredientResponseDtoList);
     }
 
+    @GetMapping("/random/meat")
+    public ResponseEntity<List<IngredientResponseDto>> getRandomMeatIngredient(@RequestParam("lan") int lan) {
+        List<IngredientResponseDto> ingredientResponseDtoList = ingredientService.getRandomMeatIngredient(lan);
+        return ResponseEntity.status(HttpStatus.OK).body(ingredientResponseDtoList);
+    }
+
+    @GetMapping("/random/veg")
+    public ResponseEntity<List<IngredientResponseDto>> getRandomVegetableIngredient(@RequestParam("lan") int lan) {
+        List<IngredientResponseDto> ingredientResponseDtoList = ingredientService.getRandomVegetableIngredient(lan);
+        return ResponseEntity.status(HttpStatus.OK).body(ingredientResponseDtoList);
+    }
+
     // 대분류 반환
     @GetMapping("/large")
     public ResponseEntity<List<String>> getLarge(@RequestParam("lan") int lan) {
