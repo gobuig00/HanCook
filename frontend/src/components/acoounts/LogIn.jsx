@@ -3,9 +3,12 @@ import axios from 'axios';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../images/logo.png';
+import Toast from 'react-bootstrap/Toast';
+import ToastContainer from 'react-bootstrap/ToastContainer';
 
 export default function Login() {
     const navigate = useNavigate();
+    const [show, setShow] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('hancook-token');
@@ -28,7 +31,7 @@ export default function Login() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post("http://localhost:8080/user/login", {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/login`, {
                 email,
                 password,
             });
@@ -39,7 +42,7 @@ export default function Login() {
                 navigate('/main');
             } else {
                 // 로그인 실패 시 할 일
-                console.log('로그인 실패', response.data);
+                setShow(true)
             }
         } catch (error) {
             console.error('로그인 오류 : ', error);
@@ -100,6 +103,11 @@ export default function Login() {
                     JOIN NOW FOR FREE
                 </button>
             </div>
+            <ToastContainer position='bottom-center' className='camera-toast'>
+                <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide bg='dark'>
+                <Toast.Body>Email or password is incorrect</Toast.Body>
+                </Toast>
+            </ToastContainer>
         </div>
     );
 }
