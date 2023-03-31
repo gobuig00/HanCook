@@ -16,25 +16,19 @@ public class SchedulerController {
 //    @GetMapping
     public void scheduler() {
         Runnable runnable = null;
-//        for(int i=0;i<2;i++){
-//            runnable = new MultiCrawler(i*20,i);
-//            Thread t = new Thread(runnable);
-//            t.start();
-//        }
-
 
         for (int i = 0; i < 20; i++) {
             runnable = new MultiCrawler(i * 500, i);
             Thread t = new Thread(runnable);
             t.start();
         }
-    }
-    //@Scheduled(cron = "00 00 14 * * *")
-    @GetMapping
-    public void beef(){
-       Runnable runnable = new BeefCrawler();
-       Thread t= new Thread(runnable);
-       t.start();
+        runnable = new BeefCrawler();
+        Thread t= new Thread(runnable);
+        t.start();
+
+        runnable = new MartCrawler();
+        t = new Thread(runnable);
+        t.start();
     }
 
 }

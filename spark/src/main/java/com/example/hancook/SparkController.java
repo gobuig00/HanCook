@@ -17,7 +17,7 @@ import java.util.Map;
 @Controller
 public class SparkController {
 
-    @Scheduled(cron = "00 20 17 * * *")
+    @Scheduled(cron = "00 00 16 * * *")
     public void processFiles() throws Exception {
         long beforeTime = System.currentTimeMillis();
 
@@ -46,7 +46,7 @@ public class SparkController {
 
                 JavaSparkContext sc = new JavaSparkContext(spark.sparkContext());
 
-                JavaRDD<String> inputRdd = sc.textFile("src/main/datas/"+fileName);
+                JavaRDD<String> inputRdd = sc.textFile("src/main/data/"+fileName);
                 StructType schema = new StructType()
                         .add("deal_date", DataTypes.StringType)
                         .add("large", DataTypes.StringType)
@@ -120,7 +120,74 @@ public class SparkController {
                 System.out.println("-----------------------------------------------------------------------------------");
                 System.out.println("Run Time : " + difTime + "ms");
                 System.out.println("-----------------------------------------------------------------------------------");
+
             }
         }
+//        육류 데이터
+        JavaSparkContext sc = new JavaSparkContext(spark.sparkContext());
+        JavaRDD<String> inputBeefRdd = sc.textFile("./data/beef/beef.csv");
+        StructType schema = new StructType()	//deal_date,large,medium,소,origin,income,가격
+                .add("deal_date", DataTypes.StringType)
+                .add("large", DataTypes.StringType)
+                .add("medium", DataTypes.StringType)
+                .add("small", DataTypes.StringType)
+                .add("origin", DataTypes.StringType)
+                .add("max", DataTypes.DoubleType)
+                .add("min", DataTypes.DoubleType)
+                .add("price",DataTypes.DoubleType);
+        JavaRDD<Row> beefPar = inputBeefRdd.map(line -> {
+            String[] parts = line.split(",");
+            if (parts.length == 8) {
+                return RowFactory.create(parts[0].trim(),
+                        parts[1].trim(),
+                        parts[2].trim(),
+                        parts[3].trim(),
+                        parts[4].trim(),
+                        Double.parseDouble(parts[5].trim()),
+                        Double.parseDouble(parts[6].trim()),
+                        Double.parseDouble(parts[7].trim()));
+            }
+            return null;
+        }).filter(row -> row != null);
+        Dataset<Row> beefDf = spark.createDataFrame(beefPar, schema);
+        beefDf.show();
+        beefDf.write()
+                .mode(SaveMode.Append)
+                .format("jdbc")
+                .options(jdbcOptions)
+                .save();
+
+        //마트 데이터 삽입
+        jdbcOptions.put("dbtable", "mart");
+        sc = new JavaSparkContext(spark.sparkContext());
+        JavaRDD<String> inputMartRdd = sc.textFile("./data/mart/ingre.csv");
+        schema = new StructType()	//deal_date,large,medium,소,origin,income,가격
+                .add("ingredient_name", DataTypes.StringType)
+                .add("item_name", DataTypes.StringType)
+                .add("item_no", DataTypes.IntegerType)
+                .add("item_price", DataTypes.StringType)
+                .add("item_url", DataTypes.StringType)
+                .add("mart", DataTypes.IntegerType)
+                .add("ingredient_id", DataTypes.LongType);
+        JavaRDD<Row> martPar = inputMartRdd.map(line -> {
+            String[] parts = line.split(",");
+            if (parts.length == 7) {
+                return RowFactory.create(parts[0].trim(),
+                        parts[1].trim(),
+                        Integer.parseInt(parts[2].trim()),
+                        parts[3].trim(),
+                        parts[4].trim(),
+                        Integer.parseInt(parts[5].trim()),
+                        Long.parseLong(parts[6].trim()));
+            }
+            return null;
+        }).filter(row -> row != null);
+        Dataset<Row> martDf = spark.createDataFrame(martPar, schema);
+        martDf.show();
+        martDf.write()
+                .mode(SaveMode.Append)
+                .format("jdbc")
+                .options(jdbcOptions)
+                .save();
     }
 }
