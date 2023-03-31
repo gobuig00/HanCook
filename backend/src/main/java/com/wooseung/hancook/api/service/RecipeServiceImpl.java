@@ -229,4 +229,12 @@ public class RecipeServiceImpl implements RecipeService {
         return processEntityList.stream().map(entity -> ProcessResponseDto.of(entity)).collect(Collectors.toList());
     }
 
+    @Override
+    public int searchName(String name) {
+        Optional<Recipe> recipe = recipeRepository.findRecipeByName(name);
+
+        if (recipe.isPresent()) return 1;
+        else return 0;
+    }
+
 }
