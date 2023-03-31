@@ -32,6 +32,7 @@ function useRecipeAPI() {
   };
   const [data, setData] = useState(null);
   const [nutrient, setNutrient] = useState(null);
+  const [originData, setOriginData] = useState(null);
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_API_URL}/recipe/id`, { params })
     .then(function (response) {
@@ -48,6 +49,7 @@ function useRecipeAPI() {
       axios
         .get(`${process.env.REACT_APP_API_URL}/nutrient/food/${foodname}`)
         .then(function (response) {
+          console.log(response.data)
           const size = response.data.servingSize / 100;
           const nutrientData = {
             nutrient: {
@@ -66,6 +68,7 @@ function useRecipeAPI() {
             },
           };
           setNutrient(nutrientData);
+          setOriginData(response.data);
         })
         .catch(function (err) {
           console.log(err);
@@ -73,7 +76,7 @@ function useRecipeAPI() {
     }
   }, [data]);
 
-  let result = [data, nutrient];
+  let result = [data, nutrient, originData];
   return result;
 }
 
@@ -112,7 +115,7 @@ function Dish() {
 
   const result = useRecipeAPI();
   const data = result[0];
-  const [addNumber, setAddNumber] = useState(0);
+  const [addNumber, setAddNumber] = useState(1);
   const [modal, setModal] = useState(false);
   const [shoppingCartModal, setShoppingCartModal] = useState(false);
 
@@ -124,7 +127,7 @@ function Dish() {
   }
 
   const decreaseAddNumber = () => {
-    if (addNumber > 0) {
+    if (addNumber > 1) {
       setAddNumber(addNumber - 1);
     }
   }
@@ -158,13 +161,18 @@ function Dish() {
     })
   }
 
-  const addEatFood = () => {
+  const useAddEatFood = () => {
     const params = {
-      addnumber : addNumber,
+      cnt : addNumber,
     }
-    axios.get('', params)
+    const headers = {
+      'Authorization' : `Bearer ${localStorage.getItem('hancook-token')}`,
+      'Content-Type': 'application/json',
+    }
+    const foodRecordRequestDto = result[2]
+    axios.post(`${process.env.REACT_APP_API_URL}/record/register`, JSON.stringify(foodRecordRequestDto), { params: params, headers: headers })
     .then((res) => {
-      console.log(res.data)
+      console.log(res)
       setModal(false);
     })
     .catch((err) => {
@@ -193,7 +201,7 @@ function Dish() {
               <>
                 <span className='ingredient-name'>{data.recipe.name}</span>
                 <br />
-                <span className='ingredient-pronunciation'>(dwejigogi kimchijjige)</span>
+                <span className='ingredient-pronunciation'></span>
               </>
               ) : (
                 'Loading...'
@@ -215,7 +223,7 @@ function Dish() {
             centerText={result[1] ? `${result[1].other.kcal} kcal` : ''}
           />
         </div>
-        <Table body={result[1] ? result[1].other : []} head={['nutrients', 'amount/(% daily value)', 'per 100g']}/>
+        <Table body={result[1] ? result[1].other : []} head={['nutrients', 'amount@(% daily value)', 'per 100g']}/>
         <div className='green-line'></div>
         <div className='related-food-text'>Recipe</div>
         <br />
@@ -251,10 +259,10 @@ function Dish() {
           Would you like to add ingredients to your shopping cart?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={closeShoppingCartModal}>
+          <Button className='dish-no-button' onClick={closeShoppingCartModal}>
             No
           </Button>
-          <Button className='yes-button' onClick={addShoppingCart}>Yes</Button>
+          <Button className='dish-yes-button' onClick={addShoppingCart}>Yes</Button>
         </Modal.Footer>
       </Modal>
       <Modal
@@ -268,10 +276,10 @@ function Dish() {
           Would you like to add this menu to the list you ate today? (Add {addNumber})
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={closeEatConfirmModal}>
+          <Button className='dish-no-button' onClick={closeEatConfirmModal}>
             No
           </Button>
-          <Button className='yes-button' onClick={addEatFood}>Yes</Button>
+          <Button className='dish-yes-button' onClick={useAddEatFood}>Yes</Button>
         </Modal.Footer>
       </Modal>
       <footer>

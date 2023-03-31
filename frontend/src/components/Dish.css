@@ -57,6 +57,7 @@
 
 .text-center {
   text-align: center;
+  width: 47vw;
 }
 
 .semi-title-text{
@@ -88,8 +89,12 @@
   font-size: 20px;
 }
 
-.yes-button {
+.dish-yes-button {
   background-color: #69B550;
+}
+
+.dish-no-button {
+  background-color: red;
 }
 
 .dish-donut {
