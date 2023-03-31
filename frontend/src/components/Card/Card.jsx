@@ -30,9 +30,10 @@ export default function Card({ cardName, cardImage, usedPart, size, onClick }) {
         <div className={itemClassName} onClick={onClick}>
             <div className='card-image' style={cardImageStyle}>
             </div>
+            {cardName &&
             <div className='card-name'>
                 {cardName}
-            </div>
+            </div>}
         </div>
     );
 }
