@@ -27,8 +27,8 @@ public class FoodRecordController {
     private final UserRepository userRepository;
 
     @PostMapping("/register")
-    public ResponseEntity<BaseResponseBody> registerFoodRecord(@RequestBody FoodRecordRequestDto foodRecordRequestDto, @AuthenticationPrincipal UserDetails userDetails) {
-        foodRecordService.insertFoodRecord(foodRecordRequestDto, userDetails.getEmail());
+    public ResponseEntity<BaseResponseBody> registerFoodRecord(@RequestBody FoodRecordRequestDto foodRecordRequestDto, @AuthenticationPrincipal UserDetails userDetails, @RequestParam("cnt") int cnt) {
+        foodRecordService.insertFoodRecord(foodRecordRequestDto, userDetails.getEmail(), cnt);
         return new ResponseEntity<>(new BaseResponseBody("SUCCESS", 201), HttpStatus.CREATED);
     }
 
