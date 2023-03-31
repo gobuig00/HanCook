@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/cart")
@@ -30,11 +29,11 @@ public class CartController {
         return new ResponseEntity<>(new BaseResponseBody("SUCCESS", 201), HttpStatus.CREATED);
     }
 
-//    @PostMapping("/add")
-//    public ResponseEntity<BaseResponseBody> addToCartByComponentId(@RequestParam("componentId") Long componentId, @AuthenticationPrincipal UserDetails userDetails) {
-//        cartService.addIngredientToCartByRecipeId(recipeId, userDetails.getEmail());
-//        return new ResponseEntity<>(new BaseResponseBody("SUCCESS", 201), HttpStatus.CREATED);
-//    }
+    @PostMapping("/addComponent")
+    public ResponseEntity<BaseResponseBody> addToCartByComponentId(@RequestParam("componentId") Long componentId, @AuthenticationPrincipal UserDetails userDetails) {
+        cartService.addIngredientToCartByComponentId(componentId, userDetails.getEmail());
+        return new ResponseEntity<>(new BaseResponseBody("SUCCESS", 201), HttpStatus.CREATED);
+    }
 
 //    @GetMapping("/get")
 //    public ResponseEntity<List<FoodRecordResponseDto>> getFoodRecordByUser(@AuthenticationPrincipal UserDetails userDetails) {
