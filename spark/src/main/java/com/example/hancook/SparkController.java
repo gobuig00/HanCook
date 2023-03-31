@@ -17,7 +17,7 @@ import java.util.Map;
 @Controller
 public class SparkController {
 
-    @Scheduled(cron = "00 00 16 * * *")
+    @Scheduled(cron = "00 00 06 * * *")
     public void processFiles() throws Exception {
         long beforeTime = System.currentTimeMillis();
 
