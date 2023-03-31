@@ -37,21 +37,17 @@ export default function Profile() {
             'sugar (g)': todaysData.reduce((total, entry) => total + entry.sugar, 0),
             'salt (mg)': todaysData.reduce((total, entry) => total + entry.salt, 0),
         };
-          
-        const lastWeeksData = responseData.filter((entry) => isWithinLastWeek(new Date(entry.eatDate)));
-        const ingestedFood = lastWeeksData.reduce((acc, entry) => {
+        
+        const lastWeeksData = responseData
+            .filter((entry) => isWithinLastWeek(new Date(entry.eatDate)))
+            .sort((a, b) => new Date(b.eatDate) - new Date(a.eatDate)); // 최신 날짜가 먼저 오도록 정렬
+
+        const ingestedFood = lastWeeksData.map((entry) => {
             const kcalPer100g = entry.kcal / (entry.servingSize / 100);
-            let foodName = entry.foodName;
-            let index = 1;
+            const foodName = entry.foodName;
+            return [foodName, kcalPer100g];
+        });
 
-            while (acc[foodName]) {
-                foodName = `${entry.foodName}-${index}`;
-                index++;
-            }
-
-            acc[foodName] = kcalPer100g;
-            return acc;
-        }, {});
         return {
             name: responseData[0].user.name,
             totalCalories,
@@ -82,7 +78,7 @@ export default function Profile() {
             setProfile(createProfile(response.data));
         }
         } catch (error) {
-            // navigate('/login')
+            navigate('/login')
         }
     };
     
@@ -120,9 +116,8 @@ export default function Profile() {
                     <div className='profile-section'>
                         <h2>Ingested Food</h2>
                         <div className='profile-ingested-food'>
-                            <p htmlFor="ingestedTable">(kcal/100g)</p>
                             <Table
-                                head= {['000','8999']}
+                                head={['No.', 'Dish', 'kcal/100g']}
                                 body={profile.ingestedFood}
                             />
                         </div>
