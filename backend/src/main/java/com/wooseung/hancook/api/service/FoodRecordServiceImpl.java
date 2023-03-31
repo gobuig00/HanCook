@@ -28,8 +28,9 @@ public class FoodRecordServiceImpl implements FoodRecordService {
 
     @Override
     @Transactional
-    public void insertFoodRecord(FoodRecordRequestDto foodRecordRequestDto, String email) {
-        String foodName = foodRecordRequestDto.getFoodName();
+    public void insertFoodRecord(FoodRecordRequestDto foodRecordRequestDto, String email, int cnt) {
+        Long no = foodRecordRequestDto.getNo();
+        String name = foodRecordRequestDto.getName();
         int servingSize = foodRecordRequestDto.getServingSize();
         String unit = foodRecordRequestDto.getUnit();
         double kcal = foodRecordRequestDto.getKcal();
@@ -41,12 +42,10 @@ public class FoodRecordServiceImpl implements FoodRecordService {
         double cholesterol = foodRecordRequestDto.getCholesterol();
         LocalDateTime date = LocalDateTime.now();
 
-        int cnt = foodRecordRequestDto.getCnt();
-
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION));
 
-        FoodRecord foodRecord = new FoodRecord(user, foodName, servingSize, unit, kcal, carb, protein, fat, sugar, salt, cholesterol, date);
+        FoodRecord foodRecord = new FoodRecord(user, name, servingSize, unit, kcal, carb, protein, fat, sugar, salt, cholesterol, date);
 
         for (int i = 0; i < cnt; i++) {
             foodRecordRepository.save(foodRecord);
