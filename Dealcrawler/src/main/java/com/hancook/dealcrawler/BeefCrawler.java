@@ -50,37 +50,43 @@ public class BeefCrawler implements Runnable {
 
     private void init() {
 
-//        if(date == null || date.isEmpty()) {
-//            // 수집 날짜 구하기 - 매일 어제의 경매데이터를 읽어옴
-//            Date today = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000);
-//
-//            // 날짜 포매팅
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//            date = dateFormat.format(today);
-//        }
-//
-//        // output file에 쓸 날짜 포매팅
-//        String outputDateFormatStr = date.replace("-", "");
-//
         try {
-            String filepath = "src\\main\\resources\\beef.csv";
+            Date day = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000);
+            String filepath = "./data/beef/";
             File wFile = new File(filepath);
             String NEWLINE = System.lineSeparator();
             BufferedWriter bw = new BufferedWriter(new FileWriter(wFile));
-            bw.write("deal_date,large,medium,소,origin,income,가격");
-            bw.write(NEWLINE);
 
-            Date day = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000);
+
+
 
             // 날짜 포매팅
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             date = dateFormat.format(day);
 
 
-            File file = new File("src\\main\\resources\\search.txt");
-            FileReader fileReader = null;
-            fileReader = new FileReader(file);
-            BufferedReader bufReader = new BufferedReader(fileReader);
+//            File file = new File("src\\main\\resources\\search.txt");
+//            FileReader fileReader = null;
+//            fileReader = new FileReader(file);
+//            BufferedReader bufReader = new BufferedReader(fileReader);
+            String code="4301 21\n" +
+                    "4301 22\n" +
+                    "4301 36\n" +
+                    "4301 40\n" +
+                    "4301 50\n" +
+                    "4304 25\n" +
+                    "4304 27\n" +
+                    "4304 28\n" +
+                    "4304 68\n" +
+                    "4401 31\n" +
+                    "4401 37\n" +
+                    "4402 27\n" +
+                    "9901 99\n" +
+                    "9903 21\n" +
+                    "9903 23\n" +
+                    "9908 01";
+
+            BufferedReader bufReader = new BufferedReader(new StringReader(code));
 
             String list = "";
             while ((list = bufReader.readLine()) != null) {
@@ -89,7 +95,8 @@ public class BeefCrawler implements Runnable {
                 String kindcode = st.nextToken();
                 String today = date;
                 String formatDay = today.replaceAll("-", "");
-//        // Jsoup를 이용해서 크롤링
+
+        // Jsoup를 이용해서 크롤링
                 String pageUrl = "https://www.kamis.or.kr/customer/price/livestockRetail/period.do?action=daily&itemcategorycode=500&productrankcode=0&itemcode=" +
                         itemcode + "&kindcode=" + kindcode + "&startday=" + today + "&endday=" + today;
 
@@ -125,16 +132,16 @@ public class BeefCrawler implements Runnable {
                         String avg = pElements.get((index * 21) + 1).text();
                         avg = avg.replaceAll(",", "");
                         String max = pElements.get((index * 21) + 2).text();
-                        max = avg.replaceAll(",", "");
+                        max = max.replaceAll(",", "");
+
                         String min = pElements.get((index * 21) + 3).text();
-                        min = avg.replaceAll(",", "");
+                        min = min.replaceAll(",", "");
                         if (beef.getLarge().contains("수입")) {
                             origin = "income";
                         }
                         bw.write(formatDay + "," + beef.getLarge().trim() + "," + beef.getMedium().trim() +
                                 "," + beef.getSmall().trim() + "," + origin.trim() + "," + max.trim() + "," + min.trim() + "," + avg.trim());
                         bw.write(NEWLINE);
-                        System.out.println(avg);
                     }
                 }
             }
