@@ -36,7 +36,7 @@ public class SparkController {
                 .config("spark.some.config.option", "some-value")
                 .getOrCreate();
 
-        String fileDirectory = "src/main/datas";
+        String fileDirectory = "./data/agri";
         File[] csvFiles = new File(fileDirectory).listFiles(file -> file.isFile() && file.getName().toLowerCase().endsWith(".csv"));
 
         if (csvFiles != null) {
@@ -45,7 +45,7 @@ public class SparkController {
                 System.out.println("Processing: " + file.getName());
 
                 JavaSparkContext sc = new JavaSparkContext(spark.sparkContext());
-//        JavaRDD<String> inputRdd = sc.textFile(args[0]);
+
                 JavaRDD<String> inputRdd = sc.textFile("src/main/datas/"+fileName);
                 StructType schema = new StructType()
                         .add("deal_date", DataTypes.StringType)
@@ -112,7 +112,7 @@ public class SparkController {
                         .format("jdbc")
                         .options(jdbcOptions)
                         .save();
-//        df2.write().csv("src\\main\\datas\\result9.csv");
+
 
 
                 long afterTime = System.currentTimeMillis();
