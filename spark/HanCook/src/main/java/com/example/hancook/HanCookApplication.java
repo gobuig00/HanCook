@@ -31,13 +31,13 @@ public class HanCookApplication implements CommandLineRunner {
 		jdbcOptions.put("driver", "com.mysql.cj.jdbc.Driver");
 
 		SparkSession spark = SparkSession.builder()
-				.appName("VeggieMeal")
+				.appName("Hancook")
 				.master("local")
 				.config("spark.some.config.option", "some-value")
 				.getOrCreate();
 
 		JavaSparkContext sc = new JavaSparkContext(spark.sparkContext());
-//		JavaRDD<String> inputRdd = sc.textFile(args[0]);
+
 		JavaRDD<String> inputRdd = sc.textFile("src/main/datas/test.csv");
 		StructType schema = new StructType()
 				.add("deal_date", DataTypes.StringType)
@@ -111,6 +111,42 @@ public class HanCookApplication implements CommandLineRunner {
 		System.out.println("-----------------------------------------------------------------------------------");
 		System.out.println("Run Time : " + difTime + "ms");
 		System.out.println("-----------------------------------------------------------------------------------");
+
+//육류 저장
+		JavaRDD<String> inputBeefRdd = sc.textFile("src/main/datas/beef.csv");
+		schema = new StructType()	//deal_date,large,medium,소,origin,income,가격
+				.add("deal_date", DataTypes.StringType)
+				.add("large", DataTypes.StringType)
+				.add("medium", DataTypes.StringType)
+				.add("small", DataTypes.StringType)
+				.add("origin", DataTypes.StringType)
+				.add("max", DataTypes.DoubleType)
+				.add("min", DataTypes.DoubleType)
+				.add("price",DataTypes.DoubleType);
+		JavaRDD<Row> beefPar = inputBeefRdd.map(line -> {
+			String[] parts = line.split(",");
+			if (parts.length == 8) {
+				return RowFactory.create(parts[0].trim(),
+						parts[1].trim(),
+						parts[2].trim(),
+						parts[3].trim(),
+						parts[4].trim(),
+						Double.parseDouble(parts[5].trim()),
+						Double.parseDouble(parts[6].trim()),
+						Double.parseDouble(parts[7].trim()));
+			}
+			return null;
+		}).filter(row -> row != null);
+		Dataset<Row> beefDf = spark.createDataFrame(beefPar, schema);
+		beefDf.show();
+		beefDf.write()
+				.mode(SaveMode.Append)
+				.format("jdbc")
+				.options(jdbcOptions)
+				.save();
+
+
+
 	}
 
 }
