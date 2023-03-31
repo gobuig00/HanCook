@@ -46,8 +46,56 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public List<IngredientResponseDto> getRandomIngredient(int lan) {
-        // 레시피에 포함된 전체 재료 정보 Entity List
+        // 랜덤 재료 정보 Entity List
         List<Ingredient> ingredientEntityList = ingredientRepository.findRandomIngredient();
+
+        // 반환할 레시피 Dto List
+        List<IngredientResponseDto> ingredientResponseDtoList = new ArrayList<>();
+
+        for (Ingredient ingredientEntity : ingredientEntityList) {
+            IngredientResponseDto ingredientResponseDto = IngredientResponseDto.of(ingredientEntity);
+
+            // 영문일때
+            if (lan == 1) {
+                // DB에 한글로 저장되어 있어 영어로 번역해서 response
+                ingredientResponseDto.setName(papagoTranslationService.translate(korean, english, ingredientEntity.getName()));
+            }
+
+            // 반환할 DtoList에 현재 RecipeEntity를 Dto로 변환하여 추가
+            ingredientResponseDtoList.add(ingredientResponseDto);
+        }
+
+        return ingredientResponseDtoList;
+    }
+
+    @Override
+    public List<IngredientResponseDto> getRandomMeatIngredient(int lan) {
+        // 랜덤 재료 정보 Entity List
+        List<Ingredient> ingredientEntityList = ingredientRepository.findRandomMeatIngredient();
+
+        // 반환할 레시피 Dto List
+        List<IngredientResponseDto> ingredientResponseDtoList = new ArrayList<>();
+
+        for (Ingredient ingredientEntity : ingredientEntityList) {
+            IngredientResponseDto ingredientResponseDto = IngredientResponseDto.of(ingredientEntity);
+
+            // 영문일때
+            if (lan == 1) {
+                // DB에 한글로 저장되어 있어 영어로 번역해서 response
+                ingredientResponseDto.setName(papagoTranslationService.translate(korean, english, ingredientEntity.getName()));
+            }
+
+            // 반환할 DtoList에 현재 RecipeEntity를 Dto로 변환하여 추가
+            ingredientResponseDtoList.add(ingredientResponseDto);
+        }
+
+        return ingredientResponseDtoList;
+    }
+
+    @Override
+    public List<IngredientResponseDto> getRandomVegetableIngredient(int lan) {
+        // 랜덤 재료 정보 Entity List
+        List<Ingredient> ingredientEntityList = ingredientRepository.findRandomVegetableIngredient();
 
         // 반환할 레시피 Dto List
         List<IngredientResponseDto> ingredientResponseDtoList = new ArrayList<>();
