@@ -44,7 +44,7 @@ public class BeefCrawler implements Runnable {
 
         try {
             Date day = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000);
-            String filepath = "./data/beef/";
+            String filepath = "./data/beef/beef.csv";
             File wFile = new File(filepath);
             String NEWLINE = System.lineSeparator();
             BufferedWriter bw = new BufferedWriter(new FileWriter(wFile));
