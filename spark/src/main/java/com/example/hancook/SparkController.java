@@ -11,6 +11,8 @@ import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructType;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +21,9 @@ public class SparkController {
 
     @Scheduled(cron = "00 00 06 * * *")
     public void processFiles() throws Exception {
+
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         long beforeTime = System.currentTimeMillis();
 
         //db 설정
@@ -42,85 +47,92 @@ public class SparkController {
         if (csvFiles != null) {
             for (File file : csvFiles) {
                 String fileName= file.getName();
-                System.out.println("Processing: " + file.getName());
 
-                JavaSparkContext sc = new JavaSparkContext(spark.sparkContext());
+                String fileDateStr = fileName.substring(0, 8);
+                LocalDate fileDate = LocalDate.parse(fileDateStr, formatter);
 
-                JavaRDD<String> inputRdd = sc.textFile("./data/agri/"+fileName);
-                StructType schema = new StructType()
-                        .add("deal_date", DataTypes.StringType)
-                        .add("large", DataTypes.StringType)
-                        .add("medium", DataTypes.StringType)
-                        .add("small", DataTypes.StringType)
-                        .add("origin", DataTypes.StringType)
-                        .add("isKg", DataTypes.DoubleType)
-                        .add("price", DataTypes.DoubleType);
+                if(fileDate.equals(today)) {
 
-                JavaRDD<Row> sizeRdd = inputRdd.map(line -> {
-                    String[] parts = line.split(",");
-                    if (parts.length == 7 && parts[5].trim().equals("0")) {
-                        return RowFactory.create("20" + parts[0].replaceAll("[^0-9]", "").trim(),
-                                parts[1].trim(),
-                                parts[2].trim(),
-                                parts[3].trim(),
-                                parts[4].trim().equals("0") ? "origin" : "korea",
-                                Double.parseDouble(parts[5].trim()),
-                                Double.parseDouble(parts[6].trim()));
-                    }
-                    return null;
-                }).filter(row -> row != null);
+                    System.out.println("Processing: " + file.getName());
 
-                JavaRDD<Row> sizeNRdd = inputRdd.map(line -> {
-                    String[] parts = line.split(",");
-                    if (parts.length != 7 && parts.length != 6 && parts[parts.length - 2].trim().equals("0")) {
-                        return RowFactory.create("20" + parts[0].replaceAll("[^0-9]", "").trim(),
-                                parts[1].trim(),
-                                parts[2].trim(),
-                                parts[parts.length - 4].trim(),
-                                parts[parts.length - 3].trim().equals("0") ? "origin" : "korea",
-                                Double.parseDouble(parts[parts.length - 2].trim()),
-                                Double.parseDouble(parts[parts.length - 1].trim()));
-                    }
-                    return null;
-                }).filter(row -> row != null);
+                    JavaSparkContext sc = new JavaSparkContext(spark.sparkContext());
 
-                JavaRDD<Row> unRdd = sizeRdd.union(sizeNRdd);
-                Dataset<Row> df = spark.createDataFrame(unRdd, schema);
+                    JavaRDD<String> inputRdd = sc.textFile("./data/agri/"+fileName);
+                    StructType schema = new StructType()
+                            .add("deal_date", DataTypes.StringType)
+                            .add("large", DataTypes.StringType)
+                            .add("medium", DataTypes.StringType)
+                            .add("small", DataTypes.StringType)
+                            .add("origin", DataTypes.StringType)
+                            .add("isKg", DataTypes.DoubleType)
+                            .add("price", DataTypes.DoubleType);
 
-                df.createOrReplaceTempView("table");
-                Dataset<Row> v1 = spark.sql("SELECT deal_date, large, medium, small, origin, AVG(price) as avgPrice FROM table GROUP BY deal_date, large, medium, small, origin");
-                v1.createOrReplaceTempView("table2");
+                    JavaRDD<Row> sizeRdd = inputRdd.map(line -> {
+                        String[] parts = line.split(",");
+                        if (parts.length == 7 && parts[5].trim().equals("0")) {
+                            return RowFactory.create("20" + parts[0].replaceAll("[^0-9]", "").trim(),
+                                    parts[1].trim(),
+                                    parts[2].trim(),
+                                    parts[3].trim(),
+                                    parts[4].trim().equals("0") ? "origin" : "korea",
+                                    Double.parseDouble(parts[5].trim()),
+                                    Double.parseDouble(parts[6].trim()));
+                        }
+                        return null;
+                    }).filter(row -> row != null);
 
-                Dataset<Row> v2 = spark.sql("SELECT table.deal_date, table.large, table.medium, table.small, table.origin, table.price, table2.avgPrice " + "FROM table INNER JOIN table2 " +
-                        "ON table.deal_date = table2.deal_date " +
-                        "AND table.large = table2.large " +
-                        "AND table.medium = table2.medium " +
-                        "AND table.small = table2.small " +
-                        "AND table.origin = table2.origin");
-                v2.createOrReplaceTempView("table3");
+                    JavaRDD<Row> sizeNRdd = inputRdd.map(line -> {
+                        String[] parts = line.split(",");
+                        if (parts.length != 7 && parts.length != 6 && parts[parts.length - 2].trim().equals("0")) {
+                            return RowFactory.create("20" + parts[0].replaceAll("[^0-9]", "").trim(),
+                                    parts[1].trim(),
+                                    parts[2].trim(),
+                                    parts[parts.length - 4].trim(),
+                                    parts[parts.length - 3].trim().equals("0") ? "origin" : "korea",
+                                    Double.parseDouble(parts[parts.length - 2].trim()),
+                                    Double.parseDouble(parts[parts.length - 1].trim()));
+                        }
+                        return null;
+                    }).filter(row -> row != null);
 
-                Dataset<Row> v3 = spark.sql("SELECT * FROM table3 WHERE avgPrice * 1.5 > price AND avgPrice * 0.5 < price");
-                v3.createOrReplaceTempView("table4");
+                    JavaRDD<Row> unRdd = sizeRdd.union(sizeNRdd);
+                    Dataset<Row> df = spark.createDataFrame(unRdd, schema);
 
-                Dataset<Row> v4 = spark.sql("SELECT deal_date, large, medium, small, origin, MAX(price) as max, MIN(price) as min, avgPrice as price " +
-                        "FROM table4 GROUP BY deal_date, large, medium, small, origin, avgPrice");
+                    df.createOrReplaceTempView("table");
+                    Dataset<Row> v1 = spark.sql("SELECT deal_date, large, medium, small, origin, AVG(price) as avgPrice FROM table GROUP BY deal_date, large, medium, small, origin");
+                    v1.createOrReplaceTempView("table2");
 
-                Dataset<Row> df2 = v4.toDF();
-                df2.show();
-                df2.write()
-                        .mode(SaveMode.Append)
-                        .format("jdbc")
-                        .options(jdbcOptions)
-                        .save();
+                    Dataset<Row> v2 = spark.sql("SELECT table.deal_date, table.large, table.medium, table.small, table.origin, table.price, table2.avgPrice " + "FROM table INNER JOIN table2 " +
+                            "ON table.deal_date = table2.deal_date " +
+                            "AND table.large = table2.large " +
+                            "AND table.medium = table2.medium " +
+                            "AND table.small = table2.small " +
+                            "AND table.origin = table2.origin");
+                    v2.createOrReplaceTempView("table3");
+
+                    Dataset<Row> v3 = spark.sql("SELECT * FROM table3 WHERE avgPrice * 1.5 > price AND avgPrice * 0.5 < price");
+                    v3.createOrReplaceTempView("table4");
+
+                    Dataset<Row> v4 = spark.sql("SELECT deal_date, large, medium, small, origin, MAX(price) as max, MIN(price) as min, avgPrice as price " +
+                            "FROM table4 GROUP BY deal_date, large, medium, small, origin, avgPrice");
+
+                    Dataset<Row> df2 = v4.toDF();
+                    df2.show();
+                    df2.write()
+                            .mode(SaveMode.Append)
+                            .format("jdbc")
+                            .options(jdbcOptions)
+                            .save();
 
 
 
-                long afterTime = System.currentTimeMillis();
-                long difTime = afterTime - beforeTime;
-                System.out.println("-----------------------------------------------------------------------------------");
-                System.out.println("Run Time : " + difTime + "ms");
-                System.out.println("-----------------------------------------------------------------------------------");
+                    long afterTime = System.currentTimeMillis();
+                    long difTime = afterTime - beforeTime;
+                    System.out.println("-----------------------------------------------------------------------------------");
+                    System.out.println("Run Time : " + difTime + "ms");
+                    System.out.println("-----------------------------------------------------------------------------------");
 
+                }
             }
         }
 //        육류 데이터
