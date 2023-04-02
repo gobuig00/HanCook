@@ -6,7 +6,10 @@
     margin: 0 0 8vh 0;
 }
 .main-header  {
-    margin: 3vw 0 8vw 3vw
+    margin: 3vw 0 8vw 0vw
+}
+.main-header .main-logo{
+    margin: 0 0 2vw 3vw
 }
 .main-logo {
     width: 52%;
@@ -58,6 +61,7 @@
 .hide-icon {
     visibility: hidden;
 }
+
 
 .ingredient-dish-cards {
     display: flex;
