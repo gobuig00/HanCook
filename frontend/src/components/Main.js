@@ -27,6 +27,7 @@ function Main() {
   const [ingredients, setIngredients] = useState([]); // 카테고리 변경시 필요한 것
   const [ingredientChosen, setIngredientChosen] = useState('Popular'); // 카테고리 변경시 필요한 것
   const [ingreDish, setIngreDish] = useState([])
+  const [priceChange, setPriceChange] = useState([])
 
   useEffect( () => {
     // 로그인 확인
@@ -47,10 +48,12 @@ function Main() {
       setDish(dishAxios.data)
       const ingreAxios = await axios.get('http://localhost:8080/component/random', {params});
       setIngredients(ingreAxios.data)
+      const priceChangeAxios = await axios.get('http://localhost:8080/deal/change');
 
       //console
-      console.log(dishAxios.data)
-      console.log(ingreAxios.data)
+      // console.log(dishAxios.data)
+      // console.log(ingreAxios.data)
+      console.log(priceChangeAxios)
 
       try {
         const params = {
