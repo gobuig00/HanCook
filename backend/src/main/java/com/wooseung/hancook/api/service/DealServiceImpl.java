@@ -85,10 +85,32 @@ public class DealServiceImpl implements DealService{
         }
 
         return returnList;
-
-
-
-
     }
+    @Override
+    public List<DealResponseDto> getChange(String today, String SevenDaysAgo){
+        List<DealResponseDto> returnList = new ArrayList<>(); // 반환할 리스트
+        List<Deal> dealMaxList = dealRepository.findMax(today, SevenDaysAgo); // 7일전 부터 오늘까지 최대 증가율 3개 deal
+
+        // max 데이터 반올림
+        for(Deal deal : dealMaxList){
+            deal.setPrice((float) Math.round(deal.getPrice()));
+            deal.setMax((float) Math.round(deal.getMax()));
+            deal.setMin((float) Math.round(deal.getMin()));
+            returnList.add(DealResponseDto.of(deal));
+        }
+        // 반환할 리스트에 추가
+        List<Deal> dealMinList = dealRepository.findMin(today, SevenDaysAgo);
+        for(Deal deal : dealMinList){
+            deal.setPrice((float) Math.round(deal.getPrice()));
+            deal.setMax((float) Math.round(deal.getMax()));
+            deal.setMin((float) Math.round(deal.getMin()));
+            returnList.add(DealResponseDto.of(deal));
+        }
+
+
+
+        return returnList;
+    }
+
 
 }

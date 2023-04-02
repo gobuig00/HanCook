@@ -25,6 +25,13 @@ public interface DealRepository extends JpaRepository<Deal, Long> {
     @Query(value = "SELECT DISTINCT d.deal_date FROM deal d WHERE d.small = :name  ORDER BY d.deal_date DESC LIMIT 7", nativeQuery = true)
     List<String> findDealDateLimit7(String name);
 
+    @Query(value = "SELECT DISTINCT * FROM deal d ORDER BY d.deal_date DESC LIMIT 3 AND (d.deal_date=:today - d.deal_date:sevenDaysAgo)/d.deal_date:sevenDaysAgo*100 DESC LIMIT 3", nativeQuery = true)
+    List<Deal> findMax(String today, String sevenDaysAgo);
+//(d1.some_column - d2.some_column) / d2.some_column * 100
+
+    @Query(value = "SELECT DISTINCT * FROM deal d ORDER BY d.deal_date DESC LIMIT 3 AND (d.deal_date=:today - d.deal_date:sevenDaysAgo)/d.deal_date:sevenDaysAgo*100 ASC LIMIT 3", nativeQuery = true)
+    List<Deal> findMin(String today, String sevenDaysAgo);
+
 
     List<Deal> findByLargeAndMediumAndSmallAndOriginAndDealDate(String large, String medium, String small, String origin, String dealDate);
 
