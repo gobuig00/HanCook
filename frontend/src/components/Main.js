@@ -44,11 +44,12 @@ function Main() {
       const params = {
         lan: 0,
       };
-      const dishAxios = await axios.get('http://localhost:8080/recipe/random', {params});
+      const dishAxios = await axios.get(`${process.env.REACT_APP_API_URL}/recipe/random`, {params});
       setDish(dishAxios.data)
-      const ingreAxios = await axios.get('http://localhost:8080/component/random', {params});
+      const ingreAxios = await axios.get(`${process.env.REACT_APP_API_URL}/component/random`, {params});
       setIngredients(ingreAxios.data)
-      const priceChangeAxios = await axios.get('http://localhost:8080/deal/change');
+      const priceChangeAxios = await axios.get(`${process.env.REACT_APP_API_URL}/deal/change`);
+      setPriceChange()
 
       //console
       // console.log(dishAxios.data)
@@ -60,9 +61,9 @@ function Main() {
           ingredient: ingreAxios.data[0].name,
           lan: 0,
         }
-        const ingreDishAxios = await axios.get('http://localhost:8080/recipe/ingredient',{params});
+        const ingreDishAxios = await axios.get(`${process.env.REACT_APP_API_URL}/recipe/ingredient`,{params});
         setIngreDish(ingreDishAxios.data.slice(0, 4))
-        console.log(ingreDishAxios.data)
+        // console.log(ingreDishAxios.data)
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
@@ -80,7 +81,7 @@ function Main() {
         ingredient: ingredientName,
         lan: 0,
       };
-      const ingreDishAxios = await axios.get('http://localhost:8080/recipe/ingredient', { params });
+      const ingreDishAxios = await axios.get(`${process.env.REACT_APP_API_URL}/recipe/ingredient`, { params });
       setIngreDish(ingreDishAxios.data.slice(0, 4));
       console.log(ingreDishAxios.data);
     } catch (error) {
@@ -111,7 +112,7 @@ function Main() {
                   className="d-block w-100"
                   src={mainImage2}
                   alt="Second slide"
-                  style={{ width: "100%", height: "400px", objectFit: "cover" }}
+                  style={{ width: "90%", height: "400px", objectFit: "cover" }}
                 />
               </Carousel.Item>
               <Carousel.Item interval={5000}>
@@ -119,7 +120,7 @@ function Main() {
                   className="d-block w-100"
                   src={mainImage3}
                   alt="Third slide"
-                  style={{ width: "100%", height: "400px", objectFit: "cover" }}
+                  style={{ width: "190%", height: "400px", objectFit: "cover" }}
                 />
               </Carousel.Item>
             </Carousel>
@@ -188,6 +189,8 @@ function Main() {
             <Button className="more-button">more</Button>
           </div>
           <hr/>
+
+          
         </div>
     </div>
           
