@@ -72,3 +72,9 @@
 .ingredient-dish-cards .custom-card {
     flex-basis: calc(50% - 10px); /* 한 줄에 두 개의 카드를 출력하므로 너비를 50%로 설정합니다. 여백 10px 제외 */
 }
+
+.main-increased-part p, .main-decreased-part p {
+    margin: 0;
+    font-family: "semibold";
+    color: #4d820e;
+}

@@ -49,7 +49,7 @@ function Main() {
       const ingreAxios = await axios.get(`${process.env.REACT_APP_API_URL}/component/random`, {params});
       setIngredients(ingreAxios.data)
       const priceChangeAxios = await axios.get(`${process.env.REACT_APP_API_URL}/deal/change`);
-      setPriceChange()
+      setPriceChange(priceChangeAxios.data)
 
       //console
       // console.log(dishAxios.data)
@@ -189,44 +189,44 @@ function Main() {
             <Button className="more-button">more</Button>
           </div>
           <hr/>
+          <div className='main-price'>
+            <h1 className='main-title'>Price Static</h1>
+            <div className='main-increased-part'>
+              <p>Most Increased in Price</p>
+              {/* {priceChange.increased.map((priceItem, index) => (
+                <PriceChange
+                  product = {priceItem.product}
+                  prevPrice = {priceItem.prevPrice}
+                  curPrice = {priceItem.curPrice}
+                  percentage = {priceItem.percentage}
+                  isIncreased = {true}
+                />
+              ))} */}
+            </div>
+            <div className='main-decreased-part'>
+              <p>Most Decreased in Price</p>
+              {/* {priceChange.decreased.map((priceItem, index) => (-
+                <PriceChange
+                  product = {priceItem.product}
+                  prevPrice = {priceItem.prevPrice}
+                  curPrice = {priceItem.curPrice}
+                  percentage = {priceItem.percentage}
+                  isIncreased = {false}
+                />
+              ))} */}
+            </div>
+            <div className='main-chart-part'>
+              <LineChart/>
+            </div>
+            
+          </div>
 
-          
         </div>
     </div>
           
 
 
-    //       <div className='main-price'>
-    //         <h1 className='main-title'>Price Static</h1>
-    //         <div className='main-increased-part'>
-    //           <h4>Most Increased in Price</h4>
-    //           {data.priceStatic.increased.map((priceItem, index) => (
-    //             <PriceChange
-    //               product = {priceItem.product}
-    //               prevPrice = {priceItem.prevPrice}
-    //               curPrice = {priceItem.curPrice}
-    //               percentage = {priceItem.percentage}
-    //               isIncreased = {true}
-    //             />
-    //           ))}
-    //         </div>
-    //         <div className='main-decreased-part'>
-    //           <h4>Most Decreased in Price</h4>
-    //           {data.priceStatic.decreased.map((priceItem, index) => (
-    //             <PriceChange
-    //               product = {priceItem.product}
-    //               prevPrice = {priceItem.prevPrice}
-    //               curPrice = {priceItem.curPrice}
-    //               percentage = {priceItem.percentage}
-    //               isIncreased = {false}
-    //             />
-    //           ))}
-    //         </div>
-    //         <div className='main-chart-part'>
-    //           <LineChart/>
-    //         </div>
-            
-    //       </div>
+          
     //     </div>
     //   <div className='main-footer'>
     //     <Footer />
