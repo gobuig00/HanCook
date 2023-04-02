@@ -22,11 +22,11 @@ public interface DealRepository extends JpaRepository<Deal, Long> {
     @Query(value = "SELECT DISTINCT d.deal_date FROM deal d WHERE d.large = :large AND d.medium = :medium AND d.small = :small AND d.origin = :origin ORDER BY d.deal_date DESC LIMIT 7", nativeQuery = true)
     List<String> findDealDateLimit7(String large, String medium, String small, String origin);
 
-    @Query(value = "SELECT DISTINCT d.deal_date FROM deal d WHERE d.medium = :name  ORDER BY d.deal_date DESC LIMIT 7", nativeQuery = true)
+    @Query(value = "SELECT DISTINCT d.deal_date FROM deal d WHERE d.small = :name  ORDER BY d.deal_date DESC LIMIT 7", nativeQuery = true)
     List<String> findDealDateLimit7(String name);
 
 
     List<Deal> findByLargeAndMediumAndSmallAndOriginAndDealDate(String large, String medium, String small, String origin, String dealDate);
 
-    List<Deal> findByMediumAndDealDate(String medium, String dealDate);
+    List<Deal> findBySmallAndDealDate(String medium, String dealDate);
 }
