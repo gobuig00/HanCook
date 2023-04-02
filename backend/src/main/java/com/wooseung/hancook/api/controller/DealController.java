@@ -2,11 +2,14 @@ package com.wooseung.hancook.api.controller;
 
 import com.wooseung.hancook.api.response.DealResponseDto;
 import com.wooseung.hancook.api.service.DealService;
+import com.wooseung.hancook.api.service.IngredientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -15,7 +18,7 @@ import java.util.List;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class DealController {
     private final DealService dealService;
-
+    private final IngredientService ingredientService;
     @GetMapping("/large")
     public ResponseEntity<List<String>> getLarge() {
         List<String> largeList = dealService.getLarge();
@@ -43,6 +46,36 @@ public class DealController {
     @GetMapping("/")
     public ResponseEntity<List<DealResponseDto>> getDeal(@RequestParam("large") String large, @RequestParam("medium") String medium, @RequestParam("small") String small, @RequestParam("origin") String origin) {
         List<DealResponseDto> dealDtoList = dealService.getDeal(large, medium, small, origin);
+        return ResponseEntity.status(HttpStatus.OK).body(dealDtoList);
+    }
+
+    //deal을 받아가지고 최대 최소 리스트로 받아가지고 어떤 재료를 입력하면 재료에 대한 리스트
+    //를 받아가지고 최대, 최소로 변동 폭 큰 거로
+    //db에서 deal값을 받는다.
+    @GetMapping("/detail")
+    public ResponseEntity<List<DealResponseDto>> getDetailChange(@RequestParam("id") String id) {
+        String name = ingredientService.searchById(id);
+        List<DealResponseDto> dealDtoList = dealService.getDetail(name);
+        return ResponseEntity.status(HttpStatus.OK).body(dealDtoList);
+    }
+
+    //최대 상승한 재료 3개, 최대 하락한 재료 3개
+    @GetMapping("/change")
+    public ResponseEntity<List<DealResponseDto>> getChange() {
+        // 오늘 날짜 가져오기
+        LocalDate today = LocalDate.now();
+
+        // 7일 전 날짜 계산하기
+        LocalDate sevenDaysAgo = today.minusDays(7);
+
+        // 날짜 형식 지정
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+        // LocalDate 객체를 문자열로 변환하여 저장
+        String todayString = today.format(formatter);
+        String sevenDaysAgoString = sevenDaysAgo.format(formatter);
+
+        List<DealResponseDto> dealDtoList = dealService.getChange(todayString, sevenDaysAgoString);
         return ResponseEntity.status(HttpStatus.OK).body(dealDtoList);
     }
 

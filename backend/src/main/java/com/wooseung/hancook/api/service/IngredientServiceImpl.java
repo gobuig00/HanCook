@@ -170,4 +170,11 @@ public class IngredientServiceImpl implements IngredientService {
         if (ingredient.isPresent()) return 1;
         else return 0;
     }
+
+    @Override
+    public String searchById(String id){
+        Optional<Ingredient> ingredientName = ingredientRepository.findByIngredientId(id);
+        if(ingredientName.isEmpty())   return "Empty";
+        else return ingredientName.get().getName();
+    }
 }
