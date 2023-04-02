@@ -18,4 +18,7 @@ public interface IngredientService {
 
     int searchName(String name);
 
+    String searchById(String id);
+
+
 }

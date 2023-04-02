@@ -64,4 +64,32 @@ public class DealServiceImpl implements DealService{
 
         return returnList;
     }
+
+    @Override
+    public List<DealResponseDto> getDetail(String name){
+        List<DealResponseDto> returnList = new ArrayList<>(); // 반환할 리스트
+        List<String> dealDateList = dealRepository.findDealDateLimit7(name); // 경매날짜 기준 최신순으로 7개 날짜 List
+
+        // 날짜별로 경매 데이터 추출(날짜 내림차순)
+        for(int i = dealDateList.size() - 1; i >= 0; i--){
+            String dealDate = dealDateList.get(i);
+            List<Deal> dealList = dealRepository.findByMediumAndDealDate(name, dealDate); //name이 medium이랑 똑같은 거임, 즉 재료의 이름
+
+            // 경매 데이터 반올림
+            for(Deal deal : dealList){
+                deal.setPrice((float) Math.round(deal.getPrice()));
+                deal.setMax((float) Math.round(deal.getMax()));
+                deal.setMin((float) Math.round(deal.getMin()));
+            }
+            // 반환할 리스트에 추가
+            returnList.addAll(dealList.stream().map(entity -> DealResponseDto.of(entity)).collect(Collectors.toList()));
+        }
+
+        return returnList;
+
+
+
+
+    }
+
 }
