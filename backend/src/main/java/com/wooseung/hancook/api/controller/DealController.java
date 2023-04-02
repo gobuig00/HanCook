@@ -76,6 +76,12 @@ public class DealController {
         String sevenDaysAgoString = sevenDaysAgo.format(formatter);
 
         List<DealResponseDto> dealDtoList = dealService.getChange(todayString, sevenDaysAgoString);
+
+        for(DealResponseDto dto: dealDtoList){
+            System.out.println(dto.getSmall());
+        }
+
+
         return ResponseEntity.status(HttpStatus.OK).body(dealDtoList);
     }
 
