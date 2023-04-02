@@ -35,5 +35,5 @@ public interface DealRepository extends JpaRepository<Deal, Long> {
 
     List<Deal> findByLargeAndMediumAndSmallAndOriginAndDealDate(String large, String medium, String small, String origin, String dealDate);
 
-    List<Deal> findByMediumAndDealDate(String medium, String dealDate);
+    List<Deal> findBySmallAndDealDate(String medium, String dealDate);
 }
