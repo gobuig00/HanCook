@@ -1,7 +1,7 @@
 // 리액트 import
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {Button} from 'react-bootstrap';
+import {Button, Carousel} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 // 컴포넌트 import
@@ -14,7 +14,9 @@ import LineChart from './LineChart';
 // 기타파일 import
 import './Main.css';
 import logo from '../images/logo.png';
-
+import mainImage1 from '../images/mainImage1.png';
+import mainImage2 from '../images/mainImage2.png';
+import mainImage3 from '../images/mainImage3.png';
 
 function Main() {
   const navigate = useNavigate();
@@ -87,7 +89,38 @@ function Main() {
     <div className="main-container">
         <div className='main-header'>
           <img className="main-logo" src={logo} alt="로고"/><br/>
-          <img className='main-image' src='' alt="메인이미지"/>
+          <div className="main-image">
+            <Carousel
+              prevIcon={<span aria-hidden="true" className="hide-icon" />}
+              nextIcon={<span aria-hidden="true" className="hide-icon" />}
+            >
+              
+              <Carousel.Item interval={5000}>
+                <img
+                  className="d-block w-100"
+                  src={mainImage1}
+                  alt="First slide"
+                  style={{ width: "100%", height: "400px", objectFit: "cover" }}
+                />
+              </Carousel.Item>
+              <Carousel.Item interval={5000}>
+                <img
+                  className="d-block w-100"
+                  src={mainImage2}
+                  alt="Second slide"
+                  style={{ width: "100%", height: "400px", objectFit: "cover" }}
+                />
+              </Carousel.Item>
+              <Carousel.Item interval={5000}>
+                <img
+                  className="d-block w-100"
+                  src={mainImage3}
+                  alt="Third slide"
+                  style={{ width: "100%", height: "400px", objectFit: "cover" }}
+                />
+              </Carousel.Item>
+            </Carousel>
+          </div>
         </div>
         <div className='main-article'>
           <div className='main-dish'>
