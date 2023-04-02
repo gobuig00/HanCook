@@ -14,4 +14,6 @@ public interface DealService {
     List<String> getSmall(String medium, String large);
 
     List<String> getOrigin(String large, String medium, String small);
+    List<DealResponseDto> getDetail(String name);
+    List<DealResponseDto> getChange(String today, String sevenDaysAgo);
 }
