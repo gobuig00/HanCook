@@ -6,9 +6,11 @@ import com.wooseung.hancook.db.entity.Deal;
 import com.wooseung.hancook.db.repository.DealRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.Converters;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,9 +22,6 @@ public class DealServiceImpl implements DealService {
     private final DealRepository dealRepository;
 
     private final PapagoTranslationService papagoTranslationService;
-
-    static String english = "en";
-    static String korean = "ko";
 
     @Override
     public List<String> getLarge() {
@@ -94,18 +93,36 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
-    public List<DealResponseDto> getChange(String today, String sevenDaysAgo){
+    public List<DealResponseDto> getChange(String today, String sevenDaysAgo, int lan) {
         List<DealResponseDto> returnList = new ArrayList<>(); // 반환할 리스트
         List<Object[]> dealMaxList = dealRepository.findMax(today, sevenDaysAgo); // 7일전 부터 오늘까지 최대 증가율 3개 deal
 
-        for(Object[] ob : dealMaxList){
-            List<Deal> dealDateList = dealRepository.findDealsByMediumAndSmallAndOriginAndDateRange(String.valueOf(ob[0]),String.valueOf(ob[1]), String.valueOf(ob[2]),sevenDaysAgo, today); // medium, small, origin 이 같은 7일전까지의 데이터를 가져온다.
+        for (Object[] ob : dealMaxList) {
+            String medium = String.valueOf(ob[0]);
+            String small = String.valueOf(ob[1]);
+            String origin = String.valueOf(ob[2]);
+
+            if (lan == 1) {
+                papagoTranslationService.translateKoreanIntoEnglish(medium);
+                papagoTranslationService.translateKoreanIntoEnglish(small);
+            }
+
+            List<Deal> dealDateList = dealRepository.findDealsByMediumAndSmallAndOriginAndDateRange(medium, small, origin, sevenDaysAgo, today); // medium, small, origin 이 같은 7일전까지의 데이터를 가져온다.
             returnList.addAll(dealDateList.stream().map(entity -> DealResponseDto.of(entity)).collect(Collectors.toList()));
         }
 
         List<Object[]> dealMinList = dealRepository.findMin(today, sevenDaysAgo);
-        for(Object[] ob : dealMinList){
-            List<Deal> dealDateList = dealRepository.findDealsByMediumAndSmallAndOriginAndDateRange(String.valueOf(ob[0]),String.valueOf(ob[1]), String.valueOf(ob[2]),sevenDaysAgo, today); // medium, small, origin 이 같은 7일전까지의 데이터를 가져온다.
+        for (Object[] ob : dealMinList) {
+            String medium = String.valueOf(ob[0]);
+            String small = String.valueOf(ob[1]);
+            String origin = String.valueOf(ob[2]);
+
+            if (lan == 1) {
+                papagoTranslationService.translateKoreanIntoEnglish(medium);
+                papagoTranslationService.translateKoreanIntoEnglish(small);
+            }
+
+            List<Deal> dealDateList = dealRepository.findDealsByMediumAndSmallAndOriginAndDateRange(medium, small, origin, sevenDaysAgo, today); // medium, small, origin 이 같은 7일전까지의 데이터를 가져온다.
             returnList.addAll(dealDateList.stream().map(entity -> DealResponseDto.of(entity)).collect(Collectors.toList()));
         }
 

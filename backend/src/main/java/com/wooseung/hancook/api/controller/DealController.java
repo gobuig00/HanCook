@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
 public class DealController {
     private final DealService dealService;
     private final IngredientService ingredientService;
+
     @GetMapping("/large")
     public ResponseEntity<List<String>> getLarge() {
         List<String> largeList = dealService.getLarge();
@@ -63,7 +65,7 @@ public class DealController {
 
     //최대 상승한 재료 3개, 최대 하락한 재료 3개
     @GetMapping("/change")
-    public ResponseEntity<List<DealResponseDto>> getChange() {
+    public ResponseEntity<List<DealResponseDto>> getChange(@RequestParam("lan") int lan) {
         // 오늘 날짜 가져오기
         LocalDate today = LocalDate.now();
         LocalDate yesterday = today.minusDays(1);
@@ -78,9 +80,10 @@ public class DealController {
         String yesterdayString = yesterday.format(formatter);
         String sevenDaysAgoString = sevenDaysAgo.format(formatter);
 
-        List<DealResponseDto> dealDtoList = dealService.getChange("20230317", "20230314");
+//        List<DealCheapResponseDto> dealDtoList = dealService.getChange(yesterdayString, sevenDaysAgoString, lan);
+        List<DealResponseDto> dealDtoList = dealService.getChange("20230317", "20230314", lan);
 
-        for(DealResponseDto dto: dealDtoList){
+        for (DealResponseDto dto : dealDtoList) {
             System.out.println(dto.getSmall());
         }
 
