@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -15,8 +14,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/deal")
 @RequiredArgsConstructor
+
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class DealController {
+    private static final Logger logger = LoggerFactory.getLogger(DealController.class);
     private final DealService dealService;
     private final IngredientService ingredientService;
     @GetMapping("/large")
@@ -54,8 +55,9 @@ public class DealController {
     //db에서 deal값을 받는다.
     @GetMapping("/detail")
     public ResponseEntity<List<DealResponseDto>> getDetailChange(@RequestParam("id") String id) {
-        String name = ingredientService.searchById(id);
+        String name = ingredientService.searchById(Long.parseLong(id));
         List<DealResponseDto> dealDtoList = dealService.getDetail(name);
+        System.out.println(dealDtoList.size());
         return ResponseEntity.status(HttpStatus.OK).body(dealDtoList);
     }
 
