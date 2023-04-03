@@ -17,7 +17,7 @@ export default function Category({ categoryList, isChosen, setIsChosen, setPart,
         } catch (error) {
           console.error('Error fetching data: ', error);
         }
-      } else if (chosen === 'Vegitable' || chosen === 'Meat') {
+      } else if (chosen === 'Vegetable' || chosen === 'Meat') {
         try {
           const ingreAxios = await axios.get(`${process.env.REACT_APP_API_URL}/ingredient/${chosen}`, {params});
           setPart(ingreAxios.data)
