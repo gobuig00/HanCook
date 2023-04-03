@@ -20,5 +20,7 @@ public interface IngredientService {
 
     String searchById(Long id);
 
+    Long getIngredientIdByName(String name);
+
 
 }
