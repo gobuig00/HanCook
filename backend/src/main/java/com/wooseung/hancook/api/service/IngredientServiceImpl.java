@@ -1,9 +1,7 @@
 package com.wooseung.hancook.api.service;
 
 import com.wooseung.hancook.api.response.IngredientResponseDto;
-import com.wooseung.hancook.api.response.RecipeResponseDto;
 import com.wooseung.hancook.db.entity.Ingredient;
-import com.wooseung.hancook.db.entity.Recipe;
 import com.wooseung.hancook.db.repository.IngredientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,30 +18,6 @@ public class IngredientServiceImpl implements IngredientService {
 
     private final PapagoTranslationService papagoTranslationService;
 
-    static String english = "en";
-    static String korean = "ko";
-
-    // 문자열을 문자 단위로 검사하여 한글 문자 또는 영어 문자가 포함되어 있는지 확인
-    // 한글 : 0, 영어 : 1, 모두 포함 안되면 : -1
-    public static int detectLanguage(String input) {
-        boolean containsKorean = false;
-        boolean containsEnglish = false;
-
-        for (char ch : input.toCharArray()) {
-            if (Character.UnicodeBlock.of(ch) == Character.UnicodeBlock.HANGUL_SYLLABLES ||
-                    Character.UnicodeBlock.of(ch) == Character.UnicodeBlock.HANGUL_JAMO ||
-                    Character.UnicodeBlock.of(ch) == Character.UnicodeBlock.HANGUL_COMPATIBILITY_JAMO) {
-                containsKorean = true;
-            } else if (ch >= 'A' && ch <= 'Z' || ch >= 'a' && ch <= 'z') {
-                containsEnglish = true;
-            }
-        }
-
-        if (containsKorean) return 0;
-        else if (containsEnglish) return 1;
-        else return -1;
-    }
-
     @Override
     public List<IngredientResponseDto> getRandomIngredient(int lan) {
         // 랜덤 재료 정보 Entity List
@@ -58,7 +32,7 @@ public class IngredientServiceImpl implements IngredientService {
             // 영문일때
             if (lan == 1) {
                 // DB에 한글로 저장되어 있어 영어로 번역해서 response
-                ingredientResponseDto.setName(papagoTranslationService.translate(korean, english, ingredientEntity.getName()));
+                ingredientResponseDto.setName(papagoTranslationService.translateKoreanIntoEnglish(ingredientEntity.getName()));
             }
 
             // 반환할 DtoList에 현재 RecipeEntity를 Dto로 변환하여 추가
@@ -82,7 +56,7 @@ public class IngredientServiceImpl implements IngredientService {
             // 영문일때
             if (lan == 1) {
                 // DB에 한글로 저장되어 있어 영어로 번역해서 response
-                ingredientResponseDto.setName(papagoTranslationService.translate(korean, english, ingredientEntity.getName()));
+                ingredientResponseDto.setName(papagoTranslationService.translateKoreanIntoEnglish(ingredientEntity.getName()));
             }
 
             // 반환할 DtoList에 현재 RecipeEntity를 Dto로 변환하여 추가
@@ -106,7 +80,7 @@ public class IngredientServiceImpl implements IngredientService {
             // 영문일때
             if (lan == 1) {
                 // DB에 한글로 저장되어 있어 영어로 번역해서 response
-                ingredientResponseDto.setName(papagoTranslationService.translate(korean, english, ingredientEntity.getName()));
+                ingredientResponseDto.setName(papagoTranslationService.translateKoreanIntoEnglish(ingredientEntity.getName()));
             }
 
             // 반환할 DtoList에 현재 RecipeEntity를 Dto로 변환하여 추가
@@ -122,7 +96,7 @@ public class IngredientServiceImpl implements IngredientService {
 
         if (lan == 1) {
             for (String large : largeList) {
-                large = papagoTranslationService.translate(korean, english, large);
+                large = papagoTranslationService.translateKoreanIntoEnglish(large);
             }
         }
 
@@ -135,7 +109,7 @@ public class IngredientServiceImpl implements IngredientService {
 
         if (lan == 1) {
             for (String medium : mediumList) {
-                medium = papagoTranslationService.translate(korean, english, medium);
+                medium = papagoTranslationService.translateKoreanIntoEnglish(medium);
             }
         }
 
@@ -156,7 +130,7 @@ public class IngredientServiceImpl implements IngredientService {
 
         if (lan == 1) {
             for (String name : nameList) {
-                name = papagoTranslationService.translate(korean, english, name);
+                name = papagoTranslationService.translateKoreanIntoEnglish(name);
             }
         }
 

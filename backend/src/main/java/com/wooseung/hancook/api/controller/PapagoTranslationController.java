@@ -17,18 +17,14 @@ public class PapagoTranslationController {
     // 한국어 텍스트를 영어로 번역
     @GetMapping("/koreantoenglish")
     public ResponseEntity<String> translateKoreanToEnglish(@RequestParam("text") String text) {
-        String sourceLang = "ko";
-        String targetLang = "en";
-        String result = papagoTranslationService.translate(sourceLang, targetLang, text);
+        String result = papagoTranslationService.translateKoreanIntoEnglish(text);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     // 영어 텍스트를 한국어로 번역
     @GetMapping("/englishtokorean")
     public ResponseEntity<String> translateEnglishToKorean(@RequestParam("text") String text) {
-        String sourceLang = "en";
-        String targetLang = "ko";
-        String result = papagoTranslationService.translate(sourceLang, targetLang, text);
+        String result = papagoTranslationService.translateEnglishIntoKorean(text);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
