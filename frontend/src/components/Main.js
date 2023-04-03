@@ -222,9 +222,9 @@ function Main() {
               ))} */}
             </div>
             <div className='main-line-chart'>
-              <LineChart
+              {/* <LineChart
               
-              />
+              /> */}
             </div>
             
           </div>
