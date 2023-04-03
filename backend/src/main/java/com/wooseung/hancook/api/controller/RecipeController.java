@@ -4,7 +4,6 @@ import com.wooseung.hancook.api.response.ProcessResponseDto;
 import com.wooseung.hancook.api.response.RecipeResponseDto;
 import com.wooseung.hancook.api.service.RecipeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +25,7 @@ public class RecipeController {
     private final RecipeService recipeService;
 
     // 랜덤으로 레시피 3개 받아오기
-    @GetMapping("/random")
+    @GetMapping("/Popular")
     public ResponseEntity<List<RecipeResponseDto>> getRandomRecipe(@RequestParam("lan") int lan){
         List<RecipeResponseDto> recipeResponseDtoList = recipeService.getRandomRecipe(lan);
         return ResponseEntity.status(HttpStatus.OK).body(recipeResponseDtoList);

@@ -16,6 +16,7 @@ public class IngredientResponseDto {
     private String medium;
     private String name;
     private Long ref;
+    private String imageUrl;
 
     public static IngredientResponseDto of(Ingredient ingredientEntity) {
         IngredientResponseDto ingredientResponseDto = ModelMapperUtils.getModelMapper().map(ingredientEntity, IngredientResponseDto.class);
