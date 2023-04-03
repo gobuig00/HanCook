@@ -98,7 +98,6 @@ public class DealServiceImpl implements DealService {
         List<DealResponseDto> returnList = new ArrayList<>(); // 반환할 리스트
         List<Object[]> dealMaxList = dealRepository.findMax(today, sevenDaysAgo); // 7일전 부터 오늘까지 최대 증가율 3개 deal
 
-
         for(Object[] ob : dealMaxList){
             List<Deal> dealDateList = dealRepository.findDealsByMediumAndSmallAndOriginAndDateRange(String.valueOf(ob[0]),String.valueOf(ob[1]), String.valueOf(ob[2]),sevenDaysAgo, today); // medium, small, origin 이 같은 7일전까지의 데이터를 가져온다.
             returnList.addAll(dealDateList.stream().map(entity -> DealResponseDto.of(entity)).collect(Collectors.toList()));
