@@ -17,7 +17,6 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class DealController {
-    private static final Logger logger = LoggerFactory.getLogger(DealController.class);
     private final DealService dealService;
     private final IngredientService ingredientService;
     @GetMapping("/large")
@@ -62,29 +61,29 @@ public class DealController {
     }
 
     //최대 상승한 재료 3개, 최대 하락한 재료 3개
-    @GetMapping("/change")
-    public ResponseEntity<List<DealResponseDto>> getChange() {
-        // 오늘 날짜 가져오기
-        LocalDate today = LocalDate.now();
-
-        // 7일 전 날짜 계산하기
-        LocalDate sevenDaysAgo = today.minusDays(7);
-
-        // 날짜 형식 지정
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-
-        // LocalDate 객체를 문자열로 변환하여 저장
-        String todayString = today.format(formatter);
-        String sevenDaysAgoString = sevenDaysAgo.format(formatter);
-
-        List<DealResponseDto> dealDtoList = dealService.getChange(todayString, sevenDaysAgoString);
-
-        for(DealResponseDto dto: dealDtoList){
-            System.out.println(dto.getSmall());
-        }
-
-
-        return ResponseEntity.status(HttpStatus.OK).body(dealDtoList);
-    }
+//    @GetMapping("/change")
+//    public ResponseEntity<List<DealResponseDto>> getChange() {
+//        // 오늘 날짜 가져오기
+//        LocalDate today = LocalDate.now();
+//
+//        // 7일 전 날짜 계산하기
+//        LocalDate sevenDaysAgo = today.minusDays(7);
+//
+//        // 날짜 형식 지정
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+//
+//        // LocalDate 객체를 문자열로 변환하여 저장
+//        String todayString = today.format(formatter);
+//        String sevenDaysAgoString = sevenDaysAgo.format(formatter);
+//
+//        List<DealResponseDto> dealDtoList = dealService.getChange(todayString, sevenDaysAgoString);
+//
+//        for(DealResponseDto dto: dealDtoList){
+//            System.out.println(dto.getSmall());
+//        }
+//
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(dealDtoList);
+//    }
 
 }
