@@ -26,7 +26,10 @@ public class PapagoTranslationServiceImpl implements PapagoTranslationService {
 //    private static final String CLIENT_SECRET = "5rFX_BEBOm";
     private static final String API_URL = "https://openapi.naver.com/v1/papago/n2mt";
 
-    public String translate(String sourceLang, String targetLang, String text) {
+    public String translateKoreanIntoEnglish(String text) {
+        String sourceLang = "ko";
+        String targetLang = "en";
+
         try {
             text = URLEncoder.encode(text, "UTF-8");
         } catch (IOException e) {
@@ -44,6 +47,30 @@ public class PapagoTranslationServiceImpl implements PapagoTranslationService {
         // JSON 객체 파싱
         JSONObject jsonResponse = new JSONObject(responseBody);
         
+        return jsonResponse.getJSONObject("message").getJSONObject("result").getString("translatedText");
+    }
+
+    public String translateEnglishIntoKorean(String text) {
+        String sourceLang = "en";
+        String targetLang = "ko";
+
+        try {
+            text = URLEncoder.encode(text, "UTF-8");
+        } catch (IOException e) {
+            throw new RuntimeException("인코딩 실패", e);
+        }
+
+        Map<String, String> requestHeaders = new HashMap<>();
+        requestHeaders.put("X-Naver-Client-Id", CLIENT_ID);
+        requestHeaders.put("X-Naver-Client-Secret", CLIENT_SECRET);
+
+        String postParams = "source=" + sourceLang + "&target=" + targetLang + "&text=" + text;
+
+        String responseBody = post(API_URL, requestHeaders, postParams);
+
+        // JSON 객체 파싱
+        JSONObject jsonResponse = new JSONObject(responseBody);
+
         return jsonResponse.getJSONObject("message").getJSONObject("result").getString("translatedText");
     }
 

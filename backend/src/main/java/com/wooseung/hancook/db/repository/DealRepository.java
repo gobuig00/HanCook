@@ -26,13 +26,20 @@ public interface DealRepository extends JpaRepository<Deal, Long> {
     @Query(value = "SELECT DISTINCT d.deal_date FROM deal d WHERE d.small = :name  ORDER BY d.deal_date DESC LIMIT 7", nativeQuery = true)
     List<String> findDealDateLimit7(String name);
 
-    @Query(value = "SELECT * FROM deal d ORDER BY ((select d.price from deal d where d.deal_date = :today) - (select d.price from deal d where d.deal_date = :sevenDaysAgo))/(select d.price from deal d where d.deal_date = :sevenDaysAgo) * 100 DESC LIMIT 3", nativeQuery = true)
-    List<Deal> findMax(String today, String sevenDaysAgo);
+    @Query(value = "SELECT t1.medium, t1.small, t1.origin, MIN(t1.price) as min_price, MAX(t2.price) as max_price, ((MAX(t2.price) - MIN(t1.price)) / MIN(t1.price) * 100) as price_difference_percentage FROM (SELECT * FROM deal WHERE deal_date = :sevenDaysAgo) AS t1 JOIN (SELECT * FROM deal WHERE deal_date = :today) AS t2 ON t1.large = t2.large AND t1.medium = t2.medium AND t1.small = t2.small AND t1.origin = t2.origin GROUP BY t1.large, t1.medium, t1.small, t1.origin ORDER BY price_difference_percentage DESC LIMIT 3", nativeQuery = true)
+    List<Object[]> findMax(String today, String sevenDaysAgo);
 
-    @Query(value = "SELECT * FROM deal d ORDER BY ((select d.price from deal d where d.deal_date = :today) - (select d.price from deal d where d.deal_date = :sevenDaysAgo))/(select d.price from deal d where d.deal_date = :sevenDaysAgo) * 100 ASC LIMIT 3", nativeQuery = true)
-    List<Deal> findMin(@Param("today") String today, @Param("sevenDaysAgo") String sevenDaysAgo);
+    @Query(value = "SELECT d FROM Deal d WHERE d.medium = :medium AND d.small = :small AND d.origin = :origin AND d.dealDate BETWEEN :startDate AND :endDate order by ASC", nativeQuery = true)
+    List<Deal> findDealsByMediumAndSmallAndOriginAndDateRange(String medium, String small, String origin, String startDate, String endDate);
+
+
+    @Query(value = "SELECT t1.medium, t1.small, t1.origin, MIN(t1.price) as min_price, MAX(t2.price) as max_price, ((MAX(t2.price) - MIN(t1.price)) / MIN(t1.price) * 100) as price_difference_percentage FROM (SELECT * FROM deal WHERE deal_date = :sevenDaysAgo) AS t1 JOIN (SELECT * FROM deal WHERE deal_date = :today) AS t2 ON t1.large = t2.large AND t1.medium = t2.medium AND t1.small = t2.small AND t1.origin = t2.origin GROUP BY t1.large, t1.medium, t1.small, t1.origin ORDER BY price_difference_percentage ASC LIMIT 3", nativeQuery = true)
+    List<Object[]> findMin(String today, String sevenDaysAgo);
 
     List<Deal> findByLargeAndMediumAndSmallAndOriginAndDealDate(String large, String medium, String small, String origin, String dealDate);
 
     List<Deal> findBySmallAndDealDate(String medium, String dealDate);
+
+
+
 }
