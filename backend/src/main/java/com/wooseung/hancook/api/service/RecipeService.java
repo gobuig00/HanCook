@@ -6,6 +6,7 @@ import com.wooseung.hancook.api.response.ProcessResponseDto;
 import com.wooseung.hancook.api.response.RecipeResponseDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RecipeService {
     List<RecipeResponseDto> getRandomRecipe(int lan);
@@ -19,4 +20,6 @@ public interface RecipeService {
     List<ComponentResponseDto> getIngredientByRecipeId(Long recipeId, int lan);
 
     List<ProcessResponseDto> getProcessByRecipeId(Long recipeId, int lan);
+
+    int searchName(String name);
 }
