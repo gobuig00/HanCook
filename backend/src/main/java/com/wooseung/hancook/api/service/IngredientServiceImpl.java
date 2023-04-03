@@ -140,7 +140,6 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public int searchName(String name) {
         Optional<Ingredient> ingredient = ingredientRepository.findIngredientByName(name);
-
         if (ingredient.isPresent()) return 1;
         else return 0;
     }
