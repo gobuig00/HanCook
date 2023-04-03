@@ -122,13 +122,12 @@ public class DealServiceImpl implements DealService {
         for (Object[] deal : dealMinList) {
             DealCheapResponseDto dealCheapResponseDto = new DealCheapResponseDto(String.valueOf(deal[0]), String.valueOf(deal[1]), String.valueOf(deal[2]));
             if (lan == 1) {
-
-
+                dealCheapResponseDto.setMedium(papagoTranslationService.translateKoreanIntoEnglish(dealCheapResponseDto.getMedium()));
+                dealCheapResponseDto.setSmall(papagoTranslationService.translateKoreanIntoEnglish(dealCheapResponseDto.getSmall()));
             }
             returnList.add(dealCheapResponseDto);
         }
         return returnList;
     }
-
 
 }

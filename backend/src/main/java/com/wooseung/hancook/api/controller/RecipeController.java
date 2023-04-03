@@ -26,7 +26,7 @@ public class RecipeController {
     private final RecipeService recipeService;
 
     // 랜덤으로 레시피 3개 받아오기
-    @GetMapping("/random")
+    @GetMapping("/Popular")
     public ResponseEntity<List<RecipeResponseDto>> getRandomRecipe(@RequestParam("lan") int lan){
         List<RecipeResponseDto> recipeResponseDtoList = recipeService.getRandomRecipe(lan);
         return ResponseEntity.status(HttpStatus.OK).body(recipeResponseDtoList);
