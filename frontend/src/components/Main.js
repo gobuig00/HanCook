@@ -29,6 +29,7 @@ function Main() {
   const [ingredientChosen, setIngredientChosen] = useState('Popular'); // 카테고리 변경시 필요한 것
   const [ingreDish, setIngreDish] = useState([]);
   const [priceChange, setPriceChange] = useState([]);
+  const [priceChart, setPriceChart] = useState([]);
   const defaultImage = ingreDefaultImage;
 
   useEffect( () => {
@@ -52,11 +53,13 @@ function Main() {
       setIngredients(ingreAxios.data)
       const priceChangeAxios = await axios.get(`${process.env.REACT_APP_API_URL}/deal/change`);
       setPriceChange(priceChangeAxios.data)
-
+      const priceChartAxios = await axios.get(`${process.env.REACT_APP_API_URL}/deal/detail`, { id: '1' })
+      setPriceChart(priceChartAxios.data)
       //console
-      console.log(dishAxios.data)
-      console.log(ingreAxios.data)
+      // console.log(dishAxios.data)
+      // console.log(ingreAxios.data)
       // console.log(priceChangeAxios.data)
+      console.log(priceChartAxios.data)
 
       try {
         const params = {
@@ -128,6 +131,7 @@ function Main() {
             </Carousel>
           </div>
         </div>
+
         <div className='main-article'>
           <div className='main-dish'>
             <h1 className='main-title'>Dish</h1>
@@ -217,8 +221,10 @@ function Main() {
                 />
               ))} */}
             </div>
-            <div className='main-chart-part'>
-              <LineChart/>
+            <div className='main-line-chart'>
+              <LineChart
+              
+              />
             </div>
             
           </div>

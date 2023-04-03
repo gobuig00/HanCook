@@ -30,7 +30,7 @@ export const options = {
 				size: 30, // 제목 글씨 크기 변경
 				family: 'bold', // 제목 폰트 변경
 			},
-			color: 'black',
+			color: '#4d820e',
 		},
 		tooltip: {
 			callbacks: {
@@ -95,6 +95,8 @@ export const options = {
 	},
 }
 
-export default function LineChart() {
-  return <Line data={data} options={options} />;
+export default function LineChart(date, ) {
+	const dateRange = ['January', 'February', 'March', 'April', 'May', 'June']
+	const price = [1000, 1050, 1032, 1020, 1015, 1030]
+  	return <Line data={data} options={options} />;
 }
