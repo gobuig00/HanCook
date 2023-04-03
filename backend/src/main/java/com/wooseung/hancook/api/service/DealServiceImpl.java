@@ -19,7 +19,6 @@ public class DealServiceImpl implements DealService {
 
     private final DealRepository dealRepository;
 
-    private final DetectLanguageService detectLanguageService;
     private final PapagoTranslationService papagoTranslationService;
 
     static String english = "en";
