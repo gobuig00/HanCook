@@ -17,6 +17,19 @@ root.render(
 );
 }
 
+const globalErrorHandler = window.onerror;
+window.onerror = (message, source, lineno, colno, error) => {
+  if (message === 'ResizeObserver loop limit exceeded') {
+    return false;
+  }
+  if (globalErrorHandler) {
+    return globalErrorHandler(message, source, lineno, colno, error);
+  }
+  return false;
+};
+
+
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

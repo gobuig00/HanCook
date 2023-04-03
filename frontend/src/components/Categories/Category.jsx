@@ -9,20 +9,28 @@ export default function Category({ categoryList, isChosen, setIsChosen, setPart,
     const params = {
       lan: 0,
     };
-    if (usedPart==="mainDish"){
-      try {
-        
-        const dishAxios = await axios.get(`http://localhost:8080/recipe/${chosen}`, {params});
-        setPart(dishAxios.data)
-      } catch (error) {
-        console.error('Error fetching data: ', error);
-      }
-    } else if (usedPart==="mainIngredient"){
-      try {
-        const ingreAxios = await axios.get(`http://localhost:8080/component/${chosen}`, {params});
-        setPart(ingreAxios.data)
-      } catch (error) {
-        console.error('Error fetching data: ', error);
+    if (usedPart==="mainIngredient"){
+      if (chosen === 'Cheap') {
+        try {
+          const ingreAxios = await axios.get(`${process.env.REACT_APP_API_URL}/deal/${chosen}`, {params});
+          setPart(ingreAxios.data)
+        } catch (error) {
+          console.error('Error fetching data: ', error);
+        }
+      } else if (chosen === 'Vegitable' || chosen === 'Meat') {
+        try {
+          const ingreAxios = await axios.get(`${process.env.REACT_APP_API_URL}/ingredient/${chosen}`, {params});
+          setPart(ingreAxios.data)
+        } catch (error) {
+          console.error('Error fetching data: ', error);
+        }
+      } else {
+        try {
+          const ingreAxios = await axios.get(`${process.env.REACT_APP_API_URL}/component/${chosen}`, {params});
+          setPart(ingreAxios.data)
+        } catch (error) {
+          console.error('Error fetching data: ', error);
+        }
       }
     }
   };
