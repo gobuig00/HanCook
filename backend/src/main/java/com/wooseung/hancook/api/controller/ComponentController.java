@@ -21,7 +21,7 @@ public class ComponentController {
 
     private final ComponentService componentService;
 
-    @GetMapping("/random")
+    @GetMapping("/Popular")
     public ResponseEntity<List<ComponentResponseDto>> getRandomIngredient(@RequestParam("lan") int lan) {
         List<ComponentResponseDto> componentResponseDtoList = componentService.getRandomComponent(lan);
         return ResponseEntity.status(HttpStatus.OK).body(componentResponseDtoList);

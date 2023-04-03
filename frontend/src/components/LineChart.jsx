@@ -48,7 +48,7 @@ export const options = {
 				size: 30, // 제목 글씨 크기 변경
 				family: 'bold', // 제목 폰트 변경
 			},
-			color: 'black',
+			color: '#4d820e',
 		},
 		tooltip: {
 			callbacks: {
