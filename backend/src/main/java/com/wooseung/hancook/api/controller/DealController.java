@@ -103,7 +103,8 @@ public class DealController {
         String yesterdayString = yesterday.format(formatter);
         String sevenDaysAgoString = sevenDaysAgo.format(formatter);
 
-        List<DealCheapResponseDto> dealCheapDtoList = dealService.getCheap(yesterdayString, sevenDaysAgoString, lan);
+//        List<DealCheapResponseDto> dealCheapDtoList = dealService.getCheap(yesterdayString, sevenDaysAgoString, lan);
+        List<DealCheapResponseDto> dealCheapDtoList = dealService.getCheap("20230317", "20230314", lan);
 
         return ResponseEntity.status(HttpStatus.OK).body(dealCheapDtoList);
     }
