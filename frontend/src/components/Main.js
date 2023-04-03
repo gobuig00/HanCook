@@ -47,9 +47,9 @@ function Main() {
       const params = {
         lan: 0,
       };
-      const dishAxios = await axios.get(`${process.env.REACT_APP_API_URL}/recipe/random`, {params});
+      const dishAxios = await axios.get(`${process.env.REACT_APP_API_URL}/recipe/Popular`, {params});
       setDish(dishAxios.data)
-      const ingreAxios = await axios.get(`${process.env.REACT_APP_API_URL}/component/random`, {params});
+      const ingreAxios = await axios.get(`${process.env.REACT_APP_API_URL}/component/Popular`, {params});
       setIngredients(ingreAxios.data)
       setIngreName(ingreAxios.data[0].name)
       // const priceChangeAxios = await axios.get(`${process.env.REACT_APP_API_URL}/deal/change`);
@@ -159,7 +159,7 @@ function Main() {
           <div className='main-ingredient'>
             <h1 className='main-title'>Ingredient</h1>
             <Category
-              categoryList={['Popular','Vegitable', 'Meat', 'Cheap']}
+              categoryList={['Popular','Vegetable', 'Meat', 'Cheap']}
               isChosen={ingredientChosen}
               setIsChosen={setIngredientChosen}
               setPart={setIngredients}
