@@ -17,6 +17,7 @@ import logo from '../images/logo.png';
 import mainImage1 from '../images/mainImage1.png';
 import mainImage2 from '../images/mainImage2.png';
 import mainImage3 from '../images/mainImage3.png';
+import ingreDefaultImage from '../images/ingreDefaultImage.png';
 
 function Main() {
   const navigate = useNavigate();
@@ -26,14 +27,15 @@ function Main() {
   const [dishChosen, setDishChosen] = useState('Popular'); // 카테고리 변경시 필요한 것
   const [ingredients, setIngredients] = useState([]); // 카테고리 변경시 필요한 것
   const [ingredientChosen, setIngredientChosen] = useState('Popular'); // 카테고리 변경시 필요한 것
-  const [ingreDish, setIngreDish] = useState([])
-  const [priceChange, setPriceChange] = useState([])
+  const [ingreDish, setIngreDish] = useState([]);
+  const [priceChange, setPriceChange] = useState([]);
+  const defaultImage = ingreDefaultImage;
 
   useEffect( () => {
     // 로그인 확인
     const token = localStorage.getItem('hancook-token');
     if (!token) {
-      navigate('/login')
+      navigate('/login');
     }
     // 통신
     fetchData();
@@ -52,9 +54,9 @@ function Main() {
       setPriceChange(priceChangeAxios.data)
 
       //console
-      // console.log(dishAxios.data)
-      // console.log(ingreAxios.data)
-      console.log(priceChangeAxios)
+      console.log(dishAxios.data)
+      console.log(ingreAxios.data)
+      // console.log(priceChangeAxios.data)
 
       try {
         const params = {
@@ -63,7 +65,7 @@ function Main() {
         }
         const ingreDishAxios = await axios.get(`${process.env.REACT_APP_API_URL}/recipe/ingredient`,{params});
         setIngreDish(ingreDishAxios.data.slice(0, 4))
-        // console.log(ingreDishAxios.data)
+        console.log(ingreDishAxios.data)
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
@@ -166,7 +168,7 @@ function Main() {
                 <Card
                   key={index}
                   cardName={ingredientItem.name}
-                  cardImage={ingredientItem.ingredientImage}
+                  cardImage={ingredientItem.ingredientImage || defaultImage}
                   usedPart='ingredient'
                   size='small'
                   onClick={() => fetchIngreDish(ingredientItem.name)}
