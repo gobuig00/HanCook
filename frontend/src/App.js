@@ -29,6 +29,7 @@ function App() {
       <Route path='/camera' element={<Camera />} />
       <Route path='/cart' element={<Cart />} />
       <Route path="/image/:imageUrl" element={<ImagePage />} />
+      <Route path="/search/:ingredient" element={<Search />} />
     </Routes>
   );
 }

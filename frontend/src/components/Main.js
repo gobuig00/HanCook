@@ -24,12 +24,12 @@ function Main() {
 
   // 초기데이터 구성하는데 필요한 것
   const [dish, setDish] = useState([]); // 카테고리 변경시 필요한 것
-  const [dishChosen, setDishChosen] = useState('Popular'); // 카테고리 변경시 필요한 것
   const [ingredients, setIngredients] = useState([]); // 카테고리 변경시 필요한 것
   const [ingredientChosen, setIngredientChosen] = useState('Popular'); // 카테고리 변경시 필요한 것
   const [ingreDish, setIngreDish] = useState([]);
+  const [ingreName, setIngreName] = useState('');
   const [priceChange, setPriceChange] = useState([]);
-  const [priceChart, setPriceChart] = useState([]);
+  const [priceChart, setPriceChart] = useState();
   const defaultImage = ingreDefaultImage;
 
   useEffect( () => {
@@ -51,15 +51,16 @@ function Main() {
       setDish(dishAxios.data)
       const ingreAxios = await axios.get(`${process.env.REACT_APP_API_URL}/component/random`, {params});
       setIngredients(ingreAxios.data)
-      const priceChangeAxios = await axios.get(`${process.env.REACT_APP_API_URL}/deal/change`);
-      setPriceChange(priceChangeAxios.data)
-      const priceChartAxios = await axios.get(`${process.env.REACT_APP_API_URL}/deal/detail`, { id: '1' })
-      setPriceChart(priceChartAxios.data)
+      setIngreName(ingreAxios.data[0].name)
+      // const priceChangeAxios = await axios.get(`${process.env.REACT_APP_API_URL}/deal/change`);
+      // setPriceChange(priceChangeAxios.data)
+      // const priceChartAxios = await axios.get(`${process.env.REACT_APP_API_URL}/deal/detail`, { id: '1' })
+      // setPriceChart(priceChartAxios.data)
       //console
       // console.log(dishAxios.data)
-      // console.log(ingreAxios.data)
+      console.log(ingreAxios.data)
       // console.log(priceChangeAxios.data)
-      console.log(priceChartAxios.data)
+      // console.log(priceChartAxios.data)
 
       try {
         const params = {
@@ -68,7 +69,7 @@ function Main() {
         }
         const ingreDishAxios = await axios.get(`${process.env.REACT_APP_API_URL}/recipe/ingredient`,{params});
         setIngreDish(ingreDishAxios.data.slice(0, 4))
-        console.log(ingreDishAxios.data)
+        // console.log(ingreDishAxios.data)
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
@@ -77,10 +78,9 @@ function Main() {
       console.error('Error fetching data: ', error);
     }
   };
-  const moveToRecipe = (recipeId) => {
-    navigate(`/dish/${recipeId}`)
-  }
+  
   const fetchIngreDish = async (ingredientName) => {
+    setIngreName(ingredientName)
     try {
       const params = {
         ingredient: ingredientName,
@@ -92,6 +92,13 @@ function Main() {
     } catch (error) {
       console.error('Error fetching data: ', error);
     }
+  };
+
+  const moveToRecipe = (recipeId) => {
+    navigate(`/dish/${recipeId}`)
+  }
+  const moveToSearch = () => {
+    navigate(`/search/${ingreName}`);
   };
 
   return (
@@ -135,15 +142,6 @@ function Main() {
         <div className='main-article'>
           <div className='main-dish'>
             <h1 className='main-title'>Dish</h1>
-
-            <Category
-              categoryList={['Popular','Vegitable', 'Cheap']}
-              isChosen={dishChosen}
-              setIsChosen={setDishChosen}
-              setPart={setDish}
-              usedPart='mainDish'
-            />
-
             <div className='dish-cards'>
                 {dish.map((dishItem, index) => (
                   <Card
@@ -161,7 +159,7 @@ function Main() {
           <div className='main-ingredient'>
             <h1 className='main-title'>Ingredient</h1>
             <Category
-              categoryList={['Popular','Vegitable', 'Cheap']}
+              categoryList={['Popular','Vegitable', 'Meat', 'Cheap']}
               isChosen={ingredientChosen}
               setIsChosen={setIngredientChosen}
               setPart={setIngredients}
@@ -192,7 +190,7 @@ function Main() {
                 />
               ))}
             </div>
-            <Button className="more-button">more</Button>
+            <Button className="more-button" onClick={moveToSearch}>more</Button>
           </div>
           <hr/>
           <div className='main-price'>
@@ -222,9 +220,10 @@ function Main() {
               ))} */}
             </div>
             <div className='main-line-chart'>
-              {/* <LineChart
-              
-              /> */}
+              {priceChart ? (
+                <LineChart priceData={priceChart}/>
+              ) : ('Loading...')
+              }
             </div>
             
           </div>
