@@ -14,6 +14,7 @@ export default function Category({ categoryList, isChosen, setIsChosen, setPart,
         try {
           const ingreAxios = await axios.get(`${process.env.REACT_APP_API_URL}/deal/${chosen}`, {params});
           setPart(ingreAxios.data)
+          console.log(ingreAxios.data)
         } catch (error) {
           console.error('Error fetching data: ', error);
         }
