@@ -74,7 +74,7 @@
 }
 
 .main-increased-part p, .main-decreased-part p {
-    margin: 0;
+    margin: 3vh 0 0 0;
     font-family: "semibold";
     color: #4d820e;
 }

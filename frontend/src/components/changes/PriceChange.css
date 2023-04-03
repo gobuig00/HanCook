@@ -1,10 +1,64 @@
-.material-symbols-outlined {
-  font-variation-settings:
-  'FILL' 1,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 48
+.price-change-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 5px solid #F1F7EB;
+  border-radius: 5px;
+  padding: 2vw;
+  margin: 3vw 0;
+  width: 100%;
+  
 }
-.material-symbols-outlined .decreased {
-  transform: rotate(180deg);
+.left, .middle, .right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "semibold";
+  color: #4d820e;
+  width: 30%;
+}
+
+.middle .prev-price{
+  font-family: "semibold";
+  color: black;
+  text-decoration: line-through;
+}
+.middle .material-icons {
+  color: black
+}
+
+.right {
+  width: 30%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.red-triangle{
+  background-image: url('../../icons/redTri.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 9vw; /* 이미지 너비에 맞게 조절해 주세요 */
+  height: 6vw; /* 이미지 높이에 맞게 조절해 주세요 */
+  display: inline-block;
+  margin-right: 2vw;
+}
+
+.blue-triangle{
+  background-image: url('../../icons/blueTri.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  width: 6vw; /* 이미지 너비에 맞게 조절해 주세요 */
+  height: 6vw; /* 이미지 높이에 맞게 조절해 주세요 */
+  display: inline-block;
+  margin-right: 2vw;
+}
+.red-percentage{
+  color: red;
+  font-family: "bold";
+}
+.blue-percentage{
+  color: blue;
+  font-family: "bold";
 }
