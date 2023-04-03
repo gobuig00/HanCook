@@ -24,6 +24,7 @@ public class Ingredient {
 
     private String medium;
 
+    @Column(name = "image_url")
     private String imageUrl;
 
     @Column(nullable = false)

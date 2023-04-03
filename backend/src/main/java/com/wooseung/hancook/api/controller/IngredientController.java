@@ -17,19 +17,19 @@ public class IngredientController {
 
     private final IngredientService ingredientService;
 
-    @GetMapping("/random")
-    public ResponseEntity<List<IngredientResponseDto>> getRandomIngredient(@RequestParam("lan") int lan) {
-        List<IngredientResponseDto> ingredientResponseDtoList = ingredientService.getRandomIngredient(lan);
-        return ResponseEntity.status(HttpStatus.OK).body(ingredientResponseDtoList);
-    }
+//    @GetMapping("/Popular")
+//    public ResponseEntity<List<IngredientResponseDto>> getRandomIngredient(@RequestParam("lan") int lan) {
+//        List<IngredientResponseDto> ingredientResponseDtoList = ingredientService.getRandomIngredient(lan);
+//        return ResponseEntity.status(HttpStatus.OK).body(ingredientResponseDtoList);
+//    }
 
-    @GetMapping("/random/meat")
+    @GetMapping("/Meat")
     public ResponseEntity<List<IngredientResponseDto>> getRandomMeatIngredient(@RequestParam("lan") int lan) {
         List<IngredientResponseDto> ingredientResponseDtoList = ingredientService.getRandomMeatIngredient(lan);
         return ResponseEntity.status(HttpStatus.OK).body(ingredientResponseDtoList);
     }
 
-    @GetMapping("/random/veg")
+    @GetMapping("/Vegetable")
     public ResponseEntity<List<IngredientResponseDto>> getRandomVegetableIngredient(@RequestParam("lan") int lan) {
         List<IngredientResponseDto> ingredientResponseDtoList = ingredientService.getRandomVegetableIngredient(lan);
         return ResponseEntity.status(HttpStatus.OK).body(ingredientResponseDtoList);
