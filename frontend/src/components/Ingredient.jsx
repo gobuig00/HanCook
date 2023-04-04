@@ -28,13 +28,15 @@ function useIngredientPrice() {
   return data;
 }
 
-function useRelatedFoodAPI() {
-  const params = {
-    ingredient: '양파',
-    lan: 0,
-  };
+function useRelatedFoodAPI(cardData) {
   const [data, setData] = useState(null);
+  
   useEffect(() => {
+    if (cardData) {
+      const params = {
+        ingredient: cardData.name,
+        lan: 1,
+    };
     axios.get(`${process.env.REACT_APP_API_URL}/recipe/ingredient`, { params })
     .then(function (response) {
       setData(response.data.slice(0, 3));
@@ -42,7 +44,8 @@ function useRelatedFoodAPI() {
     .catch(function (err) {
       console.log(err);
     });
-  }, []);
+    }
+  }, [cardData]);
   return data;
 }
 
@@ -54,6 +57,23 @@ const useMoveDish = () => {
   return handleMoveDish;
 };
 
+const useCardData = () => {
+  const params = {
+    ingredientId: useParams().id,
+    lan: 0,
+  };
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_API_URL}/ingredient/card`, { params })
+    .then(function (response) {
+      setData(response.data);
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+  }, []);
+  return data;
+}
 
 function Ingredient() {
   const navigate = useNavigate();
@@ -65,9 +85,11 @@ function Ingredient() {
     }
   }, [navigate]);
 
+  const cardData = useCardData();
   const handleMoveDish = useMoveDish();
   const priceData = useIngredientPrice();
-  const data = useRelatedFoodAPI();
+  const data = useRelatedFoodAPI(cardData);
+
   return (
     <div className='background-green'>
       <header>
@@ -77,11 +99,16 @@ function Ingredient() {
       </header>
       <main>
         <div className='ingredient-container'>
-          <img src={Img} alt="" className='ingredient-image' />
-          <div>
-            <img src={AddShoppingCart} alt="" className='add-shopping-cart-icon'/>
-            <div className='ingredient-text'><span className='ingredient-name'>Apple</span><br /><span className='ingredient-pronunciation'>(sa-gwa)</span></div>
-          </div>
+        {cardData ? (
+          <>
+            <img src={cardData.imageUrl} alt="" className='ingredient-image' />
+            <div>
+              <img src={AddShoppingCart} alt="" className='add-shopping-cart-icon'/>
+              <div className='ingredient-text'><span className='ingredient-name'>{cardData.engName}</span><br /><span className='ingredient-pronunciation'>{cardData.pronunciation}</span></div>
+            </div>
+          </>
+        ) : ('Loading...')
+        }
         </div>
         {/* <Donut /> */}
         {/* <Table /> */}

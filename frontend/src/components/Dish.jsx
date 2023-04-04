@@ -30,7 +30,7 @@ export function Youtube(props) {
 function useRecipeAPI() {
   const params = {
     recipeId: useParams().id,
-    lan: 0,
+    lan: 1,
   };
   const [data, setData] = useState(null);
   const [nutrient, setNutrient] = useState(null);
@@ -38,6 +38,7 @@ function useRecipeAPI() {
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_API_URL}/recipe/id`, { params })
     .then(function (response) {
+      console.log(response.data)
       setData(response.data);
     })
     .catch(function (err) {
@@ -244,7 +245,7 @@ function Dish() {
             </div>
             <Table body={result[1] ? result[1].other : []} head={['nutrients', 'amount@(% daily value)', 'per 100g']}/>
           </>
-        ) : ('영양 정보 데이터가 없습니다.')}
+        ) : ('No nutritional information data.')}
         <div className='green-line'></div>
         <div className='related-food-text'>Recipe</div>
         <br />
