@@ -12,7 +12,6 @@ public class DealCheapResponseDto {
     private String small;
     private String origin;
 
-
     public static DealCheapResponseDto of(Object[] ob){
          DealCheapResponseDto dealCheapResponseDto = new DealCheapResponseDto(String.valueOf(ob[0]), String.valueOf(ob[1]), String.valueOf(ob[2]));
          return dealCheapResponseDto;
