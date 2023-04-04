@@ -22,5 +22,7 @@ public interface IngredientService {
 
     Long getIngredientIdByName(String name);
 
+    IngredientResponseDto getIngredientByIngredientId(Long ingredientId, int lan);
+
 
 }

@@ -1,7 +1,5 @@
 import React from 'react';
 import './PriceChange.css';
-import blueTri from '../../icons/blueTri.png';
-import redTri from '../../icons/redTri.png';
 
 export default function PriceChange({ product, prevPrice, curPrice, percentage, isIncreased, onClick }) {
     const strPercentage = `${percentage}%`
