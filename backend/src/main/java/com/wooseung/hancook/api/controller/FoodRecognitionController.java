@@ -47,18 +47,18 @@ public class FoodRecognitionController {
         // 재료 테이블에 이름이 있는지 체크
         int ingredientResult = ingredientService.searchName(name);
 
-        // 둘 다 있다면 레시피로 리턴
-        if (recipeResult == 1 && ingredientResult == 1) {
-            checkFlag = 1;
-            id = ingredientService.getIngredientIdByName(name);
-        }
-        // 레시피 테이블에 이름이 있다면 음식으로 취급 result = 1
-        else if (recipeResult == 1) {
+        // 레시피 테이블에만 이름이 있다면 재료로 취급 result = 1
+        if (recipeResult == 1 && ingredientResult == 0) {
             checkFlag = 1;
             id = recipeService.getRecipeIdByName(name);
         }
-        // 재료 테이블에 이름이 있다면 result = 2
-        else if (ingredientResult == 1) {
+        // 재료 테이블에만 이름이 있다면 result = 2
+        else if (recipeResult == 0 && ingredientResult == 1) {
+            checkFlag = 2;
+            id = ingredientService.getIngredientIdByName(name);
+        }
+        // 둘 다 있다면 재료로 리턴
+        else if (recipeResult == 1 && ingredientResult == 1) {
             checkFlag = 2;
             id = ingredientService.getIngredientIdByName(name);
         }
