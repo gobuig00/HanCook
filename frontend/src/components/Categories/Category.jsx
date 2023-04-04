@@ -14,8 +14,6 @@ export default function Category({ categoryList, isChosen, setIsChosen, setPart,
         try {
           const getCheapAxios = await axios.get(`${process.env.REACT_APP_API_URL}/deal/${chosen}`, {params});
           const nameList = getCheapAxios.data.map(item => item.small);
-          console.log("cheap : ", getCheapAxios.data)
-          console.log("nameList: ", nameList)
           
           try {
             // 쿼리 스트링 직접 생성하기
@@ -24,7 +22,6 @@ export default function Category({ categoryList, isChosen, setIsChosen, setPart,
               headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
             });
             setPart(ingreAxios.data)
-            console.log("cheapIngre : ", getCheapAxios.data)
           } catch(error) {
             console.error('Error cheapIngre data: ', error);
           }
@@ -36,7 +33,6 @@ export default function Category({ categoryList, isChosen, setIsChosen, setPart,
         try {
           const ingreAxios = await axios.get(`${process.env.REACT_APP_API_URL}/ingredient/${chosen}`, {params});
           setPart(ingreAxios.data)
-          console.log("vegi meat pop : ", ingreAxios.data)
         } catch (error) {
           console.error('Error VegiMeatPop data: ', error);
         }

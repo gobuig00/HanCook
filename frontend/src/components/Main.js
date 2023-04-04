@@ -57,12 +57,6 @@ function Main() {
       setPriceChange(groupDataBySmall(priceChangeAxios.data))
       const firstPriceChosen = groupDataBySmall(priceChangeAxios.data)[0];
       setPriceChosen(firstPriceChosen);
-      console.log('priceChosen:', firstPriceChosen);
-      
-      //console
-      // console.log(dishAxios.data)
-      console.log("재료 : ", ingreAxios.data)
-      console.log('정제된 priceChange : ',groupDataBySmall(priceChangeAxios.data))
       
       try {
         const params = {
@@ -71,7 +65,7 @@ function Main() {
         }
         const ingreDishAxios = await axios.get(`${process.env.REACT_APP_API_URL}/recipe/ingredient`,{params});
         setIngreDish(ingreDishAxios.data.slice(0, 4))
-        // console.log(ingreDishAxios.data)
+        
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
@@ -101,7 +95,7 @@ function Main() {
       };
       const ingreDishAxios = await axios.get(`${process.env.REACT_APP_API_URL}/recipe/ingredient`, { params });
       setIngreDish(ingreDishAxios.data.slice(0, 4));
-      console.log(ingreDishAxios.data);
+      
     } catch (error) {
       console.error('Error fetching data: ', error);
     }
