@@ -56,6 +56,13 @@ public class IngredientController {
         return ResponseEntity.status(HttpStatus.OK).body(nameList);
     }
 
+    // id 입력받아 재료 정보 반환
+    @GetMapping("/id")
+    public ResponseEntity<IngredientResponseDto> getIngredientById(@RequestParam("ingredientId") Long ingredientId, @RequestParam("lan") int lan) {
+        IngredientResponseDto ingredientResponseDto = ingredientService.getIngredientByIngredientId(ingredientId, lan);
+        return ResponseEntity.status(HttpStatus.OK).body(ingredientResponseDto);
+    }
+
     // 재료명 입력받아 재료가 재료 목록에 있으면 1, 없으면 0 반환
     @GetMapping
     public ResponseEntity<Integer> searchName(@RequestParam("keyword") String keyword) {
