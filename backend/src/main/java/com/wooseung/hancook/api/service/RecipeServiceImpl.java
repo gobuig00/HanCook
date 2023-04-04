@@ -2,6 +2,7 @@ package com.wooseung.hancook.api.service;
 
 import com.wooseung.hancook.api.response.ComponentResponseDto;
 import com.wooseung.hancook.api.response.ProcessResponseDto;
+import com.wooseung.hancook.api.response.RecipeCardResponseDto;
 import com.wooseung.hancook.api.response.RecipeResponseDto;
 import com.wooseung.hancook.db.entity.Component;
 import com.wooseung.hancook.db.entity.Ingredient;
@@ -31,6 +32,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     private final PapagoTranslationService papagoTranslationService;
     private final DetectLanguageService detectLanguageService;
+    private final PronunciationService pronunciationService;
 
     // lan : (한글 : 0) / (영문 : 1)
     @Override
@@ -72,6 +74,25 @@ public class RecipeServiceImpl implements RecipeService {
         }
 
         return recipeResponseDto;
+    }
+
+    // lan : (한글 : 0) / (영문 : 1)
+    @Override
+    public RecipeCardResponseDto getRecipeCardById(Long recipeId, int lan) {
+        Recipe recipeEntity = recipeRepository.getReferenceById(recipeId);
+        RecipeCardResponseDto recipeCardResponseDto = RecipeCardResponseDto.of(recipeEntity);
+
+
+        // 영문일때
+        if (lan == 1) {
+            // DB에 한글로 저장되어 있어 영어로 번역해서 response
+            recipeCardResponseDto.setDescription(papagoTranslationService.translateKoreanIntoEnglish(recipeEntity.getDescription()));
+        }
+
+        recipeCardResponseDto.setEngName(papagoTranslationService.translateKoreanIntoEnglish(recipeCardResponseDto.getName()));
+        recipeCardResponseDto.setPronunciation(pronunciationService.conversionPronunciation(recipeCardResponseDto.getName()));
+
+        return recipeCardResponseDto;
     }
 
     // lan : (한글 : 0) / (영문 : 1)
