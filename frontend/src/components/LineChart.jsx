@@ -22,20 +22,23 @@ function getDates() {
   return dates;
 }
 
-export const data = (pricedata) => ({
-	labels: getDates(),
-	datasets: [
-		{
-			label: 'price',
-			data: [pricedata[0].price, pricedata[1].price, pricedata[2].price, pricedata[3].price, pricedata[4].price, pricedata[5].price, pricedata[6].price],
-			borderColor: 'rgb(147, 35, 35)', // Line color 변경
-			borderWidth: 5, // Line 두께 변경
-			// backgroundColor: 'rgba(255, 99, 132, 1)',
-			backgroundColor: 'rgba(255, 255, 255, 1)',
-			pointRadius: 7, // Label 점 크기를 0으로 설정하여 숨김
-		}
-	]
-});
+export const data = (pricedata) => {
+	const dataPoints = pricedata.map((item) => item.price);
+	return {
+		labels: getDates(),
+		datasets: [
+			{
+				label: 'price',
+				data: dataPoints,
+				borderColor: 'rgb(147, 35, 35)', // Line color 변경
+				borderWidth: 5, // Line 두께 변경
+				// backgroundColor: 'rgba(255, 99, 132, 1)',
+				backgroundColor: 'rgba(255, 255, 255, 1)',
+				pointRadius: 7, // Label 점 크기를 0으로 설정하여 숨김
+			},
+		],
+	};
+};
 
 
 export const options = (priceData) => ({
@@ -117,5 +120,9 @@ export const options = (priceData) => ({
 })
 
 export default function LineChart({ priceData }) {
-  return <Line data={data(priceData)} options={options(priceData)} />;
+	if (priceData) {
+		return <Line data={data(priceData)} options={options(priceData)} />;
+	}
+	return <div></div>
+  
 }
