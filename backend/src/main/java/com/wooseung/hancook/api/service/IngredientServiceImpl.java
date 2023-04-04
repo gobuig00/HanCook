@@ -1,6 +1,7 @@
 package com.wooseung.hancook.api.service;
 
 import com.wooseung.hancook.api.response.IngredientResponseDto;
+import com.wooseung.hancook.api.response.RecipeResponseDto;
 import com.wooseung.hancook.db.entity.Ingredient;
 import com.wooseung.hancook.db.repository.IngredientRepository;
 import lombok.RequiredArgsConstructor;
@@ -155,5 +156,21 @@ public class IngredientServiceImpl implements IngredientService {
     public Long getIngredientIdByName(String name) {
         Optional<Ingredient> ingredient = ingredientRepository.findIngredientByName(name);
         return ingredient.get().getIngredientId();
+    }
+
+    @Override
+    public IngredientResponseDto getIngredientByIngredientId(Long ingredientId, int lan) {
+        Optional<Ingredient> ingredient = ingredientRepository.findByIngredientId(ingredientId);
+
+        IngredientResponseDto ingredientResponseDto = IngredientResponseDto.of(ingredient.get());
+
+        // 영문일때
+        if (lan == 1) {
+            ingredientResponseDto.setLarge(papagoTranslationService.translateKoreanIntoEnglish(ingredientResponseDto.getLarge()));
+            ingredientResponseDto.setMedium(papagoTranslationService.translateKoreanIntoEnglish(ingredientResponseDto.getMedium()));
+            ingredientResponseDto.setName(papagoTranslationService.translateKoreanIntoEnglish(ingredientResponseDto.getName()));
+        }
+
+        return ingredientResponseDto;
     }
 }

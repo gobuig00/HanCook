@@ -30,7 +30,6 @@ function Main() {
   const [ingreName, setIngreName] = useState('');
   const [priceChange, setPriceChange] = useState([]);
   const [priceChosen, setPriceChosen] = useState();
-  const [loaded, setLoaded] = useState(false);
   const defaultImage = ingreDefaultImage;
 
   useEffect( () => {
@@ -65,7 +64,6 @@ function Main() {
       console.log("재료 : ", ingreAxios.data)
       console.log('정제된 priceChange : ',groupDataBySmall(priceChangeAxios.data))
       
-      setLoaded(true);
       try {
         const params = {
           ingredient: ingreAxios.data[0].name,
@@ -120,143 +118,140 @@ function Main() {
   };
 
   return (
-      <div className="main-container">
-        {loaded ? (
-          <React.Fragment>
-            <div className='main-header'>
-              <img className="main-logo" src={logo} alt="로고"/><br/>
-              <div className="main-image">
-                <Carousel
-                  prevIcon={<span aria-hidden="true" className="hide-icon" />}
-                  nextIcon={<span aria-hidden="true" className="hide-icon" />}
-                >
-                  
-                  <Carousel.Item interval={5000}>
-                    <img
-                      className="d-block w-100"
-                      src={mainImage1}
-                      alt="First slide"
-                      style={{ width: "100%", height: "400px", objectFit: "cover" }}
-                    />
-                  </Carousel.Item>
-                  <Carousel.Item interval={5000}>
-                    <img
-                      className="d-block w-100"
-                      src={mainImage2}
-                      alt="Second slide"
-                      style={{ width: "90%", height: "400px", objectFit: "cover" }}
-                    />
-                  </Carousel.Item>
-                  <Carousel.Item interval={5000}>
-                    <img
-                      className="d-block w-100"
-                      src={mainImage3}
-                      alt="Third slide"
-                      style={{ width: "190%", height: "400px", objectFit: "cover" }}
-                    />
-                  </Carousel.Item>
-                </Carousel>
-              </div>
-            </div>
-
-            <div className='main-article'>
-              <div className='main-dish'>
-                <h1 className='main-title'>Dish</h1>
-                <div className='dish-cards'>
-                    {dish.map((dishItem, index) => (
-                      <Card
-                        key={index}
-                        cardName={dishItem.name}
-                        cardImage={dishItem.img}
-                        usedPart='dish'
-                        size='small'
-                        onClick={() => moveToRecipe(dishItem.recipeId)}
-                      />
-                    ))}
-                </div>
-              </div>
-              <hr/>
-              <div className='main-ingredient'>
-                <h1 className='main-title'>Ingredient</h1>
-                <Category
-                  categoryList={['Popular','Vegetable', 'Meat', 'Cheap']}
-                  isChosen={ingredientChosen}
-                  setIsChosen={setIngredientChosen}
-                  setPart={setIngredients}
-                  usedPart='mainIngredient'
-                />
-                <div className='ingredient-cards'>
-                  {ingredients.map((ingredientItem, index) => (
-                    <Card
-                      key={index}
-                      cardName={ingredientItem.name || ingredientItem.small}
-                      cardImage={ingredientItem.imageUrl || defaultImage}
-                      usedPart='ingredient'
-                      size='small'
-                      onClick={() => fetchIngreDish(ingredientItem.name || ingredientItem.small)}
-                    />
-                    
-                  ))}
-                </div>
-
-                <div className='ingredient-dish-cards'>
-                {ingreDish.map((ingreDishItem, index) => (
-                    <Card
-                      key={index}
-                      cardImage={ingreDishItem.img}
-                      usedPart='ingredient'
-                      size='large'
-                      onClick={() => moveToRecipe(ingreDishItem.recipeId)}
-                    />
-                  ))}
-                </div>
-                <Button className="more-button" onClick={moveToSearch}>more</Button>
-              </div>
-              <hr/>
-              <div className='main-price'>
-                <h1 className='main-title'>Price Static</h1>
-                <div className='main-increased-part'>
-                  <p>Most Increased in Price</p>
-                  {priceChange.slice(0, 3).map((priceItem, index) => (
-                    <PriceChange
-                      key={index}
-                      onClick={() => handlePriceChangeClick(index)}
-                      product={priceItem[0].small}
-                      prevPrice={Math.round(priceItem[0].price)}
-                      curPrice={Math.round(priceItem[priceItem.length - 1].price)}
-                      percentage={Math.round(((priceItem[priceItem.length - 1].price - priceItem[0].price) / priceItem[0].price) * 100)}
-                      isIncreased={true}
-                    />
-                  ))}
-                </div>
-                <div className='main-decreased-part'>
-                  <p>Most Decreased in Price</p>
-                  {priceChange.slice(3, 6).map((priceItem, index) => (
-                    <PriceChange
-                      key={index}
-                      onClick={() => handlePriceChangeClick(index + 3)}
-                      product={priceItem[0].small}
-                      prevPrice={Math.round(priceItem[0].price)}
-                      curPrice={Math.round(priceItem[priceItem.length - 1].price)}
-                      percentage={Math.round(((priceItem[priceItem.length - 1].price - priceItem[0].price) / priceItem[0].price) * 100)}
-                      isIncreased={false}
-                    />
-                  ))}
-                </div>
-
-                <div className='main-line-chart'>
-                  <LineChart priceData={priceChosen} />
-                </div>
-              </div>
-            </div>
-          </React.Fragment>
-        ) : (
-          <div>Loading...</div>
-        )}
-        <div className='main-footer'>
-          <Footer />
+    <div className="main-container">
+      <div className='main-header'>
+        <img className="main-logo" src={logo} alt="로고"/><br/>
+        <div className="main-image">
+          <Carousel
+            prevIcon={<span aria-hidden="true" className="hide-icon" />}
+            nextIcon={<span aria-hidden="true" className="hide-icon" />}
+          >
+            
+            <Carousel.Item interval={5000}>
+              <img
+                className="d-block w-100"
+                src={mainImage1}
+                alt="First slide"
+                style={{ width: "100%", height: "400px", objectFit: "cover" }}
+              />
+            </Carousel.Item>
+            <Carousel.Item interval={5000}>
+              <img
+                className="d-block w-100"
+                src={mainImage2}
+                alt="Second slide"
+                style={{ width: "90%", height: "400px", objectFit: "cover" }}
+              />
+            </Carousel.Item>
+            <Carousel.Item interval={5000}>
+              <img
+                className="d-block w-100"
+                src={mainImage3}
+                alt="Third slide"
+                style={{ width: "190%", height: "400px", objectFit: "cover" }}
+              />
+            </Carousel.Item>
+          </Carousel>
         </div>
       </div>
+
+      <div className='main-article'>
+        <div className='main-dish'>
+          <h1 className='main-title'>Dish</h1>
+          <div className='dish-cards'>
+              {dish.map((dishItem, index) => (
+                <Card
+                  key={index}
+                  cardName={dishItem.name}
+                  cardImage={dishItem.img}
+                  usedPart='dish'
+                  size='small'
+                  onClick={() => moveToRecipe(dishItem.recipeId)}
+                />
+              ))}
+          </div>
+        </div>
+        <hr/>
+        <div className='main-ingredient'>
+          <h1 className='main-title'>Ingredient</h1>
+          <Category
+            categoryList={['Popular','Vegetable', 'Meat', 'Cheap']}
+            isChosen={ingredientChosen}
+            setIsChosen={setIngredientChosen}
+            setPart={setIngredients}
+            usedPart='mainIngredient'
+          />
+          <div className='ingredient-cards'>
+            {ingredients.map((ingredientItem, index) => (
+              <Card
+                key={index}
+                cardName={ingredientItem.name || ingredientItem.small}
+                cardImage={ingredientItem.imageUrl || defaultImage}
+                usedPart='ingredient'
+                size='small'
+                onClick={() => fetchIngreDish(ingredientItem.name || ingredientItem.small)}
+              />
+              
+            ))}
+          </div>
+
+          <div className='ingredient-dish-cards'>
+          {ingreDish.map((ingreDishItem, index) => (
+              <Card
+                key={index}
+                cardImage={ingreDishItem.img}
+                usedPart='ingredient'
+                size='large'
+                onClick={() => moveToRecipe(ingreDishItem.recipeId)}
+              />
+            ))}
+          </div>
+          <Button className="more-button" onClick={moveToSearch}>more</Button>
+        </div>
+        <hr/>
+        <div className='main-price'>
+          <h1 className='main-title'>Price Static</h1>
+          <div className='main-increased-part'>
+            <p>Most Increased in Price</p>
+            {priceChange.slice(0, 3).map((priceItem, index) => (
+              <PriceChange
+                key={index}
+                onClick={() => handlePriceChangeClick(index)}
+                product={priceItem[0].small}
+                prevPrice={Math.round(priceItem[0].price)}
+                curPrice={Math.round(priceItem[priceItem.length - 1].price)}
+                percentage={Math.round(((priceItem[priceItem.length - 1].price - priceItem[0].price) / priceItem[0].price) * 100)}
+                isIncreased={true}
+              />
+            ))}
+          </div>
+          <div className='main-decreased-part'>
+            <p>Most Decreased in Price</p>
+            {priceChange.slice(3, 6).map((priceItem, index) => (
+              <PriceChange
+                key={index}
+                onClick={() => handlePriceChangeClick(index + 3)}
+                product={priceItem[0].small}
+                prevPrice={Math.round(priceItem[0].price)}
+                curPrice={Math.round(priceItem[priceItem.length - 1].price)}
+                percentage={Math.round(((priceItem[priceItem.length - 1].price - priceItem[0].price) / priceItem[0].price) * 100)}
+                isIncreased={false}
+              />
+            ))}
+          </div>
+
+          <div className='main-line-chart'>
+            {priceChosen ? (
+                <LineChart priceData={priceChosen} />
+              ) : ('Loading...')
+            }
+          </div>
+        </div>
+      </div>
+      <div className='main-footer'>
+        <Footer />
+      </div>
+    </div>
   );
 }
 
