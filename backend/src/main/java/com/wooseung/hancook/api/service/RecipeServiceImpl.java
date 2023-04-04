@@ -215,4 +215,10 @@ public class RecipeServiceImpl implements RecipeService {
         else return 0;
     }
 
+    @Override
+    public Long getRecipeIdByName(String name) {
+        Optional<Recipe> recipe = recipeRepository.findRecipeByName(name);
+        return recipe.get().getRecipeId();
+    }
+
 }
