@@ -15,7 +15,7 @@ public class PronunciationController {
     private final PronunciationService pronunciationService;
 
     // 한글을 입력 받아 영어 발음 반환
-    @GetMapping("/pronunciation")
+    @GetMapping
     public ResponseEntity<String> getEnglishPronunciation(@RequestParam("korean") String korean) {
         String result = pronunciationService.conversionPronunciation(korean);
         return ResponseEntity.status(HttpStatus.OK).body(result);
