@@ -20,4 +20,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
     Optional<Recipe> findRecipeByName(String name);
 
+    Long findRecipeIdByName(String name);
+
 }
