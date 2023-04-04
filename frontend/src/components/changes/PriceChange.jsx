@@ -1,31 +1,32 @@
 import React from 'react';
 import './PriceChange.css';
 
-export default function PriceChange({ product, prevPrice, curPrice, percentage, isIncreased }) {
+export default function PriceChange({ product, prevPrice, curPrice, percentage, isIncreased, onClick }) {
     const strPercentage = `${percentage}%`
     
     return (
-        <div className='price-change-row'>
+        <div className='price-change-row' onClick={onClick}>
             <span className='left'>{product}</span>
 
             <span className='middle'>
                 <span className='prev-price'>{prevPrice}</span>
-                <i class="material-icons">arrow_forward</i>
+                <i className="material-icons">arrow_forward</i>
                 <span className='cur-price'>{curPrice}</span>
             </span>
 
             <span className='right'>
                 {isIncreased && ( 
-                    <span class="material-symbols-outlined increased">
-                        change_history
-                    </span>
+                    <>
+                        <span className="red-triangle"></span>
+                        <span className='red-percentage'>{strPercentage}</span>
+                    </>
                 )}
                 {!isIncreased && (
-                    <span class="material-symbols-outlined decreased">
-                        change_history
-                    </span>
+                    <>
+                        <span className="blue-triangle"></span>
+                        <span className='blue-percentage'>{strPercentage}</span>
+                    </>
                 )}
-                <span className='percentage'>{strPercentage}</span>
             </span>
         </div>
     );
