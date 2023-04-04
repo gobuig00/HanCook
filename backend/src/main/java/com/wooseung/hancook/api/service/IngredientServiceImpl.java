@@ -148,9 +148,9 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public String searchById(Long id){
+    public String searchById(Long id) {
         Optional<Ingredient> ingredientName = ingredientRepository.findByIngredientId(id);
-        if(ingredientName.isEmpty())   return "Empty";
+        if (ingredientName.isEmpty()) return "Empty";
         else return ingredientName.get().getName();
     }
 
