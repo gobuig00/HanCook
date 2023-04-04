@@ -20,8 +20,7 @@ public class RecipeResponseDto {
     private String img;
     private String youtubeId;
 
-
-    public static RecipeResponseDto of(Recipe recipeEntity){
+    public static RecipeResponseDto of(Recipe recipeEntity) {
         RecipeResponseDto recipeResponseDto = ModelMapperUtils.getModelMapper().map(recipeEntity, RecipeResponseDto.class);
         return recipeResponseDto;
     }

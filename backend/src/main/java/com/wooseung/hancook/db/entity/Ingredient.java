@@ -24,14 +24,15 @@ public class Ingredient {
 
     private String medium;
 
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     private Long ref;
 
-    @OneToMany(mappedBy = "ingredient")
-    List<Mart> mart = new ArrayList<>();
+    @Column(name = "image_url")
+    private String imageUrl;
+
+//    @OneToMany(mappedBy = "ingredient")
+//    List<Mart> mart = new ArrayList<>();
 
     public static Ingredient of(IngredientResponseDto ingredientResponseDto) {
         Ingredient ingredientEntity = ModelMapperUtils.getModelMapper().map(ingredientResponseDto, Ingredient.class);

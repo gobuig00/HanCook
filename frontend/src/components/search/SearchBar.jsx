@@ -1,9 +1,16 @@
 import './SearchBar.css'
-
-import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 
 const SearchBar = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const { ingredient } = useParams();
+
+  useEffect(() => {
+    if (ingredient) {
+      onSearch(ingredient);
+    }
+  }, [ingredient]);
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);

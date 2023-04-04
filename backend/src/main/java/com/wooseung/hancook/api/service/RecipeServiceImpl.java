@@ -30,30 +30,7 @@ public class RecipeServiceImpl implements RecipeService {
     private final IngredientRepository ingredientRepository;
 
     private final PapagoTranslationService papagoTranslationService;
-
-    static String english = "en";
-    static String korean = "ko";
-
-    // 문자열을 문자 단위로 검사하여 한글 문자 또는 영어 문자가 포함되어 있는지 확인
-    // 한글 : 0, 영어 : 1, 모두 포함 안되면 : -1
-    public static int detectLanguage(String input) {
-        boolean containsKorean = false;
-        boolean containsEnglish = false;
-
-        for (char ch : input.toCharArray()) {
-            if (Character.UnicodeBlock.of(ch) == Character.UnicodeBlock.HANGUL_SYLLABLES ||
-                    Character.UnicodeBlock.of(ch) == Character.UnicodeBlock.HANGUL_JAMO ||
-                    Character.UnicodeBlock.of(ch) == Character.UnicodeBlock.HANGUL_COMPATIBILITY_JAMO) {
-                containsKorean = true;
-            } else if (ch >= 'A' && ch <= 'Z' || ch >= 'a' && ch <= 'z') {
-                containsEnglish = true;
-            }
-        }
-
-        if (containsKorean) return 0;
-        else if (containsEnglish) return 1;
-        else return -1;
-    }
+    private final DetectLanguageService detectLanguageService;
 
     // lan : (한글 : 0) / (영문 : 1)
     @Override
@@ -70,8 +47,8 @@ public class RecipeServiceImpl implements RecipeService {
             // 영문일때
             if (lan == 1) {
                 // DB에 한글로 저장되어 있어 영어로 번역해서 response
-                recipeResponseDto.setName(papagoTranslationService.translate(korean, english, recipeEntity.getName()));
-                recipeResponseDto.setDescription(papagoTranslationService.translate(korean, english, recipeEntity.getDescription()));
+                recipeResponseDto.setName(papagoTranslationService.translateKoreanIntoEnglish(recipeEntity.getName()));
+                recipeResponseDto.setDescription(papagoTranslationService.translateKoreanIntoEnglish(recipeEntity.getDescription()));
             }
 
             // 반환할 DtoList에 현재 RecipeEntity를 Dto로 변환하여 추가
@@ -90,8 +67,8 @@ public class RecipeServiceImpl implements RecipeService {
         // 영문일때
         if (lan == 1) {
             // DB에 한글로 저장되어 있어 영어로 번역해서 response
-            recipeResponseDto.setName(papagoTranslationService.translate(korean, english, recipeEntity.getName()));
-            recipeResponseDto.setDescription(papagoTranslationService.translate(korean, english, recipeEntity.getDescription()));
+            recipeResponseDto.setName(papagoTranslationService.translateKoreanIntoEnglish(recipeEntity.getName()));
+            recipeResponseDto.setDescription(papagoTranslationService.translateKoreanIntoEnglish(recipeEntity.getDescription()));
         }
 
         return recipeResponseDto;
@@ -101,10 +78,10 @@ public class RecipeServiceImpl implements RecipeService {
     // 이름으로 검색해서 레시피 목록 가져오기
     @Override
     public List<RecipeResponseDto> getRecipeByName(String name, int lan) {
-        int flag = detectLanguage(name);
+        int flag = detectLanguageService.detectLanguage(name);
 
         // 입력받은 이름이 영어라면 한글로 변환
-        if (flag == 1) name = papagoTranslationService.translate(english, korean, name);
+        if (flag == 1) name = papagoTranslationService.translateEnglishIntoKorean(name);
 
         // 이름으로 찾은 레시피 Entity List
         List<Recipe> recipeEntityList = recipeRepository.findAllByNameContaining(name);
@@ -112,8 +89,8 @@ public class RecipeServiceImpl implements RecipeService {
         // 영문일때
         if (lan == 1) {
             for (Recipe recipeEntity : recipeEntityList) {
-                recipeEntity.setName(papagoTranslationService.translate(korean, english, recipeEntity.getName()));
-                recipeEntity.setDescription(papagoTranslationService.translate(korean, english, recipeEntity.getDescription()));
+                recipeEntity.setName(papagoTranslationService.translateKoreanIntoEnglish(recipeEntity.getName()));
+                recipeEntity.setDescription(papagoTranslationService.translateKoreanIntoEnglish(recipeEntity.getDescription()));
             }
         }
 
@@ -134,9 +111,10 @@ public class RecipeServiceImpl implements RecipeService {
 
         // 정제된 전체 재료 정보 EntityList
         List<Ingredient> ingredientList = ingredientRepository.findAll();
+
         // ingredientList를 돌면서 ref 값이 존재하는 데이터를 찾는다.
         for (Ingredient ingredientEntity : ingredientList) {
-            if (ingredientEntity.getRef() != null && ingredientEntity.getRef() > 0) {
+            if (ingredientEntity.getRef() != null && ingredientEntity.getRef() > 0 && ingredientEntity.getRef() <= 730) {
                 // ref 값이 존재하면 componentList를 돌면서 해당 재료의 이름을 ref 값에 해당하는 이름으로 치환한다.
                 for (Component component : componentList) {
                     if (component.getName().equals(ingredientEntity.getName())) {
@@ -156,10 +134,10 @@ public class RecipeServiceImpl implements RecipeService {
             int count = 0;
             HashSet<String> ingredientSet = new HashSet<>();
             for (String ingredientStr : ingredient) {
-                int flag = detectLanguage(ingredientStr);
+                int flag = detectLanguageService.detectLanguage(ingredientStr);
 
                 // 입력받은 재료가 영어라면 한글로 변환
-                if (flag == 1) ingredientStr = papagoTranslationService.translate(english, korean, ingredientStr);
+                if (flag == 1) ingredientStr = papagoTranslationService.translateEnglishIntoKorean(ingredientStr);
 
                 ingredientSet.add(ingredientStr);
             }
@@ -176,8 +154,8 @@ public class RecipeServiceImpl implements RecipeService {
                     // 영문일때
                     if (lan == 1) {
                         // DB에 한글로 저장되어 있어 영어로 번역해서 response
-                        recipeResponseDto.setName(papagoTranslationService.translate(korean, english, recipeEntity.getName()));
-                        recipeResponseDto.setDescription(papagoTranslationService.translate(korean, english, recipeEntity.getDescription()));
+                        recipeResponseDto.setName(papagoTranslationService.translateKoreanIntoEnglish(recipeEntity.getName()));
+                        recipeResponseDto.setDescription(papagoTranslationService.translateKoreanIntoEnglish(recipeEntity.getDescription()));
                     }
 
                     // 반환할 DtoList에 현재 RecipeEntity를 Dto로 변환하여 추가
@@ -205,8 +183,8 @@ public class RecipeServiceImpl implements RecipeService {
 
                 // 영문일때
                 if (lan == 1) {
-                    componentResponseDto.setName(papagoTranslationService.translate(korean, english, componentResponseDto.getName()));
-                    componentResponseDto.setCapacity(papagoTranslationService.translate(korean, english, componentResponseDto.getCapacity()));
+                    componentResponseDto.setName(papagoTranslationService.translateKoreanIntoEnglish(componentResponseDto.getName()));
+                    componentResponseDto.setCapacity(papagoTranslationService.translateKoreanIntoEnglish(componentResponseDto.getCapacity()));
                 }
             }
         }
@@ -222,11 +200,25 @@ public class RecipeServiceImpl implements RecipeService {
         // 영문일때
         if (lan == 1) {
             for (Process processEntity : processEntityList) {
-                processEntity.setDescription(papagoTranslationService.translate(korean, english, processEntity.getDescription()));
+                processEntity.setDescription(papagoTranslationService.translateKoreanIntoEnglish(processEntity.getDescription()));
             }
         }
 
         return processEntityList.stream().map(entity -> ProcessResponseDto.of(entity)).collect(Collectors.toList());
+    }
+
+    @Override
+    public int searchName(String name) {
+        Optional<Recipe> recipe = recipeRepository.findRecipeByName(name);
+
+        if (recipe.isPresent()) return 1;
+        else return 0;
+    }
+
+    @Override
+    public Long getRecipeIdByName(String name) {
+        Optional<Recipe> recipe = recipeRepository.findRecipeByName(name);
+        return recipe.get().getRecipeId();
     }
 
 }

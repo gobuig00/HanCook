@@ -1,5 +1,7 @@
 package com.wooseung.hancook.db.entity;
 
+import com.wooseung.hancook.api.response.FoodRecordResponseDto;
+import com.wooseung.hancook.utils.ModelMapperUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,45 +27,37 @@ public class FoodRecord {
 
     @Column(nullable = false, name = "food_name")
     private String foodName;
+    @Column(name = "serving_size")
+    private int servingSize;
+    private String unit;
+    private double kcal;
+    private double carb;
+    private double protein;
+    private double fat;
+    private double sugar;
+    private double salt;
+    private double cholesterol;
 
-    @Column(nullable = false)
-    private int calo;
+    @Column(nullable = false, name = "eat_date")
+    LocalDateTime eatDate;
 
-    @Column(nullable = false)
-    private int carbs;
-
-    @Column(nullable = false)
-    private int protein;
-
-    @Column(nullable = false)
-    private int fat;
-
-    @Column(nullable = false)
-    private int salt;
-
-    @Column(nullable = false)
-    private int ch;
-
-    @Column(nullable = false)
-    private int sugar;
-
-    @Column(nullable = false, name = "food_date")
-    LocalDateTime foodDate;
-
-    public FoodRecord(User user, String foodName, int calo, int carbs, int protein, int fat, int salt, int ch, int sugar, LocalDateTime foodDate) {
+    public FoodRecord(User user, String foodName, int servingSize, String unit, double kcal, double carb, double protein, double fat, double sugar, double salt, double cholesterol, LocalDateTime eatDate) {
         this.user = user;
         this.foodName = foodName;
-        this.calo = calo;
-        this.carbs = carbs;
+        this.servingSize = servingSize;
+        this.unit = unit;
+        this.kcal = kcal;
+        this.carb = carb;
         this.protein = protein;
         this.fat = fat;
-        this.salt = salt;
-        this.ch = ch;
         this.sugar = sugar;
-        this.foodDate = foodDate;
+        this.salt = salt;
+        this.cholesterol = cholesterol;
+        this.eatDate = eatDate;
     }
 
-    public FoodRecord(User user, String foodName, int calo, int carbs, int protein, int fat, int salt, int ch, int sugar) {
-
+    public static FoodRecord of(FoodRecordResponseDto foodRecordResponseDto) {
+        FoodRecord foodRecordEntity = ModelMapperUtils.getModelMapper().map(foodRecordResponseDto, FoodRecord.class);
+        return foodRecordEntity;
     }
 }

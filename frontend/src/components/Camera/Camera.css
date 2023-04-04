@@ -54,3 +54,9 @@
   border: none;
   border-radius: 10px;
 }
+
+.camera-toast {
+  color: white;
+  text-align: center;
+  border-radius: 10px;
+}

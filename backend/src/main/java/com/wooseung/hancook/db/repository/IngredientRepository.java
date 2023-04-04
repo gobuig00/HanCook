@@ -9,8 +9,14 @@ import java.util.Optional;
 
 public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
 
-    @Query(value = "SELECT * FROM ingredient order by RAND() limit 3", nativeQuery = true)
+    @Query(value = "SELECT * FROM ingredient ORDER BY RAND() limit 3", nativeQuery = true)
     List<Ingredient> findRandomIngredient();
+
+    @Query(value = "SELECT * FROM ingredient WHERE medium LIKE \"%고기%\" ORDER BY RAND() limit 3", nativeQuery = true)
+    List<Ingredient> findRandomMeatIngredient();
+
+    @Query(value = "SELECT * FROM ingredient WHERE large LIKE \"%채소%\" ORDER BY RAND() limit 3", nativeQuery = true)
+    List<Ingredient> findRandomVegetableIngredient();
 
     @Query(value = "SELECT DISTINCT i.large FROM ingredient i WHERE i.large IS NOT NULL", nativeQuery = true)
     List<String> findLarge();
@@ -24,4 +30,5 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     Optional<Ingredient> findIngredientByName(String name);
 
     List<Ingredient> findIngredientByMedium(String medium);
+    Optional<Ingredient> findByIngredientId(Long id);
 }
