@@ -37,6 +37,7 @@ export default function Camera() {
     }
   }
   const handleYes = useCallback ((name) => {
+    console.log(name)
     axios.get(`${process.env.REACT_APP_API_URL}/food/check?name=${name}`)
     .then((res) => {
       if (res.data.checkFlag === -1) {

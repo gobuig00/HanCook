@@ -42,14 +42,14 @@
 }
 
 .confirm-no-button {
-  width: 40vw;
+  width: 45%;
   background-color: #FF4545;
   border: none;
   border-radius: 10px;
 }
 
 .confirm-yes-button {
-  width: 40vw;
+  width: 45%;
   background-color: #69B550;
   border: none;
   border-radius: 10px;
