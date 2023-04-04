@@ -173,4 +173,20 @@ public class IngredientServiceImpl implements IngredientService {
 
         return ingredientResponseDto;
     }
+
+    @Override
+    public IngredientResponseDto getIngredientByName(String name, int lan) {
+        Optional<Ingredient> ingredient = ingredientRepository.findIngredientByName(name);
+
+        IngredientResponseDto ingredientResponseDto = IngredientResponseDto.of(ingredient.get());
+
+        // 영문일때
+        if (lan == 1) {
+            ingredientResponseDto.setLarge(papagoTranslationService.translateKoreanIntoEnglish(ingredientResponseDto.getLarge()));
+            ingredientResponseDto.setMedium(papagoTranslationService.translateKoreanIntoEnglish(ingredientResponseDto.getMedium()));
+            ingredientResponseDto.setName(papagoTranslationService.translateKoreanIntoEnglish(ingredientResponseDto.getName()));
+        }
+
+        return ingredientResponseDto;
+    }
 }
