@@ -49,11 +49,10 @@ public class IngredientController {
         List<IngredientResponseDto> ingredientResponseDtoList = new ArrayList<>();
 
         for (String name : names) {
-            IngredientResponseDto ingredientResponseDto = ingredientService.getIngredientByName(name, lan);
-
-            System.out.println(ingredientResponseDto.toString());
-
-            ingredientResponseDtoList.add(ingredientResponseDto);
+            if (ingredientService.searchName(name) == 1) {
+                IngredientResponseDto ingredientResponseDto = ingredientService.getIngredientByName(name, lan);
+                ingredientResponseDtoList.add(ingredientResponseDto);
+            }
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(ingredientResponseDtoList);
