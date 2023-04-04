@@ -150,4 +150,10 @@ public class IngredientServiceImpl implements IngredientService {
         if(ingredientName.isEmpty())   return "Empty";
         else return ingredientName.get().getName();
     }
+
+    @Override
+    public Long getIngredientIdByName(String name) {
+        Optional<Ingredient> ingredient = ingredientRepository.findIngredientByName(name);
+        return ingredient.get().getIngredientId();
+    }
 }
