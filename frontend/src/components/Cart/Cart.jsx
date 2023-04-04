@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import html2canvas from 'html2canvas';
+import Footer from '../Footer';
 
 import './Cart.css';
 import ItemList from './ItemList';
@@ -205,6 +206,9 @@ export default function Cart() {
           <p className='receipt-footer-price'>{totalPrice}₩</p>
         </div>
       </div>
+      <footer>
+        <Footer></Footer>
+      </footer>
     </div>
   );
 }

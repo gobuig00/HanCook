@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import Footer from '../Footer';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +17,7 @@ export default function Camera() {
   const [data, setData ] = useState('');
   const [show, setShow] = useState(false);
   const [toastdata, setToastData] = useState('');
+  const [imgdata, setImgData] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('hancook-token');
@@ -62,7 +63,8 @@ export default function Camera() {
     }
   };
 
-  const getCapture = () => {
+  const getCapture = useCallback((event) => {
+    event.stopPropagation();
     const canvas = canvasRef.current;
     const video = videoRef.current;
     if (canvas && video) {
@@ -72,7 +74,7 @@ export default function Camera() {
       // console.log(dataUrl)
       imageMaker(dataUrl);
     }
-  };
+  }, []);
   const imageMaker = (dataUrl) => {
     const img = new Image();
     img.onload = () => {
@@ -101,7 +103,13 @@ export default function Camera() {
           setShow(true);
         } else {
           // 결과 배열이 존재할 경우, ConfirmModal을 띄웁니다.
-          console.log(response.data.result[0].class_info)
+          const name= response.data.result[0].class_info[0].food_name
+          axios.get(`${process.env.REACT_APP_API_URL}/food/check?name=${name}`)
+            .then((res) => {
+              console.log(res);
+            }).catch((err) => {
+              console.log(err)
+            })
           setData(response.data.result[0].class_info)
           setStatus(1);
         }
@@ -119,7 +127,7 @@ export default function Camera() {
         <video ref={videoRef} className='camera-container'/>
         <div className='camera-menu-container'>
           <Menu />
-          <span onClick={getCapture} className='capture-button'><img src={camera} alt="" className='capture-button-image'/></span>
+          <span onClick={(event) => getCapture(event)} className='capture-button'><img src={camera} alt="" className='capture-button-image'/></span>
         </div>
       </div>
       <canvas ref={canvasRef} style={{display: 'none'}} />
