@@ -19,6 +19,7 @@ function useIngredientPrice() {
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_API_URL}/deal/detail`, { params })
     .then(function (response) {
+      console.log()
       setData(response.data);
     })
     .catch(function (err) {
@@ -66,8 +67,8 @@ function Ingredient() {
   }, [navigate]);
 
   const handleMoveDish = useMoveDish();
-  const priceData = useIngredientPrice()
-  const data = useRelatedFoodAPI()
+  const priceData = useIngredientPrice();
+  const data = useRelatedFoodAPI();
   return (
     <div className='background-green'>
       <header>

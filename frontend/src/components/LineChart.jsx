@@ -5,12 +5,13 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 function getDates() {
   const oneDay = 1000 * 60 * 60 * 24; // 1일을 밀리초로 표현
-  const startDate = new Date('2023-04-01');
-  const endDate = new Date('2023-03-26');
+	const today = new Date();
+  const startDate = new Date(today.getTime() - oneDay);
+  const endDate = new Date(today.getTime() - 7 * oneDay);
   const dates = [];
 
   // 날짜를 1씩 증가시면서 배열에 추가한다
-  for (let i = startDate.getTime(); i >= endDate.getTime(); i -= oneDay) {
+  for (let i = endDate.getTime(); i <= startDate.getTime(); i += oneDay) {
     const date = new Date(i);
     const month = date.getMonth() + 1;
     const day = date.getDate();
@@ -21,22 +22,26 @@ function getDates() {
   return dates;
 }
 
-export const data = (pricedata) => ({
-	labels: getDates(),
-	datasets: [
-		{
-			label: 'price',
-			data: [pricedata[0].price, pricedata[1].price, pricedata[2].price, pricedata[3].price, pricedata[4].price, pricedata[5].price, pricedata[6].price],
-			borderColor: 'rgb(147, 35, 35)', // Line color 변경
-			borderWidth: 5, // Line 두께 변경
-			// backgroundColor: 'rgba(255, 99, 132, 1)',
-			backgroundColor: 'rgba(255, 255, 255, 1)',
-			pointRadius: 7, // Label 점 크기를 0으로 설정하여 숨김
-		}
-	]
-});
+export const data = (pricedata) => {
+    const dataPoints = pricedata.map((item) => item.price);
+    return {
+        labels: getDates(),
+        datasets: [
+            {
+                label: 'price',
+                data: dataPoints,
+                borderColor: 'rgb(147, 35, 35)', // Line color 변경
+                borderWidth: 5, // Line 두께 변경
+                // backgroundColor: 'rgba(255, 99, 132, 1)',
+                backgroundColor: 'rgba(255, 255, 255, 1)',
+                pointRadius: 7, // Label 점 크기를 0으로 설정하여 숨김
+            },
+        ],
+    };
+};
 
-export const options = {
+
+export const options = (priceData) => ({
 	responsive: true,
 	maintainAspectRatio: false, // 차트의 가로 세로 비율 유지를 해제합니다.
 	plugins: {
@@ -68,13 +73,13 @@ export const options = {
 			display: true,
 			grid: {
 				color: (context) => {
-					if (context.tick.label === 'January') {
+					if (context.tick && context.tick.label === getDates()[0]) {
 						return 'rgba(77, 130, 14, 1)';
 					};
 						return 'rgba(0, 0, 0, 0.2)';
 					},
 				lineWidth: (context) => {
-					if (context.tick.label === 'January') {
+					if (context.tick && context.tick.label === getDates()[0]) {
 						return 2; // 가장 바깥쪽 경계선 두께 설정
 					};
 					return 1;
@@ -90,14 +95,15 @@ export const options = {
 		y: {
 			display: true,
 			grid: {
+				
 				color: (context) => {
-					if (context.tick.label === '1,000') {
+					if (context.tick.value === context.chart.scales.y.min) {
 						return 'rgba(77, 130, 14, 1)';
 					};
 					return 'rgba(0, 0, 0, 0.2)';
 				},
 				lineWidth: (context) => {
-					if (context.tick.label === '1,000') {
+					if (context.tick.value === context.chart.scales.y.min) {
 						return 2; // 가장 바깥쪽 경계선 두께 설정
 					};
 					return 1;
@@ -111,8 +117,8 @@ export const options = {
 			},
 		},			
 	},
-}
+})
 
 export default function LineChart({ priceData }) {
-  return <Line data={data(priceData)} options={options} />;
+  return <Line data={data(priceData)} options={options(priceData)} />;
 }

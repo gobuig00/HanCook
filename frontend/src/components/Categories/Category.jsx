@@ -14,21 +14,15 @@ export default function Category({ categoryList, isChosen, setIsChosen, setPart,
         try {
           const ingreAxios = await axios.get(`${process.env.REACT_APP_API_URL}/deal/${chosen}`, {params});
           setPart(ingreAxios.data)
-          console.log(ingreAxios.data)
+          console.log("cheap : ", ingreAxios.data)
         } catch (error) {
           console.error('Error fetching data: ', error);
         }
-      } else if (chosen === 'Vegetable' || chosen === 'Meat') {
+      } else if (chosen === 'Vegetable' || chosen === 'Meat' || chosen === 'Popular') {
         try {
           const ingreAxios = await axios.get(`${process.env.REACT_APP_API_URL}/ingredient/${chosen}`, {params});
           setPart(ingreAxios.data)
-        } catch (error) {
-          console.error('Error fetching data: ', error);
-        }
-      } else {
-        try {
-          const ingreAxios = await axios.get(`${process.env.REACT_APP_API_URL}/component/${chosen}`, {params});
-          setPart(ingreAxios.data)
+          console.log("vegi meat pop : ", ingreAxios.data)
         } catch (error) {
           console.error('Error fetching data: ', error);
         }

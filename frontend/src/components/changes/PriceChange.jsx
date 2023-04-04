@@ -12,7 +12,7 @@ export default function PriceChange({ product, prevPrice, curPrice, percentage, 
 
             <span className='middle'>
                 <span className='prev-price'>{prevPrice}</span>
-                <i class="material-icons">arrow_forward</i>
+                <i className="material-icons">arrow_forward</i>
                 <span className='cur-price'>{curPrice}</span>
             </span>
 
