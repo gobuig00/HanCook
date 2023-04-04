@@ -17,11 +17,11 @@ public class IngredientController {
 
     private final IngredientService ingredientService;
 
-//    @GetMapping("/Popular")
-//    public ResponseEntity<List<IngredientResponseDto>> getRandomIngredient(@RequestParam("lan") int lan) {
-//        List<IngredientResponseDto> ingredientResponseDtoList = ingredientService.getRandomIngredient(lan);
-//        return ResponseEntity.status(HttpStatus.OK).body(ingredientResponseDtoList);
-//    }
+    @GetMapping("/Popular")
+    public ResponseEntity<List<IngredientResponseDto>> getRandomIngredient(@RequestParam("lan") int lan) {
+        List<IngredientResponseDto> ingredientResponseDtoList = ingredientService.getRandomIngredient(lan);
+        return ResponseEntity.status(HttpStatus.OK).body(ingredientResponseDtoList);
+    }
 
     @GetMapping("/Meat")
     public ResponseEntity<List<IngredientResponseDto>> getRandomMeatIngredient(@RequestParam("lan") int lan) {
