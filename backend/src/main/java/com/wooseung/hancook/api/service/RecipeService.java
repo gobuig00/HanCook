@@ -22,4 +22,6 @@ public interface RecipeService {
     List<ProcessResponseDto> getProcessByRecipeId(Long recipeId, int lan);
 
     int searchName(String name);
+
+    Long getRecipeIdByName(String name);
 }
