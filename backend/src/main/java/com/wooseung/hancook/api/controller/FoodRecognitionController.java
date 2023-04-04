@@ -46,21 +46,21 @@ public class FoodRecognitionController {
         int recipeResult = recipeService.searchName(name);
         // 재료 테이블에 이름이 있는지 체크
         int ingredientResult = ingredientService.searchName(name);
-        
-        // 레시피 테이블에만 이름이 있다면 재료로 취급 result = 2
+
+        // 레시피 테이블에만 이름이 있다면 재료로 취급 result = 1
         if (recipeResult == 1 && ingredientResult == 0) {
             checkFlag = 1;
-            id = ingredientService.getIngredientIdByName(name);
+            id = recipeService.getRecipeIdByName(name);
         }
         // 재료 테이블에만 이름이 있다면 result = 2
         else if (recipeResult == 0 && ingredientResult == 1) {
             checkFlag = 2;
             id = ingredientService.getIngredientIdByName(name);
         }
-        // 둘 다 있다면 레시피로 리턴
+        // 둘 다 있다면 재료로 리턴
         else if (recipeResult == 1 && ingredientResult == 1) {
-            checkFlag = 1;
-            id = recipeService.getRecipeIdByName(name);
+            checkFlag = 2;
+            id = ingredientService.getIngredientIdByName(name);
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(new CheckFoodResponseDto(checkFlag, id));
