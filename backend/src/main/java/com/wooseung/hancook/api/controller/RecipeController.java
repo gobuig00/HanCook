@@ -48,6 +48,17 @@ public class RecipeController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    // 레시피 ID를 입력받아 일치하는 레시피 데이터 및 재료, 과정 데이터 반환
+    @GetMapping("/card")
+    public ResponseEntity<Map<String, Object>> getRecipeCardById(@RequestParam("recipeId") Long recipeId, @RequestParam("lan") int lan){
+        Map<String, Object> result = new HashMap<>();
+
+        result.put("recipe", recipeService.getRecipeCardById(recipeId, lan));
+        result.put("ingredient", recipeService.getIngredientByRecipeId(recipeId, lan));
+        result.put("process", recipeService.getProcessByRecipeId(recipeId, lan));
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
     // 재료 배열을 입력받아 포함되어 있는 레시피 데이터 반환
     @GetMapping("/ingredient")
     public ResponseEntity<List<RecipeResponseDto>> getRecipeByIngredient(@RequestParam("ingredient") List<String> ingredient, @RequestParam("lan") int lan){
