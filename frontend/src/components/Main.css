@@ -14,7 +14,9 @@
 .main-logo {
     width: 52%;
 }
-
+.main-article{
+    padding: 0 3vw;
+}
 .dish-categories {
     font-family: "semibold";
     display: flex;
