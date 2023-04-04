@@ -30,12 +30,30 @@ export default function Camera() {
   const handleNext = () => {
     if (status > 4) {
       setStatus(0);
-      setToastData('다시 한 번 사진을 찍어주세요.');
+      setToastData('Please take a picture again.');
       setShow(true);
     } else {
       setStatus(status+1);
     }
   }
+  const handleYes = useCallback ((name) => {
+    axios.get(`${process.env.REACT_APP_API_URL}/food/check?name=${name}`)
+    .then((res) => {
+      if (res.data.checkFlag === -1) {
+        setToastData('No matching food found.');
+        setShow(true);
+      } else if (res.data.checkFlag === 1) {
+        setStatus(0);
+        navigate(`/dish/${res.data.id}`);
+      } else {
+        setStatus(0);
+        navigate(`/ingredient/${res.data.id}`);
+      }
+      console.log(res);
+    }).catch((err) => {
+      console.log(err)
+    })
+  }, [navigate]);
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
@@ -51,15 +69,35 @@ export default function Camera() {
             facingMode: { exact: 'environment' },
           },
         });
-        const video = videoRef.current;
-        if (video) {
-          video.srcObject = stream;
-          video.onloadedmetadata = () => {
-            video.play();
-          };
-        }
-    } catch (err) {
-      console.error(err);
+        // const video = videoRef.current;
+        // if (video) {
+        //   video.srcObject = stream;
+        //   video.onloadedmetadata = () => {
+        //     video.play();
+        //   };
+        // }
+        handleStream(stream);
+    } catch {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: 'user',
+          },
+        });
+        handleStream(stream);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+  }
+
+  const handleStream = (stream) => {
+    const video = videoRef.current;
+    if (video) {
+      video.srcObject = stream;
+      video.onloadedmetadata = () => {
+        video.play();
+      };
     }
   };
 
@@ -99,24 +137,18 @@ export default function Camera() {
       .then(response => {
         // API 요청 성공 시 처리할 코드
         if (response.data.result.length === 0) {
-          setToastData('일치하는 음식이 없습니다.')
+          setToastData('No matching food found.')
           setShow(true);
         } else {
           // 결과 배열이 존재할 경우, ConfirmModal을 띄웁니다.
-          const name= response.data.result[0].class_info[0].food_name
-          axios.get(`${process.env.REACT_APP_API_URL}/food/check?name=${name}`)
-            .then((res) => {
-              console.log(res);
-            }).catch((err) => {
-              console.log(err)
-            })
+          
           setData(response.data.result[0].class_info)
           setStatus(1);
         }
       })
       .catch(error => {
         // API 요청 실패 시 처리할 코드
-        setToastData('오류가 발생했습니다.');
+        setToastData('An error has occurred.');
         setShow(true);
       });
   }
@@ -137,17 +169,18 @@ export default function Camera() {
             <Modal.Title>{data[status-1].food_name}</Modal.Title>
           ) : ('Nothing')}
         </ModalHeader>
-        <Modal.Body>
-          {/* <img src={data} alt="" /> */}
+        {/* <Modal.Body>
+          <img src={data} alt="" />
           맞음?
-        </Modal.Body>
+        </Modal.Body> */}
         <Modal.Footer className='confirm-button-container'>
           <button onClick={handleNext} className='confirm-no-button'>
             No
           </button>
-          <button onClick={handleClose} className='confirm-yes-button'>
-            Yes
-          </button>
+          {data[status-1] ? (
+            <button onClick={() => handleYes(data[status-1].food_name)} className='confirm-yes-button'>Yes</button>
+            ) : ('')
+          }
         </Modal.Footer>
       </Modal>
       <ToastContainer position='bottom-center' className='camera-toast'>
