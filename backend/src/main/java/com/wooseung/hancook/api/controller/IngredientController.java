@@ -1,5 +1,6 @@
 package com.wooseung.hancook.api.controller;
 
+import com.wooseung.hancook.api.response.IngredientCardResponseDto;
 import com.wooseung.hancook.api.response.IngredientResponseDto;
 import com.wooseung.hancook.api.service.IngredientService;
 import lombok.RequiredArgsConstructor;
@@ -84,6 +85,13 @@ public class IngredientController {
     public ResponseEntity<IngredientResponseDto> getIngredientById(@RequestParam("ingredientId") Long ingredientId, @RequestParam("lan") int lan) {
         IngredientResponseDto ingredientResponseDto = ingredientService.getIngredientByIngredientId(ingredientId, lan);
         return ResponseEntity.status(HttpStatus.OK).body(ingredientResponseDto);
+    }
+
+    // ingredient card에 들어갈 정보들 반환
+    @GetMapping("/card")
+    public ResponseEntity<IngredientCardResponseDto> getIngredientCardById(@RequestParam("ingredientId") Long ingredientId, @RequestParam("lan") int lan) {
+        IngredientCardResponseDto ingredientCardResponseDto = ingredientService.getIngredientCardByIngredientId(ingredientId, lan);
+        return ResponseEntity.status(HttpStatus.OK).body(ingredientCardResponseDto);
     }
 
     // 재료명 입력받아 재료가 재료 목록에 있으면 1, 없으면 0 반환
