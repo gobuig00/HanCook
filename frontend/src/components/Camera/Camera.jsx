@@ -8,6 +8,7 @@ import camera from '../../icons/camera.png';
 import Modal from 'react-bootstrap/Modal';
 import { ModalHeader } from 'react-bootstrap';
 import Toast from 'react-bootstrap/Toast';
+import ToastContainer from 'react-bootstrap/ToastContainer';
 
 
 export default function Camera() {
@@ -29,7 +30,7 @@ export default function Camera() {
     if (status > 4) {
       setStatus(0);
       setToastData('다시 한 번 사진을 찍어주세요.');
-      setShow(0);
+      setShow(true);
     } else {
       setStatus(status+1);
     }
@@ -125,7 +126,7 @@ export default function Camera() {
       <Modal show={status !== 0} onHide={handleClose} backdrop='static' keyboard={false} centered>
         <ModalHeader closeButton>
           {data[status-1] ? (
-            <Modal.Title>{data[status-1].food_name}, right?</Modal.Title>
+            <Modal.Title>{data[status-1].food_name}</Modal.Title>
           ) : ('Nothing')}
         </ModalHeader>
         <Modal.Body>
@@ -141,9 +142,11 @@ export default function Camera() {
           </button>
         </Modal.Footer>
       </Modal>
-      <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide>
-        <Toast.Body>{toastdata}</Toast.Body>
-      </Toast>
+      <ToastContainer position='bottom-center' className='camera-toast'>
+        <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide bg='dark'>
+          <Toast.Body>{toastdata}</Toast.Body>
+        </Toast>
+      </ToastContainer>
       <footer>
         <Footer />
       </footer>

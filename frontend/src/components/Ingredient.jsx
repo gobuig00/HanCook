@@ -6,19 +6,20 @@ import LineChart from './LineChart';
 import Img from '../images/takepicture.jpg';
 import AddShoppingCart from '../icons/AddShoppingCart.svg';
 import logo from '../images/logo.png'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Card from './Card/Card';
 import {useState, useEffect } from 'react';
 import axios from 'axios';
 
-function useRelatedFoodAPI() {
+function useIngredientPrice() {
   const params = {
-    ingredient: '양파',
+    id: useParams().id,
   };
   const [data, setData] = useState(null);
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/recipe/ingredient`, { params })
+    axios.get(`${process.env.REACT_APP_API_URL}/deal/detail`, { params })
     .then(function (response) {
+      console.log()
       setData(response.data);
     })
     .catch(function (err) {
@@ -27,23 +28,32 @@ function useRelatedFoodAPI() {
   }, []);
   return data;
 }
-// 나중에 백 되면 한번에
-// function useIngredient() {
-//   const params = {
-//     recipeId: useParams().id,
-//   };
-//   const [data, setData] = useState(null);
-//   useEffect(() => {
-//     axios.get('http://192.168.100.172:8080/ingredient', { params })
-//     .then(function (response) {
-//       setData(response.data);
-//     })
-//     .catch(function (err) {
-//       console.log(err);
-//     });
-//   }, []);
-//   return data;
-// }
+
+function useRelatedFoodAPI() {
+  const params = {
+    ingredient: '양파',
+    lan: 0,
+  };
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_API_URL}/recipe/ingredient`, { params })
+    .then(function (response) {
+      setData(response.data.slice(0, 3));
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+  }, []);
+  return data;
+}
+
+const useMoveDish = () => {
+  const navigate = useNavigate();
+  const handleMoveDish = (id) => {
+    navigate(`/dish/${id}`);
+  };
+  return handleMoveDish;
+};
 
 
 function Ingredient() {
@@ -56,8 +66,9 @@ function Ingredient() {
     }
   }, [navigate]);
 
-  const data = useRelatedFoodAPI()
-  console.log(data)
+  const handleMoveDish = useMoveDish();
+  const priceData = useIngredientPrice();
+  const data = useRelatedFoodAPI();
   return (
     <div className='background-green'>
       <header>
@@ -77,14 +88,18 @@ function Ingredient() {
         {/* <Table /> */}
         <div className='green-line'></div>
         <div className='line-chart'>
-          <LineChart />
+        {priceData ? (
+          <LineChart priceData={priceData}/>
+        ) : ('Loading...')
+        }
         </div>
         <div className='green-line'></div>
         <div className='related-food-text'>Related food</div>
-        {data ? (data.map((item, index) => (
-          <Card key={index} cardName={item.name} cardImage={item.img} cardIndex={index} usedPart='related-food' cardUrl={'/dish/' + item.recipeId} size='small'/>
-        ))) : ('Loading...')}
-        
+        <div className='dish-cards'>
+          {data ? (data.map((item, index) => (
+            <Card key={index} cardName={item.name} cardImage={item.img} cardIndex={index} usedPart='related-food' cardUrl={'/dish/' + item.recipeId} size='small' onClick={() => handleMoveDish(item.recipeId)}/>
+          ))) : ('Loading...')}
+        </div>
       </main>
       <footer>
         <Footer />
