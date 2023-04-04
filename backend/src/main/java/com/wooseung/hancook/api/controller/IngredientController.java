@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -35,6 +36,26 @@ public class IngredientController {
         return ResponseEntity.status(HttpStatus.OK).body(ingredientResponseDtoList);
     }
 
+    //    // 이름 입력받아 재료 정보 반환
+//    @GetMapping("/getbyname")
+//    public ResponseEntity<IngredientResponseDto> getIngredientByName(@RequestParam("name") String name, @RequestParam("lan") int lan) {
+//        IngredientResponseDto ingredientResponseDto = ingredientService.getIngredientByName(name, lan);
+//        return ResponseEntity.status(HttpStatus.OK).body(ingredientResponseDto);
+//    }
+
+    // 이름 입력받아 재료 정보 반환
+    @GetMapping("/getbyname")
+    public ResponseEntity<List<IngredientResponseDto>> getIngredientByName(@RequestParam("name") List<String> names, @RequestParam("lan") int lan) {
+        List<IngredientResponseDto> ingredientResponseDtoList = new ArrayList<>();
+
+        for (String name : names) {
+            IngredientResponseDto ingredientResponseDto = ingredientService.getIngredientByName(name, lan);
+            ingredientResponseDtoList.add(ingredientResponseDto);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(ingredientResponseDtoList);
+    }
+
     // 대분류 반환
     @GetMapping("/large")
     public ResponseEntity<List<String>> getLarge(@RequestParam("lan") int lan) {
@@ -60,13 +81,6 @@ public class IngredientController {
     @GetMapping("/id")
     public ResponseEntity<IngredientResponseDto> getIngredientById(@RequestParam("ingredientId") Long ingredientId, @RequestParam("lan") int lan) {
         IngredientResponseDto ingredientResponseDto = ingredientService.getIngredientByIngredientId(ingredientId, lan);
-        return ResponseEntity.status(HttpStatus.OK).body(ingredientResponseDto);
-    }
-
-    // 이름 입력받아 재료 정보 반환
-    @GetMapping("/getbyname")
-    public ResponseEntity<IngredientResponseDto> getIngredientByName(@RequestParam("name") String name, @RequestParam("lan") int lan) {
-        IngredientResponseDto ingredientResponseDto = ingredientService.getIngredientByName(name, lan);
         return ResponseEntity.status(HttpStatus.OK).body(ingredientResponseDto);
     }
 
