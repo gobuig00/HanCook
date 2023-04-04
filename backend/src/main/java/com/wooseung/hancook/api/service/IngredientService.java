@@ -1,5 +1,6 @@
 package com.wooseung.hancook.api.service;
 
+import com.wooseung.hancook.api.response.IngredientCardResponseDto;
 import com.wooseung.hancook.api.response.IngredientResponseDto;
 
 import java.util.List;
@@ -24,6 +25,6 @@ public interface IngredientService {
 
     IngredientResponseDto getIngredientByIngredientId(Long ingredientId, int lan);
     IngredientResponseDto getIngredientByName(String name, int lan);
-
+    IngredientCardResponseDto getIngredientCardByIngredientId(Long ingredientId, int lan);
 
 }
