@@ -45,12 +45,14 @@ public class IngredientController {
 
     // 이름 입력받아 재료 정보 반환
     @GetMapping("/getbyname")
-    public ResponseEntity<List<IngredientResponseDto>> getIngredientByName(@RequestParam("name") List<String> names, @RequestParam("lan") int lan) {
+    public ResponseEntity<List<IngredientResponseDto>> getIngredientByName(@RequestParam("name") String[] names, @RequestParam("lan") int lan) {
         List<IngredientResponseDto> ingredientResponseDtoList = new ArrayList<>();
 
         for (String name : names) {
-            IngredientResponseDto ingredientResponseDto = ingredientService.getIngredientByName(name, lan);
-            ingredientResponseDtoList.add(ingredientResponseDto);
+            if (ingredientService.searchName(name) == 1) {
+                IngredientResponseDto ingredientResponseDto = ingredientService.getIngredientByName(name, lan);
+                ingredientResponseDtoList.add(ingredientResponseDto);
+            }
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(ingredientResponseDtoList);
