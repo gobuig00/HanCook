@@ -114,7 +114,7 @@ public class RecipeServiceImpl implements RecipeService {
 
         // ingredientList를 돌면서 ref 값이 존재하는 데이터를 찾는다.
         for (Ingredient ingredientEntity : ingredientList) {
-            if (ingredientEntity.getRef() != null && ingredientEntity.getRef() > 0 && ingredientEntity.getRef() <= 730) {
+            if (ingredientEntity.getRef() != null && ingredientEntity.getRef() > 0 && ingredientEntity.getRef() <= 728) {
                 // ref 값이 존재하면 componentList를 돌면서 해당 재료의 이름을 ref 값에 해당하는 이름으로 치환한다.
                 for (Component component : componentList) {
                     if (component.getName().equals(ingredientEntity.getName())) {
