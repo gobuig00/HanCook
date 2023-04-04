@@ -7,6 +7,8 @@ import java.util.List;
 public interface IngredientService {
 
     List<IngredientResponseDto> getRandomIngredient(int lan);
+    List<IngredientResponseDto> getRandomMeatIngredient(int lan);
+    List<IngredientResponseDto> getRandomVegetableIngredient(int lan);
 
     List<String> getLargeList(int lan);
 
@@ -15,5 +17,12 @@ public interface IngredientService {
     List<String> getNameList(String medium, int lan);
 
     int searchName(String name);
+
+    String searchById(Long id);
+
+    Long getIngredientIdByName(String name);
+
+    IngredientResponseDto getIngredientByIngredientId(Long ingredientId, int lan);
+
 
 }

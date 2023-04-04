@@ -9,12 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FoodRecordRequestDto {
-    private String foodName;
-    private int calo;
-    private int carbs;
-    private int protein;
-    private int fat;
-    private int salt;
-    private int ch;
-    private int sugar;
+    private Long no;
+    private String name;
+    private int servingSize;
+    private String unit;
+    private double kcal;
+    private double carb;
+    private double protein;
+    private double fat;
+    private double sugar;
+    private double salt;
+    private double cholesterol;
 }

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
@@ -16,5 +17,9 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     List<Recipe> findRandomRecipe();
 
     List<Recipe> findAllByNameContaining(String name);
+
+    Optional<Recipe> findRecipeByName(String name);
+
+    Long findRecipeIdByName(String name);
 
 }
