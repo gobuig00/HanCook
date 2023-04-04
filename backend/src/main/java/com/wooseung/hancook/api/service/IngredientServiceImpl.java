@@ -1,5 +1,6 @@
 package com.wooseung.hancook.api.service;
 
+import com.wooseung.hancook.api.response.IngredientCardResponseDto;
 import com.wooseung.hancook.api.response.IngredientResponseDto;
 import com.wooseung.hancook.api.response.RecipeResponseDto;
 import com.wooseung.hancook.db.entity.Ingredient;
@@ -18,6 +19,7 @@ public class IngredientServiceImpl implements IngredientService {
     private final IngredientRepository ingredientRepository;
 
     private final PapagoTranslationService papagoTranslationService;
+    private final PronunciationService pronunciationService;
 
     @Override
     public List<IngredientResponseDto> getRandomIngredient(int lan) {
@@ -188,5 +190,23 @@ public class IngredientServiceImpl implements IngredientService {
         }
 
         return ingredientResponseDto;
+    }
+
+    @Override
+    public IngredientCardResponseDto getIngredientCardByIngredientId(Long ingredientId, int lan) {
+        Optional<Ingredient> ingredient = ingredientRepository.findByIngredientId(ingredientId);
+
+        IngredientCardResponseDto ingredientCardResponseDto = IngredientCardResponseDto.of(ingredient.get());
+
+        // 영문일때
+        if (lan == 1) {
+            ingredientCardResponseDto.setLarge(papagoTranslationService.translateKoreanIntoEnglish(ingredientCardResponseDto.getLarge()));
+            ingredientCardResponseDto.setMedium(papagoTranslationService.translateKoreanIntoEnglish(ingredientCardResponseDto.getMedium()));
+        }
+
+        ingredientCardResponseDto.setEngName(papagoTranslationService.translateKoreanIntoEnglish(ingredientCardResponseDto.getName()));
+        ingredientCardResponseDto.setPronunciation(pronunciationService.conversionPronunciation(ingredientCardResponseDto.getName()));
+
+        return ingredientCardResponseDto;
     }
 }
