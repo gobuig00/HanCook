@@ -19,7 +19,6 @@ function useIngredientPrice() {
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_API_URL}/deal/detail`, { params })
     .then(function (response) {
-      console.log()
       setData(response.data);
     })
     .catch(function (err) {
@@ -88,7 +87,7 @@ function Ingredient() {
         {/* <Table /> */}
         <div className='green-line'></div>
         <div className='line-chart'>
-        {priceData ? (
+        {priceData && priceData.length > 0 ? (
           <LineChart priceData={priceData}/>
         ) : ('Loading...')
         }
