@@ -75,6 +75,7 @@ export default function Profile() {
             });
             
             setProfile(createProfile(response.data));
+            console.log(profile)
         }
         } catch (error) {
             navigate('/login')
@@ -98,12 +99,12 @@ export default function Profile() {
                             </div>
                         </div>
                         <div className='profile-nutrition'>
-                                <Donut
-                                    keyList = {Object.keys(profile.nutrition)}
-                                    valueList = {Object.values(profile.nutrition)}
-                                    title = 'Daily Nutrition Data'
-                                    // centerText ='210kcal'
-                                />
+                            <Donut
+                                keyList = {['carbs', 'protein', 'fat']}
+                                valueList = {profile.nutrition.carbs ? Object.values(profile.nutrition) : [0, 0, 0]}
+                                title = {profile.nutrition.carbs ? 'Daily Nutrition Data' : 'There is No Nutrition Data'}
+                                centerText ={profile.nutrition.carbs ? `${profile.totalCalories} kcal` : ''}
+                            />
                         </div>
                         <div className='profile-other'>
                             <div className='profile-sub-title'>Other Ingredients</div>

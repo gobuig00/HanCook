@@ -44,8 +44,8 @@ export default function Login() {
                 // 로그인 실패 시 할 일
                 setShow(true)
             }
-        } catch (error) {
-            console.error('로그인 오류 : ', error);
+        } catch {
+            setShow(true)
         }
     };
 

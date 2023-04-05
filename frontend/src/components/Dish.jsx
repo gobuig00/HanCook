@@ -229,19 +229,15 @@ function Dish() {
             </div>
           </div>
         </div>
-        {result[1] ? (
-          <>
-            <div className='profile-nutrition dish-donut'>
-              <Donut
-                keyList={result[1] ? Object.keys(result[1].nutrient) : []}
-                valueList={result[1] ? Object.values(result[1].nutrient).map((value) => parseInt(value, 10)) : []}
-                title="Nutrition"
-                centerText={result[1] ? `${result[1].other.kcal[0]} kcal` : ''}
-              />
-            </div>
-            <Table body={result[1] ? result[1].other : []} head={['nutrients', 'amount@(% daily value)', 'per 100g']}/>
-          </>
-        ) : ('No nutritional information data.')}
+          <div className='profile-nutrition dish-donut'>
+            <Donut
+              keyList={['carbs', 'fat', 'protein']}
+              valueList={result[1] ? Object.values(result[1].nutrient).map((value) => parseInt(value, 10)) : [0, 0, 0]}
+              title={result[1] ? "Nutrition" : 'There is No Nutrition Data'}
+              centerText={result[1] ? `${result[1].other.kcal[0]} kcal` : ''}
+            />
+          </div>
+          <Table body={result[1] ? result[1].other : []} head={['nutrients', 'amount@(% daily value)', 'per 100g']}/>
         <div className='green-line'></div>
         <div className='related-food-text'>Recipe</div>
         <br />
