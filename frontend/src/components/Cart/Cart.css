@@ -55,7 +55,7 @@
 .cart-receipt{
     border: 6px solid #c4e1c5;
     border-radius: 15px;
-    margin: 10vw 3vw 5vw 3vw;
+    margin: 10vw 3vw 10vh 3vw;
     padding: 3vh 5vw;
     box-shadow: 0px 7px 6px -1px rgba(0,0,0,0.28);
     -moz-box-shadow: 0px 7px 6px -1px rgba(0,0,0,0.28);
