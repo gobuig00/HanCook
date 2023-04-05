@@ -29,8 +29,8 @@ export default function Profile() {
         const totalCalories = todaysData.reduce((total, entry) => total + entry.kcal, 0);
         const nutrition = {
             carbs: todaysData.reduce((total, entry) => total + entry.carb, 0),
-            protein: todaysData.reduce((total, entry) => total + entry.protein, 0),
             fat: todaysData.reduce((total, entry) => total + entry.fat, 0),
+            protein: todaysData.reduce((total, entry) => total + entry.protein, 0),
         };
         const other = {
             'cholesterol (mg)': todaysData.reduce((total, entry) => total + entry.cholesterol, 0),
@@ -100,7 +100,7 @@ export default function Profile() {
                         </div>
                         <div className='profile-nutrition'>
                             <Donut
-                                keyList = {['carbs', 'protein', 'fat']}
+                                keyList = {['carbs', 'fat', 'protein']}
                                 valueList = {profile.nutrition.carbs ? Object.values(profile.nutrition) : [0, 0, 0]}
                                 title = {profile.nutrition.carbs ? 'Daily Nutrition Data' : 'There is No Nutrition Data'}
                                 centerText ={profile.nutrition.carbs ? `${profile.totalCalories} kcal` : ''}
