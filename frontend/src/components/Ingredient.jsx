@@ -3,7 +3,6 @@ import Donut from './Donut';
 import './Ingredient.css';
 import Table from './Table';
 import LineChart from './LineChart';
-import Img from '../images/takepicture.jpg';
 import AddShoppingCart from '../icons/AddShoppingCart.svg';
 import logo from '../images/logo.png'
 import { Link, useNavigate, useParams } from 'react-router-dom';
