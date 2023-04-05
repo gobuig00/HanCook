@@ -1,9 +1,6 @@
 package com.wooseung.hancook.db.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +9,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Getter
+@Setter
 public class Cart {
 
     @Id
@@ -24,10 +22,10 @@ public class Cart {
     private User user;
 
     @Column(nullable = false, name = "ingredient_name")
-    private String ingredientName;
+    private String ingreName;
 
     public Cart(User user, String ingredientName) {
         this.user = user;
-        this.ingredientName = ingredientName;
+        this.ingreName = ingredientName;
     }
 }
