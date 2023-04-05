@@ -13,7 +13,7 @@ public class MartResponseDto {
 
     private Long martId;
     private Long ingredientId;
-    private String ingreName;
+    private String ingredientName;
     private int itemNo;
     private String itemName;
     private String itemPrice;
