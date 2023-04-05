@@ -4,6 +4,8 @@ import com.wooseung.hancook.api.response.ComponentResponseDto;
 import com.wooseung.hancook.api.response.ProcessResponseDto;
 import com.wooseung.hancook.api.response.RecipeCardResponseDto;
 import com.wooseung.hancook.api.response.RecipeResponseDto;
+import com.wooseung.hancook.common.exception.ApiException;
+import com.wooseung.hancook.common.exception.ExceptionEnum;
 import com.wooseung.hancook.db.entity.Component;
 import com.wooseung.hancook.db.entity.Ingredient;
 import com.wooseung.hancook.db.entity.Process;
@@ -239,6 +241,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Long getRecipeIdByName(String name) {
         Optional<Recipe> recipe = recipeRepository.findRecipeByName(name);
+        if (recipe.isEmpty()) throw new ApiException(ExceptionEnum.INGREDIENT_NOT_EXIST_EXCEPTION);
         return recipe.get().getRecipeId();
     }
 

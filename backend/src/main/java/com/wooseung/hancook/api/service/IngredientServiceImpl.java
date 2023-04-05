@@ -3,6 +3,8 @@ package com.wooseung.hancook.api.service;
 import com.wooseung.hancook.api.response.IngredientCardResponseDto;
 import com.wooseung.hancook.api.response.IngredientResponseDto;
 import com.wooseung.hancook.api.response.RecipeResponseDto;
+import com.wooseung.hancook.common.exception.ApiException;
+import com.wooseung.hancook.common.exception.ExceptionEnum;
 import com.wooseung.hancook.db.entity.Ingredient;
 import com.wooseung.hancook.db.repository.IngredientRepository;
 import lombok.RequiredArgsConstructor;
@@ -157,12 +159,14 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public Long getIngredientIdByName(String name) {
         Optional<Ingredient> ingredient = ingredientRepository.findIngredientByName(name);
-        return ingredient.get().getIngredientId();
+        if (ingredient.isEmpty()) throw new ApiException(ExceptionEnum.INGREDIENT_NOT_EXIST_EXCEPTION);
+        else return ingredient.get().getIngredientId();
     }
 
     @Override
     public IngredientResponseDto getIngredientByIngredientId(Long ingredientId, int lan) {
         Optional<Ingredient> ingredient = ingredientRepository.findByIngredientId(ingredientId);
+        if (ingredient.isEmpty()) throw new ApiException(ExceptionEnum.INGREDIENT_NOT_EXIST_EXCEPTION);
 
         IngredientResponseDto ingredientResponseDto = IngredientResponseDto.of(ingredient.get());
 
@@ -179,6 +183,7 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public IngredientResponseDto getIngredientByName(String name, int lan) {
         Optional<Ingredient> ingredient = ingredientRepository.findIngredientByName(name);
+        if (ingredient.isEmpty()) throw new ApiException(ExceptionEnum.INGREDIENT_NOT_EXIST_EXCEPTION);
 
         IngredientResponseDto ingredientResponseDto = IngredientResponseDto.of(ingredient.get());
 
@@ -195,6 +200,7 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public IngredientCardResponseDto getIngredientCardByIngredientId(Long ingredientId, int lan) {
         Optional<Ingredient> ingredient = ingredientRepository.findByIngredientId(ingredientId);
+        if (ingredient.isEmpty()) throw new ApiException(ExceptionEnum.INGREDIENT_NOT_EXIST_EXCEPTION);
 
         IngredientCardResponseDto ingredientCardResponseDto = IngredientCardResponseDto.of(ingredient.get());
 
