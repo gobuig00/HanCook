@@ -64,6 +64,7 @@ function Start() {
             <p className='main-smaill-text-lineheight'>You can get information about food</p>
             <p className='main-smaill-text-lineheight'>just by taking pictures.</p>
           </div>
+          <div className='for-margin'></div>
         </div>
       </main>
       <footer>
