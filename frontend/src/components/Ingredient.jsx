@@ -48,6 +48,40 @@ function useRelatedFoodAPI(cardData) {
   return data;
 }
 
+function useNutrition() {
+  const params = {
+    ingredientId: useParams().id,
+  };
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_API_URL}/nutrient/ingredient`, { params })
+    .then(function (response) {
+      const size = response.data.servingSize / 100;
+      const nutrientData = {
+        nutrient: {
+          carbs: response.data.carb,
+          fat: response.data.fat,
+          protein: response.data.protein,
+        },
+        other: {
+          carbs: [`${response.data.carb}(${(response.data.carb/3.25).toFixed(2)}%)`, `${(response.data.carb / size).toFixed(2)}(${(response.data.carb / size/3.25).toFixed(2)})%`],
+          fat: [`${response.data.fat}(${(response.data.fat/5).toFixed(2)}%)`, `${(response.data.fat / size).toFixed(2)}(${(response.data.fat / size/5).toFixed(2)})%`],
+          protein: [`${response.data.protein}(${(response.data.protein*2).toFixed(2)}%)`, `${(response.data.protein / size).toFixed(2)}(${(response.data.protein*2 / size).toFixed(2)})%`],
+          cholesterol: [`${response.data.cholesterol}(${(response.data.cholesterol/2).toFixed(2)}%)`, `${(response.data.cholesterol / size).toFixed(2)}(${(response.data.cholesterol / size/2).toFixed(2)})%`],
+          kcal: [`${response.data.kcal}(${(response.data.kcal/22).toFixed(2)}%)`, `${(response.data.kcal / size).toFixed(2)}(${(response.data.kcal / size/22).toFixed(2)})%`],
+          sugar: [`${response.data.sugar}(${(response.data.sugar).toFixed(2)}%)`, `${(response.data.sugar / size).toFixed(2)}(${(response.data.sugar / size).toFixed(2)})%`],
+          salt: [`${response.data.salt}(${(response.data.salt/20).toFixed(2)}%)`, `${(response.data.salt / size).toFixed(2)}(${(response.data.salt / size/20).toFixed(2)})%`],
+        },
+      };
+      setData(nutrientData);
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+  }, []);
+  return data;
+}
+
 const useMoveDish = () => {
   const navigate = useNavigate();
   const handleMoveDish = (id) => {
@@ -88,6 +122,7 @@ function Ingredient() {
   const handleMoveDish = useMoveDish();
   const priceData = useIngredientPrice();
   const data = useRelatedFoodAPI(cardData);
+  const nutrientData = useNutrition();
 
   return (
     <div className='background-green'>
@@ -109,8 +144,15 @@ function Ingredient() {
         ) : ('Loading...')
         }
         </div>
-        {/* <Donut /> */}
-        {/* <Table /> */}
+        <div className='profile-nutrition dish-donut'>
+          <Donut
+            keyList={['carbs', 'fat', 'protein']}
+            valueList={nutrientData ? Object.values(nutrientData.nutrient) : [0, 0, 0]}
+            title={nutrientData ? "Nutrition" : 'There is No Nutrition Data'}
+            centerText={nutrientData ? ` kcal` : ''}
+          />
+        </div>
+        <Table body={nutrientData ? nutrientData.other : []} head={['nutrients', 'amount@(% daily value)', 'per 100g']}/>
         <div className='green-line'></div>
         <div className='line-chart'>
         {priceData && priceData.length > 0 ? (
