@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface MartService {
 
-    List<MartResponseDto> getMartList(Long ingredientId, int mart);
+    List<MartResponseDto> getMartList(String ingreName);
 
 }
