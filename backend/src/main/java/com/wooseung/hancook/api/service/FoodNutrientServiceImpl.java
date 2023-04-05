@@ -1,7 +1,9 @@
 package com.wooseung.hancook.api.service;
 
 import com.wooseung.hancook.api.response.FoodNutrientResponseDto;
+import com.wooseung.hancook.api.response.IngredientResponseDto;
 import com.wooseung.hancook.db.entity.FoodNutrient;
+import com.wooseung.hancook.db.entity.Ingredient;
 import com.wooseung.hancook.db.repository.FoodNutrientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ public class FoodNutrientServiceImpl implements FoodNutrientService {
 
     private final PapagoTranslationService papagoTranslationService;
     private final DetectLanguageService detectLanguageService;
+    private final IngredientService ingredientService;
 
     @Override
     public FoodNutrientResponseDto getNutrientById(Long id) {
@@ -41,6 +44,12 @@ public class FoodNutrientServiceImpl implements FoodNutrientService {
         FoodNutrientResponseDto foodNutrientResponseDto = FoodNutrientResponseDto.of(foodNutrientEntity);
 
         return foodNutrientResponseDto;
+    }
+
+    @Override
+    public FoodNutrientResponseDto getNutrientByIngredientId(Long ingredientId) {
+        IngredientResponseDto ingredientResponseDto = ingredientService.getIngredientByIngredientId(ingredientId, 0);
+        return getNutrientByName(ingredientResponseDto.getName());
     }
 
 }

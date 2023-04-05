@@ -1,7 +1,10 @@
 package com.wooseung.hancook.api.service;
 
+import com.wooseung.hancook.api.response.IngredientCardResponseDto;
 import com.wooseung.hancook.api.response.IngredientResponseDto;
 import com.wooseung.hancook.api.response.RecipeResponseDto;
+import com.wooseung.hancook.common.exception.ApiException;
+import com.wooseung.hancook.common.exception.ExceptionEnum;
 import com.wooseung.hancook.db.entity.Ingredient;
 import com.wooseung.hancook.db.repository.IngredientRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,7 @@ public class IngredientServiceImpl implements IngredientService {
     private final IngredientRepository ingredientRepository;
 
     private final PapagoTranslationService papagoTranslationService;
+    private final PronunciationService pronunciationService;
 
     @Override
     public List<IngredientResponseDto> getRandomIngredient(int lan) {
@@ -146,21 +150,23 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public String searchById(Long id){
+    public String searchById(Long id) {
         Optional<Ingredient> ingredientName = ingredientRepository.findByIngredientId(id);
-        if(ingredientName.isEmpty())   return "Empty";
+        if (ingredientName.isEmpty()) return "Empty";
         else return ingredientName.get().getName();
     }
 
     @Override
     public Long getIngredientIdByName(String name) {
         Optional<Ingredient> ingredient = ingredientRepository.findIngredientByName(name);
-        return ingredient.get().getIngredientId();
+        if (ingredient.isEmpty()) throw new ApiException(ExceptionEnum.INGREDIENT_NOT_EXIST_EXCEPTION);
+        else return ingredient.get().getIngredientId();
     }
 
     @Override
     public IngredientResponseDto getIngredientByIngredientId(Long ingredientId, int lan) {
         Optional<Ingredient> ingredient = ingredientRepository.findByIngredientId(ingredientId);
+        if (ingredient.isEmpty()) throw new ApiException(ExceptionEnum.INGREDIENT_NOT_EXIST_EXCEPTION);
 
         IngredientResponseDto ingredientResponseDto = IngredientResponseDto.of(ingredient.get());
 
@@ -177,6 +183,7 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public IngredientResponseDto getIngredientByName(String name, int lan) {
         Optional<Ingredient> ingredient = ingredientRepository.findIngredientByName(name);
+        if (ingredient.isEmpty()) throw new ApiException(ExceptionEnum.INGREDIENT_NOT_EXIST_EXCEPTION);
 
         IngredientResponseDto ingredientResponseDto = IngredientResponseDto.of(ingredient.get());
 
@@ -188,5 +195,24 @@ public class IngredientServiceImpl implements IngredientService {
         }
 
         return ingredientResponseDto;
+    }
+
+    @Override
+    public IngredientCardResponseDto getIngredientCardByIngredientId(Long ingredientId, int lan) {
+        Optional<Ingredient> ingredient = ingredientRepository.findByIngredientId(ingredientId);
+        if (ingredient.isEmpty()) throw new ApiException(ExceptionEnum.INGREDIENT_NOT_EXIST_EXCEPTION);
+
+        IngredientCardResponseDto ingredientCardResponseDto = IngredientCardResponseDto.of(ingredient.get());
+
+        // 영문일때
+        if (lan == 1) {
+            ingredientCardResponseDto.setLarge(papagoTranslationService.translateKoreanIntoEnglish(ingredientCardResponseDto.getLarge()));
+            ingredientCardResponseDto.setMedium(papagoTranslationService.translateKoreanIntoEnglish(ingredientCardResponseDto.getMedium()));
+        }
+
+        ingredientCardResponseDto.setEngName(papagoTranslationService.translateKoreanIntoEnglish(ingredientCardResponseDto.getName()));
+        ingredientCardResponseDto.setPronunciation(pronunciationService.conversionPronunciation(ingredientCardResponseDto.getName()));
+
+        return ingredientCardResponseDto;
     }
 }

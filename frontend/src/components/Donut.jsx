@@ -27,6 +27,9 @@ const alwaysDrawCenterText = (centerText) => ({
 export default function Donut({ keyList, valueList, title, centerText }) {
   const percentage = function() {
     const sum = valueList.reduce((a, b) => a + b, 0);
+    if (sum === 0) {
+      return [0, 0, 0]
+    }
     const array = []
     valueList.map((item) => {
       array.push((item/sum*100).toFixed(0))

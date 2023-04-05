@@ -44,20 +44,24 @@ export default function Login() {
                 // 로그인 실패 시 할 일
                 setShow(true)
             }
-        } catch (error) {
-            console.error('로그인 오류 : ', error);
+        } catch {
+            setShow(true)
         }
     };
 
     const handleClickJoinBtn = () => {
         navigate('/SignUp');
     }
+
+    const moveToMain = () => {
+        navigate('/')
+    }
     
 
     return (
         <div className="login-container">
             <div className='login-header'>
-                <img src={logo} className='login-logo' alt="로고" />
+                <img src={logo} className='login-logo' alt="로고" onClick={moveToMain}/>
             </div>
             <div className="login-inside">
                 <h1 className="login-title">Sign In</h1>

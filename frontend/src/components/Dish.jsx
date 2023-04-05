@@ -30,18 +30,18 @@ export function Youtube(props) {
 function useRecipeAPI() {
   const params = {
     recipeId: useParams().id,
-    lan: 0,
+    lan: 1,
   };
   const [data, setData] = useState(null);
   const [nutrient, setNutrient] = useState(null);
   const [originData, setOriginData] = useState(null);
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/recipe/id`, { params })
+    axios.get(`${process.env.REACT_APP_API_URL}/recipe/card`, { params })
     .then(function (response) {
       setData(response.data);
     })
-    .catch(function (err) {
-      console.log(err);
+    .catch(function () {
+      console.log('There is no food data');
     });
   }, []);
 
@@ -51,7 +51,6 @@ function useRecipeAPI() {
       axios
         .get(`${process.env.REACT_APP_API_URL}/nutrient/food/${foodname}`)
         .then(function (response) {
-          console.log(response.data)
           const size = response.data.servingSize / 100;
           const nutrientData = {
             nutrient: {
@@ -72,8 +71,8 @@ function useRecipeAPI() {
           setNutrient(nutrientData);
           setOriginData(response.data);
         })
-        .catch(function (err) {
-          console.log(err);
+        .catch(() => {
+          console.log('There are no nutrient data.');
         });
     }
   }, [data]);
@@ -182,18 +181,16 @@ function Dish() {
       'Authorization' : `Bearer ${localStorage.getItem('hancook-token')}`,
       'Content-Type': 'application/json',
     }
-    const foodRecordRequestDto = result[2]
-    axios.post(`${process.env.REACT_APP_API_URL}/record/register`, JSON.stringify(foodRecordRequestDto), { params: params, headers: headers })
-    .then((res) => {
-      console.log(res)
+    const foodRecordRequestDto = JSON.stringify(result[2])
+    axios.post(`${process.env.REACT_APP_API_URL}/record/register`, foodRecordRequestDto , { params: params, headers: headers })
+    .then(() => {
       setModal(false);
       setToastData('Add this menu to the list you ate today');
       setShow(true);
     })
-    .catch((err) => {
-      console.log(err)
+    .catch(() => {
       setModal(false);
-      setToastData('Fail');
+      setToastData('Unable to add due to lack of nutrient data.');
       setShow(true);
     })
   }
@@ -216,9 +213,9 @@ function Dish() {
             <img src={AddShoppingCart} alt="" className='add-shopping-cart-icon' onClick={openShoppingCartModal}/>
             {data ? (
               <>
-                <span className='ingredient-name'>{data.recipe.name}</span>
+                <span className='ingredient-name'>{data.recipe.engName}</span>
                 <br />
-                <span className='ingredient-pronunciation'></span>
+                <span className='ingredient-pronunciation'>{data.recipe.pronunciation}</span>
               </>
               ) : (
                 'Loading...'
@@ -232,19 +229,15 @@ function Dish() {
             </div>
           </div>
         </div>
-        {result[1] ? (
-          <>
-            <div className='profile-nutrition dish-donut'>
-              <Donut
-                keyList={result[1] ? Object.keys(result[1].nutrient) : []}
-                valueList={result[1] ? Object.values(result[1].nutrient).map((value) => parseInt(value, 10)) : []}
-                title="Nutrition"
-                centerText={result[1] ? `${result[1].other.kcal} kcal` : ''}
-              />
-            </div>
-            <Table body={result[1] ? result[1].other : []} head={['nutrients', 'amount@(% daily value)', 'per 100g']}/>
-          </>
-        ) : ('영양 정보 데이터가 없습니다.')}
+          <div className='profile-nutrition dish-donut'>
+            <Donut
+              keyList={['carbs', 'fat', 'protein']}
+              valueList={result[1] ? Object.values(result[1].nutrient).map((value) => parseInt(value, 10)) : [0, 0, 0]}
+              title={result[1] ? "Nutrition" : 'There is No Nutrition Data'}
+              centerText={result[1] ? `${result[1].other.kcal[0]} kcal` : ''}
+            />
+          </div>
+          <Table body={result[1] ? result[1].other : []} head={['nutrients', 'amount@(% daily value)', 'per 100g']}/>
         <div className='green-line'></div>
         <div className='related-food-text'>Recipe</div>
         <br />
