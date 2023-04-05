@@ -10,7 +10,8 @@ export const toggleExpandUtil = (prevExpanded, ingredient) => ({
   };
   
   export const selectItemUtil = (prevSelectedItems, item, index) => {
-    if (prevSelectedItems[index].some((selectedItem) => selectedItem.title === item.title)) {
+    console.log(prevSelectedItems)
+    if (prevSelectedItems[index].some((selectedItem) => selectedItem.ingredientName === item.ingredientName)) {
       console.log('Item already added.');
       return prevSelectedItems;
     }
@@ -27,7 +28,7 @@ export const toggleExpandUtil = (prevExpanded, ingredient) => ({
   
   export const getTotalPriceByMartUtil = (items) => {
     return items.reduce((totalPrice, currentItem) => {
-      return totalPrice + parseInt(currentItem.price);
+      return totalPrice + parseInt(currentItem.itemPrice);
     }, 0);
   };
   

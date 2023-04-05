@@ -20,14 +20,16 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 public class PapagoTranslationServiceImpl implements PapagoTranslationService {
+//    파파고 1
 //    private static final String CLIENT_ID = "YtKB9hRoR31AAAPYfPuR";
 //    private static final String CLIENT_SECRET = "vh5BKsU9nD";
+//    파파고 2
 //    private static final String CLIENT_ID = "7TaJvP_1du1J6ucbvYGy";
 //    private static final String CLIENT_SECRET = "5rFX_BEBOm";
-    //    파파고 3
+//    파파고 3
     private static final String CLIENT_ID = "stlZPjKDtCfE_HIowJSa";
     private static final String CLIENT_SECRET = "EIIrQ1YWDL";
-    //    파파고 4
+//    파파고 4
 //    private static final String CLIENT_ID = "aJ4wDKE0DKwUOiVODqe1";
 //    private static final String CLIENT_SECRET = "EiEoqEumEE";
 //    파파고 5

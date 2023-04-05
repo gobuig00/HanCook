@@ -29,8 +29,8 @@ export default function Profile() {
         const totalCalories = todaysData.reduce((total, entry) => total + entry.kcal, 0);
         const nutrition = {
             carbs: todaysData.reduce((total, entry) => total + entry.carb, 0),
-            protein: todaysData.reduce((total, entry) => total + entry.protein, 0),
             fat: todaysData.reduce((total, entry) => total + entry.fat, 0),
+            protein: todaysData.reduce((total, entry) => total + entry.protein, 0),
         };
         const other = {
             'cholesterol (mg)': todaysData.reduce((total, entry) => total + entry.cholesterol, 0),
@@ -75,6 +75,7 @@ export default function Profile() {
             });
             
             setProfile(createProfile(response.data));
+            console.log(profile)
         }
         } catch (error) {
             navigate('/login')
@@ -98,12 +99,12 @@ export default function Profile() {
                             </div>
                         </div>
                         <div className='profile-nutrition'>
-                                <Donut
-                                    keyList = {Object.keys(profile.nutrition)}
-                                    valueList = {Object.values(profile.nutrition)}
-                                    title = 'Daily Nutrition Data'
-                                    // centerText ='210kcal'
-                                />
+                            <Donut
+                                keyList = {['carbs', 'fat', 'protein']}
+                                valueList = {profile.nutrition.carbs ? Object.values(profile.nutrition) : [0, 0, 0]}
+                                title = {profile.nutrition.carbs ? 'Daily Nutrition Data' : 'There is No Nutrition Data'}
+                                centerText ={profile.nutrition.carbs ? `${profile.totalCalories} kcal` : ''}
+                            />
                         </div>
                         <div className='profile-other'>
                             <div className='profile-sub-title'>Other Ingredients</div>
