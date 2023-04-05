@@ -52,6 +52,10 @@ export default function SignUp() {
         setGender(event.target.value);
     };
 
+    const moveToMain = () => {
+        navigate('/')
+    }
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = {
@@ -83,7 +87,7 @@ export default function SignUp() {
     return (
         <div className="signup-container">
             <div className='signup-header'>
-                <img src={logo} className='signup-logo' alt="로고" />
+                <img src={logo} className='signup-logo' alt="로고" onClick={moveToMain}/>
             </div>
             <div className="signup-inside">
                 <h1 className="signup-title">Sign up</h1>
