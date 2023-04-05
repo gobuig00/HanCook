@@ -69,7 +69,6 @@ public class ConsumerWorker implements Runnable {
             consumer.close();
         }
     }
-    // asdfsda
     private void addLocalFileBuffer(ConsumerRecord<String, String> record) {
 
         List<String> buffer = bufferString.getOrDefault(record.partition(), new ArrayList<>());
@@ -130,12 +129,7 @@ public class ConsumerWorker implements Runnable {
                 // 날짜 포매팅
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
-                String fileName = "../" + dateFormat.format(today);
-
-        /*        Configuration configuration = new Configuration();
-                configuration.set("fs.defaultFS", "hdfs://localhost:9000"); // 하둡 HDFS 주소
-                FileSystem hdfsFileSystem = FileSystem.get(configuration);
-                FSDataOutputStream fileOutputStream = hdfsFileSystem.create(new org.apache.hadoop.fs.Path(fileName));*/
+                String fileName = "./data/agri/" + dateFormat.format(today);
 
                 File Folder = new File(fileName);
 
@@ -146,7 +140,7 @@ public class ConsumerWorker implements Runnable {
                         e.getStackTrace();
                     }
                 }
-                fileName += "/" +dateFormat.format(today) + "-" + partitionNo + "-" + currentFileOffset.get(partitionNo) + ".csv";
+                fileName += "/" + dateFormat.format(today) + "-" + partitionNo + "-" + currentFileOffset.get(partitionNo) + ".csv";
                 Path path = Paths.get(fileName);
                 System.out.println(path);
                 BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8);

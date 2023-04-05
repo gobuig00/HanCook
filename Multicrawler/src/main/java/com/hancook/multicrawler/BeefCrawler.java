@@ -90,7 +90,7 @@ public class BeefCrawler implements Runnable {
 
         // Jsoup를 이용해서 크롤링
                 String pageUrl = "https://www.kamis.or.kr/customer/price/livestockRetail/period.do?action=daily&itemcategorycode=500&productrankcode=0&itemcode=" +
-                        itemcode + "&kindcode=" + kindcode + "&startday=" + today + "&endday=" + today;
+                        itemcode + "&kindcode=" + kindcode + "&startday=" + "20230201" + "&endday=" + "20230201";
 
                 Beef beef = new Beef();
                 beef.setDate(formatDay);

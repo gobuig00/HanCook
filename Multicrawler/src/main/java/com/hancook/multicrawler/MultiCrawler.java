@@ -70,8 +70,7 @@ public class MultiCrawler implements Runnable {
         Document doc = null;
 
         try {
-            int tempN=page;
-            while(page < tempN + 500) { // 500페이지씩 읽어옴
+            while(page < (number * 500) + 500) { // 500페이지씩 읽어옴
                 // 1일치 만큼만 데이터 읽어오기
                 System.out.println("page : "+page+"number : "+(number));
 
