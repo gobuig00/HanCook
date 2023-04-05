@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface MartRepository extends JpaRepository<Mart, Long> {
 
-    List<Mart> findAllByIngredientAndMartAndItemNameIsNotNull(Ingredient ingredient, int mart);
+//    List<Mart> findAllByIngredientAndMartAndItemNameIsNotNull(Ingredient ingredient, int mart);
+    List<Mart> findAllByIngredient(Ingredient ingredient);
 }

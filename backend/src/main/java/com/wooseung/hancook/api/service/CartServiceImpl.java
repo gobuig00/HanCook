@@ -1,10 +1,11 @@
 package com.wooseung.hancook.api.service;
 
-import com.wooseung.hancook.api.response.ComponentResponseDto;
+import com.wooseung.hancook.api.response.*;
 import com.wooseung.hancook.common.exception.ApiException;
 import com.wooseung.hancook.common.exception.ExceptionEnum;
 import com.wooseung.hancook.db.entity.Cart;
 import com.wooseung.hancook.db.entity.Component;
+import com.wooseung.hancook.db.entity.FoodRecord;
 import com.wooseung.hancook.db.entity.User;
 import com.wooseung.hancook.db.repository.CartRepository;
 import com.wooseung.hancook.db.repository.ComponentRepository;
@@ -14,7 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service("cartService")
 @RequiredArgsConstructor
@@ -26,6 +29,7 @@ public class CartServiceImpl implements CartService {
     private final ComponentRepository componentRepository;
 
     private final RecipeService recipeService;
+    private final PapagoTranslationService papagoTranslationService;
 
     @Override
     @Transactional
@@ -54,5 +58,18 @@ public class CartServiceImpl implements CartService {
                 .orElseThrow(() -> new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION));
 
         cartRepository.save(new Cart(user, component.getName()));
+    }
+
+    @Override
+    public List<CartResponseDto> getCartByEmail(String email) {
+        // 이메일에 맞는 유저 검색
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION));
+
+        List<Cart> cartEntityList = cartRepository.findAllByUserId(user.getId());
+
+        return cartEntityList.stream()
+                .map(entity -> CartResponseDto.of(entity))
+                .collect(Collectors.toList());
     }
 }
