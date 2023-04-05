@@ -1,13 +1,12 @@
 package com.wooseung.hancook.api.service;
 
-import com.wooseung.hancook.api.response.CartResponseDto;
 import com.wooseung.hancook.api.response.MartResponseDto;
+import com.wooseung.hancook.common.exception.ApiException;
+import com.wooseung.hancook.common.exception.ExceptionEnum;
 import com.wooseung.hancook.db.entity.Ingredient;
 import com.wooseung.hancook.db.entity.Mart;
-import com.wooseung.hancook.db.repository.CartRepository;
 import com.wooseung.hancook.db.repository.IngredientRepository;
 import com.wooseung.hancook.db.repository.MartRepository;
-import com.wooseung.hancook.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,9 @@ public class MartServiceImpl implements MartService {
     @Override
     public List<MartResponseDto> getMartList(String ingreName) {
         Optional<Ingredient> ingredient = ingredientRepository.findIngredientByName(ingreName);
-        List<Mart> martEntityList = martRepository.findAllByIngredient(ingredient.get());
+        if (ingredient.isEmpty()) throw new ApiException(ExceptionEnum.INGREDIENT_NOT_EXIST_EXCEPTION);
+
+        List<Mart> martEntityList = martRepository.findNineByIngredientId(ingredient.get().getIngredientId());
 
         return martEntityList.stream()
                 .map(entity -> MartResponseDto.of(entity))
