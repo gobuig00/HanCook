@@ -5,4 +5,5 @@ import com.wooseung.hancook.api.response.FoodNutrientResponseDto;
 public interface FoodNutrientService {
     FoodNutrientResponseDto getNutrientById(Long id);
     FoodNutrientResponseDto getNutrientByName(String name);
+    FoodNutrientResponseDto getNutrientByIngredientId(Long ingredientId);
 }
