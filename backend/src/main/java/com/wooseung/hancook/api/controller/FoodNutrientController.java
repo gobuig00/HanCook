@@ -22,6 +22,7 @@ public class FoodNutrientController {
 
     @GetMapping("/ingredient")
     public ResponseEntity<FoodNutrientResponseDto> getNutrientByIngredientId(@RequestParam("ingredientId") Long ingredientId) {
+        System.out.println(1);
         return ResponseEntity.status(HttpStatus.OK).body(foodNutrientService.getNutrientByIngredientId(ingredientId));
     }
 
