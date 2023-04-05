@@ -35,9 +35,4 @@ public class CartController {
         return new ResponseEntity<>(new BaseResponseBody("SUCCESS", 201), HttpStatus.CREATED);
     }
 
-//    @GetMapping("/get")
-//    public ResponseEntity<List<FoodRecordResponseDto>> getFoodRecordByUser(@AuthenticationPrincipal UserDetails userDetails) {
-//        Optional<User> user = userRepository.findByEmail(userDetails.getEmail());
-//        return ResponseEntity.status(HttpStatus.OK).body(foodRecordService.getFoodRecordById(user.get().getId()));
-//    }
 }

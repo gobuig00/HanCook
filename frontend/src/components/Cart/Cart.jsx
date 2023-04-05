@@ -19,32 +19,22 @@ import {
 
 
 export default function Cart() {
-  const [cartItems, setCartItems] = useState({
-    Radish: [
-      { title: 'title1title1title1title1title1title1title1title1title1title1title1title1title1title1title1title1title1', price: 100 }, // e-mart
-      { title: 'title2', price: 200 }, // lotte-mart
-      { title: 'title3', price: 300 }, // home-plus
-    ],
-    Onion: [
-      { title: 'title4', price: 100 }, // e-mart
-      { title: 'title5', price: 200 }, // lotte-mart
-      { title: 'title6', price: 300 }, // home-plus
-    ],
-  });
-
+  const [cartItems, setCartItems] = useState(null);
   const [expanded, setExpanded] = useState({});
   const [selectedItems, setSelectedItems] = useState([[], [], []]);
   const Kakao = window.Kakao;
   
   useEffect(() => {
-    // async function fetchCartItems() {
-    //   try {
-    //     const response = await axios.get('/api/cart-items');
-    //     setCartItems(response.data);
-    //   } catch (error) {
-    //     console.error('Error fetching cart items:', error);
-    //   }
-    // }
+    const headers = {
+      'Authorization' : `Bearer ${localStorage.getItem('hancook-token')}`,
+      'Content-Type': 'application/json',
+    }
+    axios.get(`${process.env.REACT_APP_API_URL}/mart?lan=1`, { headers: headers })
+    .then((res) => {
+      setCartItems(res.data)
+    }).catch((err) => {
+      console.log(err)
+    })
 
     // fetchCartItems();
     // Initialize the Kakao SDK with your app's JavaScript key
@@ -56,6 +46,8 @@ export default function Cart() {
       console.error('Failed to initialize Kakao SDK.');
   }
   }, []);
+
+  
 
   const toggleExpand = (ingredient) => {
     setExpanded((prevExpanded) => toggleExpandUtil(prevExpanded, ingredient));
@@ -143,8 +135,9 @@ export default function Cart() {
   return (
     <div className='cart-container'>
       <div className='cart-ingredients'>
-        <div className='cart-header'><b>{Object.keys(cartItems).length}</b> ingredient(s) selected</div>
-        {Object.entries(cartItems).map(([ingredient, items]) => (
+        <div className='cart-header'><b>{cartItems ? Object.keys(cartItems).length : ''}</b> ingredient(s) selected</div>
+        {cartItems ? (
+          Object.entries(cartItems).map(([ingredient, items]) => (
           <div key={ingredient} className='cart-ingredien-part'>
             <div className='cart-ingredien-part-header'>
               <i className="material-icons" onClick={() => toggleExpand(ingredient)}>
@@ -155,13 +148,13 @@ export default function Cart() {
             </div>
             {expanded[ingredient] &&
               items.map((item, index) => (
-                <div key={index} className="cart-item" onClick={() => selectItem(item, index)}>
-                  <ItemList title={item.title} price={item.price} index={index} />
+                <div key={index} className="cart-item" onClick={() => selectItem(item, item.mart-1)}>
+                  <ItemList title={item.itemName} price={item.itemPrice} index={item.mart} />
                 </div>
               ))
             }
           </div>
-        ))}
+        ))) : ''}
       </div>
       <div className="cart-receipt">
         <div className="receipt-header">
@@ -172,7 +165,7 @@ export default function Cart() {
         </div>
           <hr />
         <div className="receipt-body">
-          {['E-Mart', 'Lotte-Mart', 'Home-Plus'].map((martName, index) => {
+          {[ 'Lotte-Mart', 'Home-Plus', 'E-Mart'].map((martName, index) => {
             const selectedMartItems = selectedItems[index];
 
             return (
@@ -183,12 +176,12 @@ export default function Cart() {
                 </div>
                 <div className={`receipt-body-${martName}-body`}>
                   {selectedMartItems.map((item, itemIndex) => (
-                    <div key={item.title} className="selected-item">
+                    <div key={item.itemName} className="selected-item">
                         <div className='selected-item-title'>
                             <i className="material-icons" onClick={() => deleteSelectedItem(index, itemIndex)}>close</i>
-                            <p>{item.title}</p>
+                            <p>{item.itemName}</p>
                         </div>
-                        <p className='selected-item-price'>{item.price}₩</p>
+                        <p className='selected-item-price'>{item.itemPrice}₩</p>
                     </div>
                   ))}
                 </div>

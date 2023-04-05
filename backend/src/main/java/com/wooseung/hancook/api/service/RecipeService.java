@@ -3,6 +3,7 @@ package com.wooseung.hancook.api.service;
 
 import com.wooseung.hancook.api.response.ComponentResponseDto;
 import com.wooseung.hancook.api.response.ProcessResponseDto;
+import com.wooseung.hancook.api.response.RecipeCardResponseDto;
 import com.wooseung.hancook.api.response.RecipeResponseDto;
 
 import java.util.List;
@@ -12,6 +13,8 @@ public interface RecipeService {
     List<RecipeResponseDto> getRandomRecipe(int lan);
 
     RecipeResponseDto getRecipeById(Long recipeId, int lan);
+
+    RecipeCardResponseDto getRecipeCardById(Long recipeId, int lan);
 
     List<RecipeResponseDto> getRecipeByName(String name, int lan);
 
