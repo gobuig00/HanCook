@@ -1,5 +1,6 @@
 package com.wooseung.hancook.api.service;
 
+import com.wooseung.hancook.api.controller.RecipeController;
 import com.wooseung.hancook.api.response.ComponentResponseDto;
 import com.wooseung.hancook.api.response.ProcessResponseDto;
 import com.wooseung.hancook.api.response.RecipeCardResponseDto;
@@ -21,12 +22,16 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 @Service("recipeService")
 @RequiredArgsConstructor
 @Slf4j
 public class RecipeServiceImpl implements RecipeService {
 
+    private static final Logger logger = LogManager.getLogger(RecipeServiceImpl.class);
     private final RecipeRepository recipeRepository;
     private final ComponentRepository componentRepository;
     private final ProcessRepository processRepository;
@@ -84,7 +89,6 @@ public class RecipeServiceImpl implements RecipeService {
         Recipe recipeEntity = recipeRepository.getReferenceById(recipeId);
         RecipeCardResponseDto recipeCardResponseDto = RecipeCardResponseDto.of(recipeEntity);
 
-
         // 영문일때
         if (lan == 1) {
             // DB에 한글로 저장되어 있어 영어로 번역해서 response
@@ -131,7 +135,6 @@ public class RecipeServiceImpl implements RecipeService {
         List<RecipeResponseDto> recipeResponseDtoList = new ArrayList<>();
         // 레시피에 포함된 전체 재료 정보 Entity List
         List<Component> componentList = componentRepository.findAll();
-
         // 정제된 전체 재료 정보 EntityList
         List<Ingredient> ingredientList = ingredientRepository.findAll();
 
