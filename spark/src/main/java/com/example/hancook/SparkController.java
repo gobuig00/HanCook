@@ -11,23 +11,29 @@ import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructType;
 
 import java.io.File;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller
 public class SparkController {
 
-    @Scheduled(cron = "00 00 06 * * *")
+    @Scheduled(cron = "00 00 03 * * *")
     public void processFiles() throws Exception {
 
-        LocalDate today = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String date;
+        Date today = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+        date = formatter.format(today);
         long beforeTime = System.currentTimeMillis();
 
         //db 설정
         Map<String, String> jdbcOptions = new HashMap<>();
+//        172.26.13.247
         jdbcOptions.put("url", "jdbc:mysql://172.26.13.247:3306/hancookdb?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true");
 
         jdbcOptions.put("user", "ssafy");
@@ -41,7 +47,7 @@ public class SparkController {
                 .config("spark.some.config.option", "some-value")
                 .getOrCreate();
 
-        String fileDirectory = "./data/agri";
+        String fileDirectory = "./data/agri/" + date;
         File[] csvFiles = new File(fileDirectory).listFiles(file -> file.isFile() && file.getName().toLowerCase().endsWith(".csv"));
 
         if (csvFiles != null) {
@@ -49,15 +55,14 @@ public class SparkController {
                 String fileName= file.getName();
 
                 String fileDateStr = fileName.substring(0, 8);
-                LocalDate fileDate = LocalDate.parse(fileDateStr, formatter);
 
-                if(fileDate.equals(today)) {
+                if(fileDateStr.equals(date)) {
 
                     System.out.println("Processing: " + file.getName());
 
                     JavaSparkContext sc = new JavaSparkContext(spark.sparkContext());
 
-                    JavaRDD<String> inputRdd = sc.textFile("./data/agri/"+fileName);
+                    JavaRDD<String> inputRdd = sc.textFile("./data/agri/"+ date + "/" + fileName);
                     StructType schema = new StructType()
                             .add("deal_date", DataTypes.StringType)
                             .add("large", DataTypes.StringType)
@@ -69,7 +74,7 @@ public class SparkController {
 
                     JavaRDD<Row> sizeRdd = inputRdd.map(line -> {
                         String[] parts = line.split(",");
-                        if (parts.length == 7 && parts[5].trim().equals("0")) {
+                        if (parts.length == 7 && parts[0].trim().equals(date.substring(2)) && parts[5].trim().equals("0")) {
                             return RowFactory.create("20" + parts[0].replaceAll("[^0-9]", "").trim(),
                                     parts[1].trim(),
                                     parts[2].trim(),
@@ -172,7 +177,7 @@ public class SparkController {
         //마트 데이터 삽입
         jdbcOptions.put("dbtable", "mart");
         sc = new JavaSparkContext(spark.sparkContext());
-        JavaRDD<String> inputMartRdd = sc.textFile("./data/mart/ingre.csv");
+        JavaRDD<String> inputMartRdd = sc.textFile("./data/mart/mart.csv");
         schema = new StructType()	//deal_date,large,medium,소,origin,income,가격
                 .add("ingredient_name", DataTypes.StringType)
                 .add("item_name", DataTypes.StringType)
@@ -196,6 +201,15 @@ public class SparkController {
         }).filter(row -> row != null);
         Dataset<Row> martDf = spark.createDataFrame(martPar, schema);
         martDf.show();
+
+        String url = "jdbc:mysql://172.26.13.247:3306/hancookdb?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true";
+        Connection connection = DriverManager.getConnection(url, "ssafy", "ssafy");
+        Statement statement = connection.createStatement();
+        String deleteQuery = "DELETE FROM mart";
+        statement.executeUpdate(deleteQuery);
+        statement.close();
+        connection.close();
+
         martDf.write()
                 .mode(SaveMode.Append)
                 .format("jdbc")

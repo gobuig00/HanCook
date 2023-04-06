@@ -69,7 +69,6 @@ public class ConsumerWorker implements Runnable {
             consumer.close();
         }
     }
-    // asdfsda
     private void addLocalFileBuffer(ConsumerRecord<String, String> record) {
 
         List<String> buffer = bufferString.getOrDefault(record.partition(), new ArrayList<>());
@@ -85,28 +84,6 @@ public class ConsumerWorker implements Runnable {
     private void saveBufferToLocalFile(Set<TopicPartition> partitions) {
         partitions.forEach(p -> checkFlushCount(p.partition()));
     }
-    // sdfsad
-    /**
-     * Hdfs에 파일을 저장할 때 2 가지 방식이 존재한다
-     * - append, flush (후자 선택)
-     */
-//    private void addHdfsFileBuffer(ConsumerRecord<String, String> record) {
-//
-//        List<String> buffer = bufferString.getOrDefault(record.partition(), new ArrayList<>());
-//        buffer.add(record.value());
-//        bufferString.put(record.partition(), buffer);
-//
-//        if(buffer.size() == 1) {
-//            currentFileOffset.put(record.partition(), record.offset());
-//        }
-//
-//        // consumer에 할당된 파티션 정보를 얻어 파티션마다 할당된 버퍼의 크기가 다 채워졌을 때 파일을 저장(flush)한다.
-//        saveBufferToHdfsFile(consumer.assignment());
-//    }
-//
-//    private void saveBufferToHdfsFile(Set<TopicPartition> partitions) {
-//        partitions.forEach(p -> checkFlushCount(p.partition()));
-//    }
 
     private void checkFlushCount(int partitionNo) {
         if(bufferString.get(partitionNo) != null) {
@@ -116,26 +93,15 @@ public class ConsumerWorker implements Runnable {
         }
     }
 
-    /**
-     * HDFS 클러스터 접근권한이 되지않아, 파일 주석처리
-     * 로컬 서버에 저장
-     */
-
     private void save(int partitionNo) {
         if(bufferString.get(partitionNo).size() > 0) {
             try{
-                // 파일이름 및 HDFS 저장 - 매일 수집되는 날짜를 기준으로 폴더 생성되고 저장됨
                 Date today = new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000);
 
                 // 날짜 포매팅
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
-                String fileName = "../" + dateFormat.format(today);
-
-        /*        Configuration configuration = new Configuration();
-                configuration.set("fs.defaultFS", "hdfs://localhost:9000"); // 하둡 HDFS 주소
-                FileSystem hdfsFileSystem = FileSystem.get(configuration);
-                FSDataOutputStream fileOutputStream = hdfsFileSystem.create(new org.apache.hadoop.fs.Path(fileName));*/
+                String fileName = "./data/agri/" + dateFormat.format(today);
 
                 File Folder = new File(fileName);
 
@@ -146,7 +112,7 @@ public class ConsumerWorker implements Runnable {
                         e.getStackTrace();
                     }
                 }
-                fileName += "/" +dateFormat.format(today) + "-" + partitionNo + "-" + currentFileOffset.get(partitionNo) + ".csv";
+                fileName += "/" + dateFormat.format(today) + "-" + partitionNo + "-" + currentFileOffset.get(partitionNo) + ".csv";
                 Path path = Paths.get(fileName);
                 System.out.println(path);
                 BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8);
