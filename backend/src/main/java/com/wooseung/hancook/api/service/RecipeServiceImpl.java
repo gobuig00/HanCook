@@ -105,6 +105,7 @@ public class RecipeServiceImpl implements RecipeService {
     // 이름으로 검색해서 레시피 목록 가져오기
     @Override
     public List<RecipeResponseDto> getRecipeByName(String name, int lan) {
+        logger.info("getRecipeByName name" + name);
         int flag = detectLanguageService.detectLanguage(name);
 
         // 입력받은 이름이 영어라면 한글로 변환
