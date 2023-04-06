@@ -1,5 +1,6 @@
 package com.wooseung.hancook.api.service;
 
+import com.wooseung.hancook.api.controller.RecipeController;
 import com.wooseung.hancook.api.response.ComponentResponseDto;
 import com.wooseung.hancook.api.response.ProcessResponseDto;
 import com.wooseung.hancook.api.response.RecipeCardResponseDto;
@@ -21,12 +22,16 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 @Service("recipeService")
 @RequiredArgsConstructor
 @Slf4j
 public class RecipeServiceImpl implements RecipeService {
 
+    private static final Logger logger = LogManager.getLogger(RecipeServiceImpl.class);
     private final RecipeRepository recipeRepository;
     private final ComponentRepository componentRepository;
     private final ProcessRepository processRepository;
@@ -101,6 +106,9 @@ public class RecipeServiceImpl implements RecipeService {
     // 이름으로 검색해서 레시피 목록 가져오기
     @Override
     public List<RecipeResponseDto> getRecipeByName(String name, int lan) {
+        logger.info("name" + name);
+        logger.info("lan" + lan);
+
         int flag = detectLanguageService.detectLanguage(name);
 
         // 입력받은 이름이 영어라면 한글로 변환
@@ -108,6 +116,9 @@ public class RecipeServiceImpl implements RecipeService {
 
         // 이름으로 찾은 레시피 Entity List
         List<Recipe> recipeEntityList = recipeRepository.findAllByNameContaining(name);
+        for (Recipe dto : recipeEntityList) {
+            logger.info("recipe" + dto.getName());
+        }
 
         // 영문일때
         if (lan == 1) {
