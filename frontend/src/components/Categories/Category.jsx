@@ -7,7 +7,7 @@ export default function Category({ categoryList, isChosen, setIsChosen, setPart,
     const chosen = event.target.textContent;
     setIsChosen(chosen);
     const params = {
-      lan: 0,
+      lan: 1,
     };
     if (usedPart==="mainIngredient"){
       if (chosen === 'Cheap') {
