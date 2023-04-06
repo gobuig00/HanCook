@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CartService {
     void addIngredientToCartByRecipeId(Long recipeId, String email);
-    void addIngredientToCartByIngredientId(Long componentId, String email);
+    void addIngredientToCartByIngredientId(Long ingredientId, String email);
 
     List<CartResponseDto> getCartByEmail(String email);
 
