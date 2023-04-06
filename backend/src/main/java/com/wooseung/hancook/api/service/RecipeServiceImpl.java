@@ -131,7 +131,6 @@ public class RecipeServiceImpl implements RecipeService {
         List<RecipeResponseDto> recipeResponseDtoList = new ArrayList<>();
         // 레시피에 포함된 전체 재료 정보 Entity List
         List<Component> componentList = componentRepository.findAll();
-
         // 정제된 전체 재료 정보 EntityList
         List<Ingredient> ingredientList = ingredientRepository.findAll();
 
