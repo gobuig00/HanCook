@@ -66,7 +66,11 @@ public class RecipeController {
 
     // 재료 배열을 입력받아 포함되어 있는 레시피 데이터 반환
     @GetMapping("/ingredient")
-    public ResponseEntity<List<RecipeResponseDto>> getRecipeByIngredient(@RequestParam("ingredient") String[] ingredient, @RequestParam("lan") int lan) {
+    public ResponseEntity<List<RecipeResponseDto>> getRecipeByIngredient(@RequestParam("ingredient") String ingredient, @RequestParam("lan") int lan) {
+        logger.info("ingredient" + ingredient);
+        StringTokenizer st = new StringTokenizer(ingredient, ",");
+        ingredient = st.nextToken();
+        logger.info("realIngredient" + ingredient);
         List<RecipeResponseDto> recipeResponseDtoList = recipeService.getRecipeByIngredient(ingredient, lan);
         return ResponseEntity.status(HttpStatus.OK).body(recipeResponseDtoList);
     }
@@ -80,7 +84,6 @@ public class RecipeController {
         logger.info("realName" + name);
 
         List<RecipeResponseDto> recipeResponseDtoListByName = recipeService.getRecipeByName(name, lan);
-        logger.info("recipeResponseDtoListByName" + recipeResponseDtoListByName.get(0));
         List<String> strList = new ArrayList<>();
         strList.add(name);
         List<RecipeResponseDto> recipeResponseDtoListByIngredient = recipeService.getRecipeByIngredientList(strList, lan);
