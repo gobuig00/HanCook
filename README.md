@@ -57,3 +57,34 @@ SSAFY 8기 2학기 특화프로젝트 - HanCook
 - Mattermost
 - Discord
 - notion
+
+# :two_men_holding_hands: 협업 환경
+## GitLab
+### Git Flow
++ 각자 맡은 기능에 맞게 ``` feature ``` 브랜치를 생성하여 개발
++ 완료된 기능은 ``` develop ``` 에 ``` merge ``` 
++ 매일 오전 9시 스크럼 회의가 끝나면 ``` develop ``` 최신 버전을 ``` pull ```
+> ### Commit convention
+> ``` FEAT ``` : 기능 추가, 프로젝트 생성, 초기 설정 
+<br> ``` FIX ``` : 기능 변경, 기능 수정, 오류 수정
+<br> ``` REFACTOR ``` : 같은 기능을 하는 코드를 리팩토링
+
+## Notion
++ 팀 전체가 알아야 할 공지사항이나 프로젝트를 진행하면서 나오는 각종 산출물들의 형상관리
+
+## JIRA
++ 협업 및 일정, 업무 관리를 JIRA를 통해 관리하였습니다.
++ 매 주 월요일 한 주동안 진행되어야 할 계획을 수립하여 진행할 이슈들을 스프린트를 만들어 등록
+
+>``` Epic ``` : BackEnd, FrontEnd, 기획, 설계
+<br> ``` story ``` : 기획, 설계, 산출물 제작 등 개발외의 업무에 관한 업무 관리
+<br> ``` task ``` : 코드 작성과 관련된 개발업무에 관한 업무 관리
+
+<p align="center">
+<img src=https://user-images.githubusercontent.com/91431779/219372056-b1257d25-3a76-4020-9628-1a98ca425077.png height="300">
+</p>
+
+## MatterMost
++ 일일 스크럼 회의록 관리
++ GitLab과 연동하여 실시간 GitLab 관리
++ Archiving채널을 통해서 각 종 정보 공유
