@@ -2,10 +2,7 @@ package com.wooseung.hancook.db.entity;
 
 import com.wooseung.hancook.api.response.FoodRecordResponseDto;
 import com.wooseung.hancook.utils.ModelMapperUtils;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,6 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Getter
+@Setter
 public class FoodRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
