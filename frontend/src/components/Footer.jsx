@@ -18,9 +18,6 @@ export default function Footer({ toggleModal }) {
     const moveToCamera = () => {
         navigate('/camera');
     }
-    const moveToShoppingCart = () => {
-        navigate('/cart');
-    }
     const moveToProfile = () => {
         navigate('/profile');
     }
@@ -38,7 +35,7 @@ export default function Footer({ toggleModal }) {
             <span onClick={moveToCamera}>
                 <img src={camera} alt="camera button" />
             </span>
-            <span onClick={moveToShoppingCart}>
+            <span onClick={moveToCart}>
                 <img src={shoppingcart} alt="shoppingcart button" />
             </span>
             <span onClick={moveToProfile}>
