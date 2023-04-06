@@ -34,8 +34,14 @@ public class FoodRecordController {
 
     @GetMapping("/get")
     public ResponseEntity<List<FoodRecordResponseDto>> getFoodRecordByUser(@AuthenticationPrincipal UserDetails userDetails) {
+        System.out.println("userDetails.getEmail : " + userDetails.getEmail());
         Optional<User> user = userRepository.findByEmail(userDetails.getEmail());
-        return ResponseEntity.status(HttpStatus.OK).body(foodRecordService.getFoodRecordById(user.get().getId()));
+        List<FoodRecordResponseDto> list = foodRecordService.getFoodRecordById(user.get().getId());
+        System.out.println("list.size : " + list.size());
+        if(!list.isEmpty()) {
+            System.out.println("list.get(0) : " + list.get(0));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
 }
