@@ -73,14 +73,10 @@ public class RecipeController {
     // 이름이나 재료를 입력받아 포함되어 있는 레시피 데이터 반환
     @GetMapping("/search")
     public ResponseEntity<List<RecipeResponseDto>> searchRecipe(@RequestParam("name") String name, @RequestParam("lan") int lan) {
-        logger.info("name" + name);
-        logger.info("lan" + lan);
         List<RecipeResponseDto> recipeResponseDtoListByName = recipeService.getRecipeByName(name, lan);
-        logger.info("recipeResponseDtoListByName" + recipeResponseDtoListByName.get(0));
         List<String> strList = new ArrayList<>();
         strList.add(name);
         List<RecipeResponseDto> recipeResponseDtoListByIngredient = recipeService.getRecipeByIngredient(strList, lan);
-        logger.info("recipeResponseDtoListByIngredient" + recipeResponseDtoListByIngredient.get(0));
 
         List<RecipeResponseDto> answerList = new ArrayList<>();
         // 이름을 입력받아 일치한 레시피 데이터 리스트
@@ -92,10 +88,6 @@ public class RecipeController {
         for (RecipeResponseDto recipeResponseDto : recipeResponseDtoListByIngredient) {
             // 중복 제거
             if (!answerList.contains(recipeResponseDto)) answerList.add(recipeResponseDto);
-        }
-
-        for (RecipeResponseDto recipeResponseDto : answerList) {
-            logger.info("This is an info message" + recipeResponseDto.getName());
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(answerList);
