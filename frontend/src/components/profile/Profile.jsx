@@ -78,10 +78,11 @@ export default function Profile() {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 }
+            }).then(data=>{
+                console.log(data);
+                setProfile(createProfile(response.data));
+                console.log(profile);
             });
-            
-            setProfile(createProfile(response.data));
-            console.log(profile)
         }
         } catch (error) {
             navigate('/login')
