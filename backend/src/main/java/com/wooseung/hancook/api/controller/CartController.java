@@ -9,10 +9,14 @@ import com.wooseung.hancook.db.entity.Component;
 import com.wooseung.hancook.db.entity.Ingredient;
 import com.wooseung.hancook.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.StringTokenizer;
 
 
 @RestController
@@ -21,10 +25,16 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CartController {
 
+    private static final Logger logger = LogManager.getLogger(CartController.class);
     private final CartService cartService;
 
     @PostMapping("/add")
     public ResponseEntity<BaseResponseBody> addToCartByRecipeId(@RequestParam("recipeId") String recipeId, @AuthenticationPrincipal UserDetails userDetails) {
+        logger.info("recipeId" + recipeId);
+        StringTokenizer st = new StringTokenizer(recipeId, ",");
+        recipeId = st.nextToken();
+        logger.info("realName" + recipeId);
+
         cartService.addIngredientToCartByRecipeId(Long.parseLong(recipeId), userDetails.getEmail());
         return new ResponseEntity<>(new BaseResponseBody("SUCCESS", 201), HttpStatus.CREATED);
     }
