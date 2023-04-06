@@ -17,7 +17,7 @@ public class CrawlingController {
     private static final Logger logger = LoggerFactory.getLogger(CrawlingController.class);
 
     @GetMapping
-    public ResponseEntity<?> craw(){
+    public ResponseEntity<?> craw() {
 
         CrawlingResponseDto mart = martservice.craw();
         return null;
