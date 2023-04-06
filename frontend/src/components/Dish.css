@@ -104,3 +104,7 @@
 .camera-toast {
   font-family: 'semibold';
 }
+
+.modal {
+  width: 100vw;
+}
