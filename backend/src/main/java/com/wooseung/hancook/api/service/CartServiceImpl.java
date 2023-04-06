@@ -3,12 +3,10 @@ package com.wooseung.hancook.api.service;
 import com.wooseung.hancook.api.response.*;
 import com.wooseung.hancook.common.exception.ApiException;
 import com.wooseung.hancook.common.exception.ExceptionEnum;
-import com.wooseung.hancook.db.entity.Cart;
-import com.wooseung.hancook.db.entity.Component;
-import com.wooseung.hancook.db.entity.FoodRecord;
-import com.wooseung.hancook.db.entity.User;
+import com.wooseung.hancook.db.entity.*;
 import com.wooseung.hancook.db.repository.CartRepository;
 import com.wooseung.hancook.db.repository.ComponentRepository;
+import com.wooseung.hancook.db.repository.IngredientRepository;
 import com.wooseung.hancook.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,12 +15,14 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service("cartService")
 @RequiredArgsConstructor
 @Slf4j
 public class CartServiceImpl implements CartService {
+    private final IngredientRepository ingredientRepository;
 
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
@@ -49,15 +49,18 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public void addIngredientToCartByComponentId(Long componentId, String email) {
+    public void addIngredientToCartByIngredientId(Long ingredientId, String email) {
         // 컴포넌트 아이디로 이름 찾기
-        Component component = componentRepository.findById(componentId);
+        Optional<Ingredient> ingredient = ingredientRepository.findById(ingredientId);
+        if (ingredient.isEmpty()) {
+            throw new ApiException(ExceptionEnum.INGREDIENT_NOT_EXIST_EXCEPTION);
+        }
 
         // 이메일에 맞는 유저 검색
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION));
 
-        cartRepository.save(new Cart(user, component.getName()));
+        cartRepository.save(new Cart(user, ingredient.get().getName()));
     }
 
     @Override

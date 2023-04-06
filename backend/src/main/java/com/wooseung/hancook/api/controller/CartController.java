@@ -1,13 +1,8 @@
 package com.wooseung.hancook.api.controller;
 
 import com.wooseung.hancook.api.response.BaseResponseBody;
-import com.wooseung.hancook.api.response.ComponentResponseDto;
 import com.wooseung.hancook.api.service.CartService;
-import com.wooseung.hancook.api.service.RecipeService;
 import com.wooseung.hancook.common.auth.UserDetails;
-import com.wooseung.hancook.db.entity.Component;
-import com.wooseung.hancook.db.entity.Ingredient;
-import com.wooseung.hancook.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,8 +35,8 @@ public class CartController {
     }
 
     @PostMapping("/addComponent")
-    public ResponseEntity<BaseResponseBody> addToCartByComponentId(@RequestParam("componentId") Long componentId, @AuthenticationPrincipal UserDetails userDetails) {
-        cartService.addIngredientToCartByComponentId(componentId, userDetails.getEmail());
+    public ResponseEntity<BaseResponseBody> addToCartByComponentId(@RequestParam("ingredientId") Long ingredientId, @AuthenticationPrincipal UserDetails userDetails) {
+        cartService.addIngredientToCartByIngredientId(ingredientId, userDetails.getEmail());
         return new ResponseEntity<>(new BaseResponseBody("SUCCESS", 201), HttpStatus.CREATED);
     }
 
