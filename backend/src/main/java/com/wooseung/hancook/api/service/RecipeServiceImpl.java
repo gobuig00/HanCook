@@ -155,6 +155,8 @@ public class RecipeServiceImpl implements RecipeService {
         // 입력받은 재료가 영어라면 한글로 변환
         if (flag == 1) ingredient = papagoTranslationService.translateEnglishIntoKorean(ingredient);
 
+        logger.info("ingredient : " + ingredient);
+
         // 전체 레시피 Entity List를 돌면서 선택된 재료(ingredient)가 포함된 레시피를 찾아 recipeDtoList에 추가
         for (Recipe recipeEntity : recipeEntityList) {
             for (Component component : componentList) {
