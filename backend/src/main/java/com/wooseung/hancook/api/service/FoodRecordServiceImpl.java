@@ -59,14 +59,14 @@ public class FoodRecordServiceImpl implements FoodRecordService {
     public List<FoodRecordResponseDto> getFoodRecordById(Long id) {
         // ID로 찾은 음식 기록 Entity List
         List<FoodRecord> foodRecordEntityList = foodRecordRepository.findAllByUserId(id);
-
+        System.out.println("foodRecordEntityList : " + foodRecordEntityList.size());
         List<FoodRecordResponseDto> foodRecordResponseDtoList = new ArrayList<>();
 
         for (FoodRecord foodRecordEntity : foodRecordEntityList) {
             FoodRecordResponseDto foodRecordResponseDto = FoodRecordResponseDto.of(foodRecordEntity);
             foodRecordResponseDtoList.add(foodRecordResponseDto);
         }
-
+        System.out.println("foodRecordResponseDtoList : " + foodRecordResponseDtoList.size());
         return foodRecordResponseDtoList;
     }
 }
