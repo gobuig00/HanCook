@@ -36,12 +36,12 @@ public class CartController {
 
     @PostMapping("/addComponent")
     public ResponseEntity<BaseResponseBody> addToCartByComponentId(@RequestParam("ingredientId") String ingredientId, @AuthenticationPrincipal UserDetails userDetails) {
-        logger.info("ingredientId" + ingredientId);
+        logger.info("ingredientId : " + ingredientId);
         StringTokenizer st = new StringTokenizer(ingredientId, ",");
         ingredientId = st.nextToken();
-        logger.info("ingredientId" + ingredientId);
+        logger.info("RealIngredientId : " + ingredientId);
 
-        cartService.addIngredientToCartByIngredientId((Long.parseLong(ingredientId)), userDetails.getEmail());
+        cartService.addIngredientToCartByIngredientId(Long.parseLong(ingredientId), userDetails.getEmail());
         return new ResponseEntity<>(new BaseResponseBody("SUCCESS", 201), HttpStatus.CREATED);
     }
 

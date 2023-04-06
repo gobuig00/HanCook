@@ -133,11 +133,8 @@ function Ingredient() {
   const [shoppingCartModal, setShoppingCartModal] = useState(false);
 
   const addShoppingCart = () => {
-    const params = {
-      ingredientId: ingredientId,
-    }
     const headers = {
-      'Authorization' : `Bearer ${localStorage.getItem('hancook-token')}`,
+      'Authorization': `Bearer ${localStorage.getItem('hancook-token')}`,
       'Content-Type': 'application/json',
     }
     axios.post(`${process.env.REACT_APP_API_URL}/cart/addComponent?ingredientId=${ingredientId}`, {}, { headers: headers })

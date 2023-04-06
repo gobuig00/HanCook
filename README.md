@@ -162,4 +162,5 @@
 <br/>
 
 ## 팀원 소개
-![역할](https://user-images.githubusercontent.com/91431779/230386890-bef11085-761a-416c-83eb-c4e3eab38ae7.PNG)
+![역할](https://user-images.githubusercontent.com/91431779/230400163-cfbfda98-cd3a-4c4d-81c4-37fc82f5db8e.PNG)
+

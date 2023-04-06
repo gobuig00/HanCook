@@ -26,10 +26,12 @@ public class MartServiceImpl implements MartService {
 
     @Override
     public List<MartResponseDto> getMartList(String ingreName) {
-        Optional<Ingredient> ingredient = ingredientRepository.findIngredientByName(ingreName);
+        System.out.println("getMartList start");
+        System.out.println("getMartList ingreName" + ingreName);
+        List <Ingredient> ingredient = ingredientRepository.findAllIngredientByName(ingreName);
         if (ingredient.isEmpty()) throw new ApiException(ExceptionEnum.INGREDIENT_NOT_EXIST_EXCEPTION);
 
-        List<Mart> martEntityList = martRepository.findNineByIngredientId(ingredient.get().getIngredientId());
+        List<Mart> martEntityList = martRepository.findNineByIngredientId(ingredient.get(0).getIngredientId());
 
         return martEntityList.stream()
                 .map(entity -> MartResponseDto.of(entity))

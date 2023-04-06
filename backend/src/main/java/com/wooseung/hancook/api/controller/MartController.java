@@ -31,12 +31,16 @@ public class MartController {
         Map<String, Object> result = new HashMap<>();
 
         String email = userDetails.getEmail();
-
+        System.out.println("=================================");
+        System.out.println(email);
+        System.out.println("=================================");
         List<CartResponseDto> cartList = cartService.getCartByEmail(email);
 
         for (CartResponseDto cartResponseDto : cartList) {
+            System.out.println("for 1");
             String ingredientName = cartResponseDto.getIngreName();
             List<MartResponseDto> martList = martService.getMartList(ingredientName);
+
             if (lan == 1) ingredientName = papagoTranslationService.translateKoreanIntoEnglish(ingredientName);
             result.put(ingredientName, martList);
         }

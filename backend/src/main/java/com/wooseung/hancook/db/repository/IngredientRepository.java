@@ -1,5 +1,6 @@
 package com.wooseung.hancook.db.repository;
 
+import com.wooseung.hancook.db.entity.Component;
 import com.wooseung.hancook.db.entity.Ingredient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -31,4 +32,7 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
 
     List<Ingredient> findIngredientByMedium(String medium);
     Optional<Ingredient> findByIngredientId(Long id);
+
+    Ingredient findIngredientByIngredientId(Long id);
+    List<Ingredient> findAllIngredientByName(String name);
 }
