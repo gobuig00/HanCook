@@ -128,7 +128,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     // lan : (한글 : 0) / (영문 : 1)
     @Override
-    public List<RecipeResponseDto> getRecipeByIngredient(List<String> ingredient, int lan) {
+    public List<RecipeResponseDto> getRecipeByIngredient(String[] ingredient, int lan) {
         // 전체 레시피 Entity List
         List<Recipe> recipeEntityList = recipeRepository.findAll();
         // 반환할 레시피 Dto List
@@ -174,7 +174,7 @@ public class RecipeServiceImpl implements RecipeService {
                     count++;
                 }
                 // count 값이 ingredient의 크기와 같아지면 선택된 재료들이 모두 포함되었음을 의미
-                if (count == ingredient.size()) {
+                if (count == ingredient.length) {
                     RecipeResponseDto recipeResponseDto = RecipeResponseDto.of(recipeEntity);
 
                     // 영문일때
