@@ -89,7 +89,6 @@ public class RecipeServiceImpl implements RecipeService {
         Recipe recipeEntity = recipeRepository.getReferenceById(recipeId);
         RecipeCardResponseDto recipeCardResponseDto = RecipeCardResponseDto.of(recipeEntity);
 
-
         // 영문일때
         if (lan == 1) {
             // DB에 한글로 저장되어 있어 영어로 번역해서 response
@@ -112,7 +111,8 @@ public class RecipeServiceImpl implements RecipeService {
         int flag = detectLanguageService.detectLanguage(name);
 
         // 입력받은 이름이 영어라면 한글로 변환
-        if (flag == 1) name = papagoTranslationService.translateEnglishIntoKorean(name);
+//        if (flag == 1) name = papagoTranslationService.translateEnglishIntoKorean(name);
+        logger.info("name" + name);
 
         // 이름으로 찾은 레시피 Entity List
         List<Recipe> recipeEntityList = recipeRepository.findAllByNameContaining(name);
