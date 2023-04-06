@@ -34,6 +34,7 @@ public class FoodRecordController {
 
     @GetMapping("/get")
     public ResponseEntity<List<FoodRecordResponseDto>> getFoodRecordByUser(@AuthenticationPrincipal UserDetails userDetails) {
+        System.out.println(userDetails.getEmail());
         Optional<User> user = userRepository.findByEmail(userDetails.getEmail());
         return ResponseEntity.status(HttpStatus.OK).body(foodRecordService.getFoodRecordById(user.get().getId()));
     }
