@@ -103,8 +103,8 @@ public class DealServiceImpl implements DealService {
             String origin = String.valueOf(ob[2]);
 
             if (lan == 1) {
-                papagoTranslationService.translateKoreanIntoEnglish(medium);
-                papagoTranslationService.translateKoreanIntoEnglish(small);
+                medium = papagoTranslationService.translateKoreanIntoEnglish(medium);
+                small = papagoTranslationService.translateKoreanIntoEnglish(small);
             }
 
             List<Deal> dealDateList = dealRepository.findDealsByMediumAndSmallAndOriginAndDateRange(medium, small, origin, sevenDaysAgo, today); // medium, small, origin 이 같은 7일전까지의 데이터를 가져온다.
@@ -118,8 +118,8 @@ public class DealServiceImpl implements DealService {
             String origin = String.valueOf(ob[2]);
 
             if (lan == 1) {
-                papagoTranslationService.translateKoreanIntoEnglish(medium);
-                papagoTranslationService.translateKoreanIntoEnglish(small);
+                medium = papagoTranslationService.translateKoreanIntoEnglish(medium);
+                small = papagoTranslationService.translateKoreanIntoEnglish(small);
             }
 
             List<Deal> dealDateList = dealRepository.findDealsByMediumAndSmallAndOriginAndDateRange(medium, small, origin, sevenDaysAgo, today); // medium, small, origin 이 같은 7일전까지의 데이터를 가져온다.
