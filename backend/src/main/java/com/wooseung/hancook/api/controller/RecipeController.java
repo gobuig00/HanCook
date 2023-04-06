@@ -35,6 +35,10 @@ public class RecipeController {
     // 이름을 입력받아 일치하는 레시피 검색
     @GetMapping("/name")
     public ResponseEntity<List<RecipeResponseDto>> getRecipeByName(@RequestParam("name") String name, @RequestParam("lan") int lan) {
+        logger.info("name" + name);
+        StringTokenizer st = new StringTokenizer(name, ",");
+        name = st.nextToken();
+        logger.info("realName" + name);
         List<RecipeResponseDto> recipeResponseDtoList = recipeService.getRecipeByName(name, lan);
         return ResponseEntity.status(HttpStatus.OK).body(recipeResponseDtoList);
     }
@@ -71,9 +75,9 @@ public class RecipeController {
     @GetMapping("/search")
     public ResponseEntity<List<RecipeResponseDto>> searchRecipe(@RequestParam("name") String name, @RequestParam("lan") int lan) {
         logger.info("name" + name);
-
         StringTokenizer st = new StringTokenizer(name, ",");
         name = st.nextToken();
+        logger.info("realName" + name);
 
         List<RecipeResponseDto> recipeResponseDtoListByName = recipeService.getRecipeByName(name, lan);
         logger.info("recipeResponseDtoListByName" + recipeResponseDtoListByName.get(0));
