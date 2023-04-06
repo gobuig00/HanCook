@@ -9,6 +9,10 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import Card from './Card/Card';
 import {useState, useEffect } from 'react';
 import axios from 'axios';
+import Toast from 'react-bootstrap/Toast';
+import ToastContainer from 'react-bootstrap/ToastContainer';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 function useIngredientPrice() {
   const params = {
@@ -75,8 +79,8 @@ function useNutrition() {
       };
       setData(nutrientData);
     })
-    .catch(function (err) {
-      console.log(err);
+    .catch(() => {
+      console.log('There is no nutrient data');
     });
   }, []);
   return data;
@@ -110,6 +114,7 @@ const useCardData = () => {
 
 function Ingredient() {
   const navigate = useNavigate();
+  const ingredientId = useParams().id
 
   useEffect(() => {
     const token = localStorage.getItem('hancook-token');
@@ -123,6 +128,35 @@ function Ingredient() {
   const priceData = useIngredientPrice();
   const data = useRelatedFoodAPI(cardData);
   const nutrientData = useNutrition();
+  const [show, setShow] = useState(false);
+  const [toastdata, setToastData] = useState('')
+  const [shoppingCartModal, setShoppingCartModal] = useState(false);
+
+  const addShoppingCart = () => {
+    const params = {
+      ingredientId: ingredientId,
+    }
+    const headers = {
+      'Authorization' : `Bearer ${localStorage.getItem('hancook-token')}`,
+      'Content-Type': 'application/json',
+    }
+    axios.post(`${process.env.REACT_APP_API_URL}/cart/addComponent`,  params, { headers: headers })
+    .then(() => {
+      setToastData('Add ingredients to your shopping cart');
+      setShow(true);
+    }).catch(() => {
+      setToastData('Fail');
+      setShow(true);
+    })
+  }
+
+  const openShoppingCartModal = () => {
+    setShoppingCartModal(true);
+  }
+
+  const closeShoppingCartModal = () => {
+    setShoppingCartModal(false);
+  }
 
   return (
     <div className='background-green'>
@@ -137,7 +171,7 @@ function Ingredient() {
           <>
             <img src={cardData.imageUrl} alt="" className='ingredient-image' />
             <div>
-              <img src={AddShoppingCart} alt="" className='add-shopping-cart-icon'/>
+              <img src={AddShoppingCart} alt="" className='add-shopping-cart-icon' onClick={openShoppingCartModal}/>
               <div className='ingredient-text'><span className='ingredient-name'>{cardData.engName}</span><br /><span className='ingredient-pronunciation'>{cardData.pronunciation}</span></div>
             </div>
           </>
@@ -168,6 +202,28 @@ function Ingredient() {
           ))) : ('Loading...')}
         </div>
       </main>
+      <Modal
+        show={shoppingCartModal}
+        onHide={closeShoppingCartModal}
+        backdrop="static"
+        keyboard={false}
+        centered
+      >
+        <Modal.Body>
+          Would you like to add ingredients to your shopping cart?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button className='dish-no-button' onClick={closeShoppingCartModal}>
+            No
+          </Button>
+          <Button className='dish-yes-button' onClick={addShoppingCart}>Yes</Button>
+        </Modal.Footer>
+      </Modal>
+      <ToastContainer position='bottom-center' className='camera-toast'>
+        <Toast onClose={() => setShow(false)} show={show} delay={3000} autohide bg='dark'>
+          <Toast.Body>{toastdata}</Toast.Body>
+        </Toast>
+      </ToastContainer>
       <footer>
         <Footer />
       </footer>
