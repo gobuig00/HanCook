@@ -5,6 +5,7 @@ import Donut from '../Donut';
 import Table from '../Table';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../Footer';
+import Button from 'react-bootstrap/Button';
 
 export default function Profile() {
     const navigate = useNavigate();
@@ -15,6 +16,11 @@ export default function Profile() {
         today.setHours(0, 0, 0, 0);
         return today;
     };
+
+    const logOut = () => {
+        localStorage.removeItem('hancook-token');
+        navigate('/login')
+    }
       
     const isWithinLastWeek = (date) => {
         const today = getToday();
@@ -121,6 +127,9 @@ export default function Profile() {
                                 body={profile.ingestedFood}
                             />
                         </div>
+                    </div>
+                    <div className='logout-button-container'>
+                        <Button variant="danger" className='logout-button' onClick={logOut}>Log Out</Button>
                     </div>
                     <footer>
                         <Footer />
