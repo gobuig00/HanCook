@@ -7,9 +7,29 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '../Footer';
 import Button from 'react-bootstrap/Button';
 
+
+  
+
+
 export default function Profile() {
     const navigate = useNavigate();
-    const [profile, setProfile] = useState({});
+    const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem('hancook-token');
+    if (!token) {
+      navigate('/login')
+    }
+    const headers = {
+        'Authorization': `Bearer ${localStorage.getItem('hancook-token')}`,
+        'Content-Type': 'application/json',
+      };
+    axios.get(`${process.env.REACT_APP_API_URL}/record/get`, { headers: headers })
+              .then(res=>setProfile(createProfile(res.data)))
+              .catch (() => {
+                console.log('err');
+              })
+  }, [navigate]);
 
     const getToday = () => {
         const today = new Date();
@@ -21,6 +41,21 @@ export default function Profile() {
         localStorage.removeItem('hancook-token');
         navigate('/login')
     }
+
+    function useFetchProfile() {
+        const headers = {
+          'Authorization': `Bearer ${localStorage.getItem('hancook-token')}`,
+          'Content-Type': 'application/json',
+        };
+      
+        useEffect(() => {
+              axios.get(`${process.env.REACT_APP_API_URL}/record/get`, { headers: headers })
+              .then(res=>createProfile(res.data))
+              .catch (() => {
+                console.log('err');
+              })
+            })
+      }
       
     const isWithinLastWeek = (date) => {
         const today = getToday();
@@ -63,34 +98,10 @@ export default function Profile() {
         };
     };
     
-      
-
-    useEffect(() => {
-        fetchProfile();
-    }, []);
-
-    const fetchProfile = async () => {
-        try {
-        const token = localStorage.getItem("hancook-token");
-
-        if (token) {
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}/record/get`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                }
-            });
-            
-            setProfile(createProfile(response.data));
-            console.log(profile)
-        }
-        } catch (error) {
-            navigate('/login')
-        }
-    };
     
     return (
         <div className='profile-container'>
-            {profile.name ? (
+            {profile ? (
                 <>
                     <div className='profile-header'>
                         <h1>{profile.name}</h1><p>'s Profile</p>
