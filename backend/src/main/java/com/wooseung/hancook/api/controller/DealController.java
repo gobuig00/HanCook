@@ -5,6 +5,8 @@ import com.wooseung.hancook.api.response.DealResponseDto;
 import com.wooseung.hancook.api.service.DealService;
 import com.wooseung.hancook.api.service.IngredientService;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.StringTokenizer;
 
 @RestController
 @RequestMapping("/deal")
@@ -19,6 +22,8 @@ import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class DealController {
+
+    private static final Logger logger = LogManager.getLogger(DealController.class);
     private final DealService dealService;
     private final IngredientService ingredientService;
 
@@ -57,6 +62,11 @@ public class DealController {
     //db에서 deal값을 받는다.
     @GetMapping("/detail")
     public ResponseEntity<List<DealResponseDto>> getDetailChange(@RequestParam("id") String id) {
+        logger.info("id : " + id);
+        StringTokenizer st = new StringTokenizer(id, ",");
+        id = st.nextToken();
+        logger.info("RealIngredientId : " + id);
+
         String name = ingredientService.searchById(Long.parseLong(id));
         List<DealResponseDto> dealDtoList = dealService.getDetail(name);
         return ResponseEntity.status(HttpStatus.OK).body(dealDtoList);
