@@ -59,7 +59,6 @@ public class DealController {
     public ResponseEntity<List<DealResponseDto>> getDetailChange(@RequestParam("id") String id) {
         String name = ingredientService.searchById(Long.parseLong(id));
         List<DealResponseDto> dealDtoList = dealService.getDetail(name);
-        System.out.println(dealDtoList.size());
         return ResponseEntity.status(HttpStatus.OK).body(dealDtoList);
     }
 
@@ -81,11 +80,7 @@ public class DealController {
         String sevenDaysAgoString = sevenDaysAgo.format(formatter);
 
 //        List<DealCheapResponseDto> dealDtoList = dealService.getChange(yesterdayString, sevenDaysAgoString, lan);
-        List<DealResponseDto> dealDtoList = dealService.getChange("20230317", "20230314", lan);
-
-        for (DealResponseDto dto : dealDtoList) {
-            System.out.println(dto.getSmall());
-        }
+        List<DealResponseDto> dealDtoList = dealService.getChange("20230324", "20230317", lan);
 
         return ResponseEntity.status(HttpStatus.OK).body(dealDtoList);
     }
@@ -107,7 +102,7 @@ public class DealController {
         String sevenDaysAgoString = sevenDaysAgo.format(formatter);
 
 //        List<DealCheapResponseDto> dealCheapDtoList = dealService.getCheap(yesterdayString, sevenDaysAgoString, lan);
-        List<DealCheapResponseDto> dealCheapDtoList = dealService.getCheap("20230317", "20230314", lan);
+        List<DealCheapResponseDto> dealCheapDtoList = dealService.getCheap("20230324", "20230317", lan);
 
         return ResponseEntity.status(HttpStatus.OK).body(dealCheapDtoList);
     }
