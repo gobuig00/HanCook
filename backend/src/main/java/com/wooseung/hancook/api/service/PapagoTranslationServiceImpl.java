@@ -33,9 +33,9 @@ public class PapagoTranslationServiceImpl implements PapagoTranslationService {
 //    private static final String CLIENT_ID = "aJ4wDKE0DKwUOiVODqe1";
 //    private static final String CLIENT_SECRET = "EiEoqEumEE";
 //    파파고 5
-    private static final String CLIENT_ID = "EWdEtRJsEogFzW_DzFva";
-    private static final String CLIENT_SECRET = "0FDvXsHfFN";
-    private static final String API_URL = "https://openapi.naver.com/v1/papago/n2mt";
+    private static final String CLIENT_ID = "x3xkbd4j0n";
+    private static final String CLIENT_SECRET = "SYBk4DbEOYVOLypVrLUTjGlt5LL0rzQpxOFusU6L";
+    private static final String API_URL = "https://naveropenapi.apigw.ntruss.com/nmt/v1/translation";
 
     public String translateKoreanIntoEnglish(String text) {
         String sourceLang = "ko";
@@ -48,8 +48,8 @@ public class PapagoTranslationServiceImpl implements PapagoTranslationService {
         }
 
         Map<String, String> requestHeaders = new HashMap<>();
-        requestHeaders.put("X-Naver-Client-Id", CLIENT_ID);
-        requestHeaders.put("X-Naver-Client-Secret", CLIENT_SECRET);
+        requestHeaders.put("X-NCP-APIGW-API-KEY-ID", CLIENT_ID);
+        requestHeaders.put("X-NCP-APIGW-API-KEY", CLIENT_SECRET);
 
         String postParams = "source=" + sourceLang + "&target=" + targetLang + "&text=" + text;
 
@@ -72,8 +72,8 @@ public class PapagoTranslationServiceImpl implements PapagoTranslationService {
         }
 
         Map<String, String> requestHeaders = new HashMap<>();
-        requestHeaders.put("X-Naver-Client-Id", CLIENT_ID);
-        requestHeaders.put("X-Naver-Client-Secret", CLIENT_SECRET);
+        requestHeaders.put("X-NCP-APIGW-API-KEY-ID", CLIENT_ID);
+        requestHeaders.put("X-NCP-APIGW-API-KEY", CLIENT_SECRET);
 
         String postParams = "source=" + sourceLang + "&target=" + targetLang + "&text=" + text;
 
