@@ -72,8 +72,8 @@ public class PapagoTranslationServiceImpl implements PapagoTranslationService {
         }
 
         Map<String, String> requestHeaders = new HashMap<>();
-        requestHeaders.put("X-Naver-Client-Id", CLIENT_ID);
-        requestHeaders.put("X-Naver-Client-Secret", CLIENT_SECRET);
+        requestHeaders.put("X-NCP-APIGW-API-KEY-ID", CLIENT_ID);
+        requestHeaders.put("X-NCP-APIGW-API-KEY", CLIENT_SECRET);
 
         String postParams = "source=" + sourceLang + "&target=" + targetLang + "&text=" + text;
 
