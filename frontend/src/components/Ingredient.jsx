@@ -136,17 +136,18 @@ function Ingredient() {
     const headers = {
       'Authorization': `Bearer ${localStorage.getItem('hancook-token')}`,
       'Content-Type': 'application/json',
-    };
+    }
     axios.post(`${process.env.REACT_APP_API_URL}/cart/addComponent?ingredientId=${ingredientId}`, {}, { headers: headers })
-      .then(() => {
-        setToastData('Add ingredients to your shopping cart');
-        setShow(true);
-      }).catch(() => {
-        setToastData('Fail');
-        setShow(true);
-      });
-  };
-  
+    .then(() => {
+      setShoppingCartModal(false);
+      setToastData('Add ingredients to your shopping cart');
+      setShow(true);
+    }).catch(() => {
+      setShoppingCartModal(false);
+      setToastData('Fail');
+      setShow(true);
+    })
+  }
 
   const openShoppingCartModal = () => {
     setShoppingCartModal(true);
