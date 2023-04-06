@@ -23,11 +23,10 @@ export default function Search() {
     setLoading(true);
     const params = {
       name: searchTerm,
-      lan: 0,
+      lan: 1,
     };
     axios.get(`${process.env.REACT_APP_API_URL}/recipe/search`, { params })
     .then(response => {
-      console.log(response.data)
       setResult(response.data)
       setLoading(false)
     }).catch(err => {
