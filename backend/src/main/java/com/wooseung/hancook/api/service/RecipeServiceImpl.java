@@ -128,7 +128,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     // lan : (한글 : 0) / (영문 : 1)
     @Override
-    public List<RecipeResponseDto> getRecipeByIngredient(String[] ingredient, int lan) {
+    public List<RecipeResponseDto> getRecipeByIngredient(String ingredient, int lan) {
         // 전체 레시피 Entity List
         List<Recipe> recipeEntityList = recipeRepository.findAll();
         // 반환할 레시피 Dto List
@@ -159,14 +159,12 @@ public class RecipeServiceImpl implements RecipeService {
         for (Recipe recipeEntity : recipeEntityList) {
             int count = 0;
             HashSet<String> ingredientSet = new HashSet<>();
-            for (String ingredientStr : ingredient) {
-                int flag = detectLanguageService.detectLanguage(ingredientStr);
+            int flag = detectLanguageService.detectLanguage(ingredient);
 
-                // 입력받은 재료가 영어라면 한글로 변환
-                if (flag == 1) ingredientStr = papagoTranslationService.translateEnglishIntoKorean(ingredientStr);
+            // 입력받은 재료가 영어라면 한글로 변환
+            if (flag == 1) ingredient = papagoTranslationService.translateEnglishIntoKorean(ingredient);
 
-                ingredientSet.add(ingredientStr);
-            }
+            ingredientSet.add(ingredient);
             // 전체 재료 정보 Entity List를 돌면서 레시피 ID가 같고, 선택된 재료들 중 현재 재료 Entity의 이름이 포함되어있는 경우 count++
             for (Component component : componentList) {
                 if (component.getRecipeId() == recipeEntity.getRecipeId() && ingredientSet.contains(component.getName())) {
@@ -174,7 +172,7 @@ public class RecipeServiceImpl implements RecipeService {
                     count++;
                 }
                 // count 값이 ingredient의 크기와 같아지면 선택된 재료들이 모두 포함되었음을 의미
-                if (count == ingredient.length) {
+                if (count == 1) {
                     RecipeResponseDto recipeResponseDto = RecipeResponseDto.of(recipeEntity);
 
                     // 영문일때
