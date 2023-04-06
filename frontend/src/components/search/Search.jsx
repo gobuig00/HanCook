@@ -25,7 +25,10 @@ export default function Search() {
       name: searchTerm,
       lan: 1,
     };
-    axios.get(`${process.env.REACT_APP_API_URL}/recipe/search`, { params })
+    const headers = {
+      'Content-Type': 'application/json;charset=utf-8',
+    }
+    axios.get(`${process.env.REACT_APP_API_URL}/recipe/search`, { params: params, headers: headers })
     .then(response => {
       setResult(response.data)
       setLoading(false)
