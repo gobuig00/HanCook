@@ -27,6 +27,7 @@ public class RecipeController {
 
     private final RecipeService recipeService;
     private static final Logger logger = LogManager.getLogger(RecipeController.class);
+
     // 랜덤으로 레시피 3개 받아오기
     @GetMapping("/Popular")
     public ResponseEntity<List<RecipeResponseDto>> getRandomRecipe(@RequestParam("lan") int lan) {
@@ -73,6 +74,7 @@ public class RecipeController {
     @GetMapping("/search")
     public ResponseEntity<List<RecipeResponseDto>> searchRecipe(@RequestParam("name") String name, @RequestParam("lan") int lan) {
         logger.info("name" + name);
+        logger.info("lan" + lan);
         List<RecipeResponseDto> recipeResponseDtoListByName = recipeService.getRecipeByName(name, lan);
         logger.info("recipeResponseDtoListByName" + recipeResponseDtoListByName.get(0));
         List<String> strList = new ArrayList<>();
@@ -93,7 +95,7 @@ public class RecipeController {
         }
 
         for (RecipeResponseDto recipeResponseDto : answerList) {
-            logger.info("This is an info message" +recipeResponseDto.getName());
+            logger.info("This is an info message" + recipeResponseDto.getName());
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(answerList);
