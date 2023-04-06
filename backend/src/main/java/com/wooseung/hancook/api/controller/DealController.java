@@ -80,7 +80,7 @@ public class DealController {
         String sevenDaysAgoString = sevenDaysAgo.format(formatter);
 
 //        List<DealCheapResponseDto> dealDtoList = dealService.getChange(yesterdayString, sevenDaysAgoString, lan);
-        List<DealResponseDto> dealDtoList = dealService.getChange("20230324", "20230317", lan);
+        List<DealResponseDto> dealDtoList = dealService.getChange("20230317", "20230313", lan);
 
         return ResponseEntity.status(HttpStatus.OK).body(dealDtoList);
     }
@@ -102,7 +102,7 @@ public class DealController {
         String sevenDaysAgoString = sevenDaysAgo.format(formatter);
 
 //        List<DealCheapResponseDto> dealCheapDtoList = dealService.getCheap(yesterdayString, sevenDaysAgoString, lan);
-        List<DealCheapResponseDto> dealCheapDtoList = dealService.getCheap("20230324", "20230317", lan);
+        List<DealCheapResponseDto> dealCheapDtoList = dealService.getCheap("20230317", "20230313", lan);
 
         return ResponseEntity.status(HttpStatus.OK).body(dealCheapDtoList);
     }
