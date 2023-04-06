@@ -1,5 +1,6 @@
 package com.wooseung.hancook.api.service;
 
+import com.wooseung.hancook.api.controller.RecipeController;
 import com.wooseung.hancook.api.response.*;
 import com.wooseung.hancook.common.exception.ApiException;
 import com.wooseung.hancook.common.exception.ExceptionEnum;
@@ -10,6 +11,8 @@ import com.wooseung.hancook.db.repository.IngredientRepository;
 import com.wooseung.hancook.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -22,6 +25,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class CartServiceImpl implements CartService {
+    private static final Logger logger = LogManager.getLogger(CartServiceImpl.class);
     private final IngredientRepository ingredientRepository;
 
     private final UserRepository userRepository;
@@ -51,16 +55,13 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public void addIngredientToCartByIngredientId(Long ingredientId, String email) {
         // 컴포넌트 아이디로 이름 찾기
-        Optional<Ingredient> ingredient = ingredientRepository.findById(ingredientId);
-        if (ingredient.isEmpty()) {
-            throw new ApiException(ExceptionEnum.INGREDIENT_NOT_EXIST_EXCEPTION);
-        }
+        Ingredient ingredient = ingredientRepository.findIngredientByIngredientId(ingredientId);
 
         // 이메일에 맞는 유저 검색
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION));
 
-        cartRepository.save(new Cart(user, ingredient.get().getName()));
+        cartRepository.save(new Cart(user, ingredient.getName()));
     }
 
     @Override
