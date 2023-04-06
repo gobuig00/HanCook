@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /*
  * 레시피 API
  */
@@ -23,7 +26,7 @@ import java.util.Map;
 public class RecipeController {
 
     private final RecipeService recipeService;
-
+    private static final Logger logger = LogManager.getLogger(RecipeController.class);
     // 랜덤으로 레시피 3개 받아오기
     @GetMapping("/Popular")
     public ResponseEntity<List<RecipeResponseDto>> getRandomRecipe(@RequestParam("lan") int lan) {
@@ -69,10 +72,13 @@ public class RecipeController {
     // 이름이나 재료를 입력받아 포함되어 있는 레시피 데이터 반환
     @GetMapping("/search")
     public ResponseEntity<List<RecipeResponseDto>> searchRecipe(@RequestParam("name") String name, @RequestParam("lan") int lan) {
+        logger.info("name" + name);
         List<RecipeResponseDto> recipeResponseDtoListByName = recipeService.getRecipeByName(name, lan);
+        logger.info("recipeResponseDtoListByName" + recipeResponseDtoListByName.get(0));
         List<String> strList = new ArrayList<>();
         strList.add(name);
         List<RecipeResponseDto> recipeResponseDtoListByIngredient = recipeService.getRecipeByIngredient(strList, lan);
+        logger.info("recipeResponseDtoListByIngredient" + recipeResponseDtoListByIngredient.get(0));
 
         List<RecipeResponseDto> answerList = new ArrayList<>();
         // 이름을 입력받아 일치한 레시피 데이터 리스트
@@ -87,7 +93,7 @@ public class RecipeController {
         }
 
         for (RecipeResponseDto recipeResponseDto : answerList) {
-            System.out.println(recipeResponseDto.toString());
+            logger.info("This is an info message" +recipeResponseDto.getName());
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(answerList);
