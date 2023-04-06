@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /*
  * 레시피 API
  */
@@ -23,7 +26,7 @@ import java.util.Map;
 public class RecipeController {
 
     private final RecipeService recipeService;
-
+    private static final Logger logger = LogManager.getLogger(RecipeController.class);
     // 랜덤으로 레시피 3개 받아오기
     @GetMapping("/Popular")
     public ResponseEntity<List<RecipeResponseDto>> getRandomRecipe(@RequestParam("lan") int lan) {
@@ -87,7 +90,7 @@ public class RecipeController {
         }
 
         for (RecipeResponseDto recipeResponseDto : answerList) {
-            System.out.println(recipeResponseDto.toString());
+            logger.info("This is an info message" +recipeResponseDto.getName());
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(answerList);
