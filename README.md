@@ -3,7 +3,20 @@
 2023.02.27(월) ~ 2023.04.07(금) (39일간 진행)
 SSAFY 8기 2학기 특화프로젝트 - HanCook
 ## :computer: 서비스 화면
+### 물가분석 / 음식인식 
+<p align="center">
+<img src=https://user-images.githubusercontent.com/91431779/230371516-77fcfff1-db22-4473-bdf2-d4b10151c1bb.gif width="350" height="500"> 
+<img src=https://user-images.githubusercontent.com/91431779/230371913-8eb8499a-a18d-40fd-a9c5-3531f1bc83ca.gif width="350" height="500">
+</p>
+
+### 레시피 / 장바구니
+<p align="center">
+<img src=https://user-images.githubusercontent.com/91431779/230373362-5342a799-8016-49c5-98e7-3f4001b20bff.gif width="350" height="500"> 
+<img src=https://user-images.githubusercontent.com/91431779/230372052-430d0050-f524-45eb-9392-56a4719efa45.gif width="350" height="500">
+</p>
+
 ## :dart: 기획배경
+
 
 ## 🙆🏼‍♂️외국인을 위한 음식 소개 서비스
 
@@ -57,6 +70,8 @@ SSAFY 8기 2학기 특화프로젝트 - HanCook
 - Mattermost
 - Discord
 - notion
+
+## :open_file_folder: 프로젝트 파일 구조
 
 ## :two_men_holding_hands: 협업 환경
 ### GitLab
