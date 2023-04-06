@@ -1,7 +1,6 @@
 package com.wooseung.hancook.api.controller;
 
 import com.wooseung.hancook.api.response.CheckFoodResponseDto;
-import com.wooseung.hancook.api.response.RecipeResponseDto;
 import com.wooseung.hancook.api.service.FoodRecognitionService;
 import com.wooseung.hancook.api.service.IngredientService;
 import com.wooseung.hancook.api.service.RecipeService;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.StringTokenizer;
 
 @RestController
