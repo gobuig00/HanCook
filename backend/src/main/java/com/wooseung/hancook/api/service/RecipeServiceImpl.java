@@ -105,7 +105,6 @@ public class RecipeServiceImpl implements RecipeService {
     // 이름으로 검색해서 레시피 목록 가져오기
     @Override
     public List<RecipeResponseDto> getRecipeByName(String name, int lan) {
-        logger.info("getRecipeByName name" + name);
         int flag = detectLanguageService.detectLanguage(name);
 
         // 입력받은 이름이 영어라면 한글로 변환
@@ -161,11 +160,6 @@ public class RecipeServiceImpl implements RecipeService {
             int count = 0;
             HashSet<String> ingredientSet = new HashSet<>();
             for (String ingredientStr : ingredient) {
-                logger.info("ingredientStr" + ingredientStr);
-                StringTokenizer st = new StringTokenizer(ingredientStr, ",");
-                ingredientStr = st.nextToken();
-                logger.info("realIngredientStr" + ingredientStr);
-
                 int flag = detectLanguageService.detectLanguage(ingredientStr);
 
                 // 입력받은 재료가 영어라면 한글로 변환
