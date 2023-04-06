@@ -20,6 +20,8 @@ public interface RecipeService {
 
     List<RecipeResponseDto> getRecipeByIngredient(String[] ingredient, int lan);
 
+    List<RecipeResponseDto> getRecipeByIngredientList(List<String> ingredient, int lan);
+
     List<ComponentResponseDto> getIngredientByRecipeId(Long recipeId, int lan);
 
     List<ProcessResponseDto> getProcessByRecipeId(Long recipeId, int lan);
