@@ -17,6 +17,7 @@ export default function Camera() {
   const [data, setData ] = useState('');
   const [show, setShow] = useState(false);
   const [toastdata, setToastData] = useState('');
+  const [engFoodName, setEngFoodName] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('hancook-token');
@@ -32,6 +33,12 @@ export default function Camera() {
       setToastData('Please take a picture again.');
       setShow(true);
     } else {
+      axios.get(`${process.env.REACT_APP_API_URL}/translate/koreantoenglish?text=${data[status-1].food_name}`)
+          .then((res) => {
+            setEngFoodName(res.data)
+          }).catch((err) => {
+            console.log(err)
+          })
       setStatus(status+1);
     }
   }
@@ -141,8 +148,13 @@ export default function Camera() {
           setShow(true);
         } else {
           // 결과 배열이 존재할 경우, ConfirmModal을 띄웁니다.
-          
           setData(response.data.result[0].class_info)
+          axios.get(`${process.env.REACT_APP_API_URL}/translate/koreantoenglish?text=${response.data.result[0].class_info[0].food_name}`)
+          .then((res) => {
+            setEngFoodName(res.data)
+          }).catch((err) => {
+            console.log(err)
+          })
           setStatus(1);
         }
       })
@@ -165,8 +177,8 @@ export default function Camera() {
       <canvas ref={canvasRef} style={{display: 'none'}} />
       <Modal show={status !== 0} onHide={handleClose} backdrop='static' keyboard={false} centered>
         <ModalHeader closeButton>
-          {data[status-1] ? (
-            <Modal.Title>{data[status-1].food_name}</Modal.Title>
+          {engFoodName ? (
+            <Modal.Title>{engFoodName}</Modal.Title>
           ) : ('Nothing')}
         </ModalHeader>
         <Modal.Footer className='confirm-button-container'>
