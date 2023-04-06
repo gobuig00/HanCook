@@ -26,21 +26,21 @@ public class RecipeController {
 
     // 랜덤으로 레시피 3개 받아오기
     @GetMapping("/Popular")
-    public ResponseEntity<List<RecipeResponseDto>> getRandomRecipe(@RequestParam("lan") int lan){
+    public ResponseEntity<List<RecipeResponseDto>> getRandomRecipe(@RequestParam("lan") int lan) {
         List<RecipeResponseDto> recipeResponseDtoList = recipeService.getRandomRecipe(lan);
         return ResponseEntity.status(HttpStatus.OK).body(recipeResponseDtoList);
     }
 
     // 이름을 입력받아 일치하는 레시피 검색
     @GetMapping("/name")
-    public ResponseEntity<List<RecipeResponseDto>> getRecipeByName(@RequestParam("name") String name, @RequestParam("lan") int lan){
+    public ResponseEntity<List<RecipeResponseDto>> getRecipeByName(@RequestParam("name") String name, @RequestParam("lan") int lan) {
         List<RecipeResponseDto> recipeResponseDtoList = recipeService.getRecipeByName(name, lan);
         return ResponseEntity.status(HttpStatus.OK).body(recipeResponseDtoList);
     }
 
     // 레시피 ID를 입력받아 일치하는 레시피 데이터 및 재료, 과정 데이터 반환
     @GetMapping("/id")
-    public ResponseEntity<Map<String, Object>> getRecipeById(@RequestParam("recipeId") Long recipeId, @RequestParam("lan") int lan){
+    public ResponseEntity<Map<String, Object>> getRecipeById(@RequestParam("recipeId") Long recipeId, @RequestParam("lan") int lan) {
         Map<String, Object> result = new HashMap<>();
         result.put("recipe", recipeService.getRecipeById(recipeId, lan));
         result.put("ingredient", recipeService.getIngredientByRecipeId(recipeId, lan));
@@ -50,7 +50,7 @@ public class RecipeController {
 
     // 레시피 ID를 입력받아 일치하는 레시피 데이터 및 재료, 과정 데이터 반환
     @GetMapping("/card")
-    public ResponseEntity<Map<String, Object>> getRecipeCardById(@RequestParam("recipeId") Long recipeId, @RequestParam("lan") int lan){
+    public ResponseEntity<Map<String, Object>> getRecipeCardById(@RequestParam("recipeId") Long recipeId, @RequestParam("lan") int lan) {
         Map<String, Object> result = new HashMap<>();
 
         result.put("recipe", recipeService.getRecipeCardById(recipeId, lan));
@@ -61,14 +61,14 @@ public class RecipeController {
 
     // 재료 배열을 입력받아 포함되어 있는 레시피 데이터 반환
     @GetMapping("/ingredient")
-    public ResponseEntity<List<RecipeResponseDto>> getRecipeByIngredient(@RequestParam("ingredient") List<String> ingredient, @RequestParam("lan") int lan){
+    public ResponseEntity<List<RecipeResponseDto>> getRecipeByIngredient(@RequestParam("ingredient") List<String> ingredient, @RequestParam("lan") int lan) {
         List<RecipeResponseDto> recipeResponseDtoList = recipeService.getRecipeByIngredient(ingredient, lan);
         return ResponseEntity.status(HttpStatus.OK).body(recipeResponseDtoList);
     }
 
     // 이름이나 재료를 입력받아 포함되어 있는 레시피 데이터 반환
     @GetMapping("/search")
-    public ResponseEntity<List<RecipeResponseDto>> searchRecipe(@RequestParam("name") String name, @RequestParam("lan") int lan){
+    public ResponseEntity<List<RecipeResponseDto>> searchRecipe(@RequestParam("name") String name, @RequestParam("lan") int lan) {
         List<RecipeResponseDto> recipeResponseDtoListByName = recipeService.getRecipeByName(name, lan);
         List<String> strList = new ArrayList<>();
         strList.add(name);
@@ -86,12 +86,16 @@ public class RecipeController {
             if (!answerList.contains(recipeResponseDto)) answerList.add(recipeResponseDto);
         }
 
+        for (RecipeResponseDto recipeResponseDto : answerList) {
+            System.out.println(recipeResponseDto.toString());
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(answerList);
     }
 
     // 레시피 아이디를 입력받아 레시피 요리 순서, 설명 반환
     @GetMapping("/process")
-    public ResponseEntity<List<ProcessResponseDto>> getProcessByRecipe(@RequestParam("recipeId") Long recipeId, @RequestParam("lan") int lan){
+    public ResponseEntity<List<ProcessResponseDto>> getProcessByRecipe(@RequestParam("recipeId") Long recipeId, @RequestParam("lan") int lan) {
         List<ProcessResponseDto> processResponseDtoList = recipeService.getProcessByRecipeId(recipeId, lan);
         return ResponseEntity.status(HttpStatus.OK).body(processResponseDtoList);
     }
