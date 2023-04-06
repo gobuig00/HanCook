@@ -42,9 +42,6 @@ const Menu = () => {
         <div style={Object.assign({}, styles.slide, styles.slide1)} onClick={() => handleClick(0)}>
           <span className='carousel-selected-text'>Food</span> 
         </div>
-        <div style={Object.assign({}, styles.slide, styles.slide2)} onClick={() => handleClick(1)}>
-          <span className='carousel-selected-text'>Text</span>
-        </div>
       </Carousel>
     </div>
   );
