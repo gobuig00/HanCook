@@ -161,6 +161,11 @@ public class RecipeServiceImpl implements RecipeService {
             int count = 0;
             HashSet<String> ingredientSet = new HashSet<>();
             for (String ingredientStr : ingredient) {
+                logger.info("ingredientStr" + ingredientStr);
+                StringTokenizer st = new StringTokenizer(ingredientStr, ",");
+                ingredientStr = st.nextToken();
+                logger.info("realIngredientStr" + ingredientStr);
+
                 int flag = detectLanguageService.detectLanguage(ingredientStr);
 
                 // 입력받은 재료가 영어라면 한글로 변환
