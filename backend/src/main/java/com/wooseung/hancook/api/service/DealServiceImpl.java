@@ -102,12 +102,15 @@ public class DealServiceImpl implements DealService {
             String small = String.valueOf(ob[1]);
             String origin = String.valueOf(ob[2]);
 
+            List<Deal> dealDateList = dealRepository.findDealsByMediumAndSmallAndOriginAndDateRange(medium, small, origin, sevenDaysAgo, today); // medium, small, origin 이 같은 7일전까지의 데이터를 가져온다.
+
             if (lan == 1) {
-                medium = papagoTranslationService.translateKoreanIntoEnglish(medium);
-                small = papagoTranslationService.translateKoreanIntoEnglish(small);
+                for (Deal dealEntity : dealDateList) {
+                    dealEntity.setMedium(papagoTranslationService.translateKoreanIntoEnglish(dealEntity.getMedium()));
+                    dealEntity.setSmall(papagoTranslationService.translateKoreanIntoEnglish(dealEntity.getSmall()));
+                }
             }
 
-            List<Deal> dealDateList = dealRepository.findDealsByMediumAndSmallAndOriginAndDateRange(medium, small, origin, sevenDaysAgo, today); // medium, small, origin 이 같은 7일전까지의 데이터를 가져온다.
             returnList.addAll(dealDateList.stream().map(entity -> DealResponseDto.of(entity)).collect(Collectors.toList()));
         }
 
@@ -117,12 +120,15 @@ public class DealServiceImpl implements DealService {
             String small = String.valueOf(ob[1]);
             String origin = String.valueOf(ob[2]);
 
+            List<Deal> dealDateList = dealRepository.findDealsByMediumAndSmallAndOriginAndDateRange(medium, small, origin, sevenDaysAgo, today); // medium, small, origin 이 같은 7일전까지의 데이터를 가져온다.
+
             if (lan == 1) {
-                medium = papagoTranslationService.translateKoreanIntoEnglish(medium);
-                small = papagoTranslationService.translateKoreanIntoEnglish(small);
+                for (Deal dealEntity : dealDateList) {
+                    dealEntity.setMedium(papagoTranslationService.translateKoreanIntoEnglish(dealEntity.getMedium()));
+                    dealEntity.setSmall(papagoTranslationService.translateKoreanIntoEnglish(dealEntity.getSmall()));
+                }
             }
 
-            List<Deal> dealDateList = dealRepository.findDealsByMediumAndSmallAndOriginAndDateRange(medium, small, origin, sevenDaysAgo, today); // medium, small, origin 이 같은 7일전까지의 데이터를 가져온다.
             returnList.addAll(dealDateList.stream().map(entity -> DealResponseDto.of(entity)).collect(Collectors.toList()));
         }
 
