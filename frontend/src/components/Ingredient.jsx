@@ -22,6 +22,7 @@ function useIngredientPrice() {
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_API_URL}/deal/detail`, { params })
     .then(function (response) {
+      console.log(response.data)
       setData(response.data);
     })
     .catch(function (err) {
