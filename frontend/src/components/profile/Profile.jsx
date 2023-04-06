@@ -74,13 +74,13 @@ export default function Profile() {
         const token = localStorage.getItem("hancook-token");
 
         if (token) {
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}/record/get`, {
+            await axios.get(`${process.env.REACT_APP_API_URL}/record/get`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 }
             }).then(data=>{
                 console.log(data);
-                setProfile(createProfile(response.data));
+                setProfile(createProfile(data));
                 console.log(profile);
             });
         }
