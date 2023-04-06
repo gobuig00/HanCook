@@ -8,10 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -73,8 +70,11 @@ public class RecipeController {
     // 이름이나 재료를 입력받아 포함되어 있는 레시피 데이터 반환
     @GetMapping("/search")
     public ResponseEntity<List<RecipeResponseDto>> searchRecipe(@RequestParam("name") String name, @RequestParam("lan") int lan) {
-        name = "계란";
         logger.info("name" + name);
+
+        StringTokenizer st = new StringTokenizer(name, ",");
+        name = st.nextToken();
+
         List<RecipeResponseDto> recipeResponseDtoListByName = recipeService.getRecipeByName(name, lan);
         logger.info("recipeResponseDtoListByName" + recipeResponseDtoListByName.get(0));
         List<String> strList = new ArrayList<>();
