@@ -21,17 +21,11 @@ public class KafkaConsumerController {
 
     private final static String TOPIC_NAME = "deal";
     private final static String BOOTSTRAP_SERVERS = "localhost:9092";
-//    private final static String SECURITY_PROTOCOL = "SASL_SSL";
-//    private final static String JAAS_CONFIG = "org.apache.kafka.common." +
-//            "security.plain.PlainLoginModule   required username=''   " +
-//            "password='';";
-//    private final static String SSL_ENDPOINT = "https";
-//    private final static String SASL_MECHANISM = "PLAIN";
     private final static String GROUP_ID = "consumer-save-HanCook-";
     private final static int CONSUMER_COUNT = 6; // Partition 개수와 연동될 쓰레드 개수 (1 Partition : 1 Consumer Thread)
     private final static List<ConsumerWorker> workers = new ArrayList<>();
 
-    @Scheduled(cron = "00 51 13 * * *")
+    @Scheduled(cron = "00 02 00 * * *")
     private void work() {
         // 런타임 도중 셧다운 훅이 발생했을 때, 각 컨슈머를 운영하는 쓰레드에 종료를 알린다.
         Runtime.getRuntime().addShutdownHook(new ShutdownThread());
@@ -43,11 +37,6 @@ public class KafkaConsumerController {
         configs.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         configs.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         configs.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-
-//        configs.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL);
-//        configs.put(SaslConfigs.SASL_JAAS_CONFIG, JAAS_CONFIG);
-//        configs.put(SaslConfigs.SASL_MECHANISM, SASL_MECHANISM);
-//        configs.put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, SSL_ENDPOINT);
 
         // 컨슈머 쓰레드를 쓰레드 풀로 관리한다. 미리 만들어놓으면 연결을 한 번만 설정하면 되므로 오버헤드가 적어진다
         ExecutorService executorService = Executors.newCachedThreadPool();

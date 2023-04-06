@@ -11,6 +11,9 @@ import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructType;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,7 +22,7 @@ import java.util.Map;
 @Controller
 public class SparkController {
 
-    @Scheduled(cron = "00 00 16 * * *")
+    @Scheduled(cron = "00 00 03 * * *")
     public void processFiles() throws Exception {
 
         String date;
@@ -71,7 +74,7 @@ public class SparkController {
 
                     JavaRDD<Row> sizeRdd = inputRdd.map(line -> {
                         String[] parts = line.split(",");
-                        if (parts.length == 7 && parts[5].trim().equals("0")) {
+                        if (parts.length == 7 && parts[0].trim().equals(date.substring(2)) && parts[5].trim().equals("0")) {
                             return RowFactory.create("20" + parts[0].replaceAll("[^0-9]", "").trim(),
                                     parts[1].trim(),
                                     parts[2].trim(),
@@ -198,6 +201,15 @@ public class SparkController {
         }).filter(row -> row != null);
         Dataset<Row> martDf = spark.createDataFrame(martPar, schema);
         martDf.show();
+
+        String url = "jdbc:mysql://172.26.13.247:3306/hancookdb?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true";
+        Connection connection = DriverManager.getConnection(url, "ssafy", "ssafy");
+        Statement statement = connection.createStatement();
+        String deleteQuery = "DELETE FROM mart";
+        statement.executeUpdate(deleteQuery);
+        statement.close();
+        connection.close();
+
         martDf.write()
                 .mode(SaveMode.Append)
                 .format("jdbc")
