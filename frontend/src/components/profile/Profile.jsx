@@ -80,7 +80,7 @@ export default function Profile() {
                 }
             }).then(data=>{
                 console.log(data);
-                setProfile(createProfile(data));
+                setProfile(createProfile(data.data));
                 console.log(profile);
             });
         }
