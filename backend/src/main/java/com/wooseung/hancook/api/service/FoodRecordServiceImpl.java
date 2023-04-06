@@ -26,6 +26,8 @@ public class FoodRecordServiceImpl implements FoodRecordService {
     private final FoodRecordRepository foodRecordRepository;
     private final UserRepository userRepository;
 
+    private final PapagoTranslationService papagoTranslationService;
+
     @Override
     @Transactional
     public void insertFoodRecord(FoodRecordRequestDto foodRecordRequestDto, String email, int cnt) {
@@ -46,6 +48,7 @@ public class FoodRecordServiceImpl implements FoodRecordService {
                 .orElseThrow(() -> new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION));
 
         FoodRecord foodRecord = new FoodRecord(user, name, servingSize, unit, kcal, carb, protein, fat, sugar, salt, cholesterol, date);
+        foodRecord.setFoodName(papagoTranslationService.translateKoreanIntoEnglish(foodRecord.getFoodName()));
 
         for (int i = 0; i < cnt; i++) {
             foodRecordRepository.save(foodRecord);
