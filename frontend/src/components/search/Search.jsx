@@ -27,6 +27,7 @@ export default function Search() {
     };
     axios.get(`${process.env.REACT_APP_API_URL}/recipe/search`, { params })
     .then(response => {
+      console.log(response.data)
       setResult(response.data)
       setLoading(false)
     }).catch(err => {
