@@ -47,20 +47,15 @@ public class BeefCrawler implements Runnable {
             String filepath = "./data/beef/beef.csv";
             File wFile = new File(filepath);
             String NEWLINE = System.lineSeparator();
-            BufferedWriter bw = new BufferedWriter(new FileWriter(wFile));
 
-
-
+            FileOutputStream fos = new FileOutputStream(wFile);
+            OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
+            BufferedWriter bw = new BufferedWriter(osw);
 
             // 날짜 포매팅
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             date = dateFormat.format(day);
 
-
-//            File file = new File("src\\main\\resources\\search.txt");
-//            FileReader fileReader = null;
-//            fileReader = new FileReader(file);
-//            BufferedReader bufReader = new BufferedReader(fileReader);
             String code="4301 21\n" +
                     "4301 22\n" +
                     "4301 36\n" +
@@ -90,7 +85,7 @@ public class BeefCrawler implements Runnable {
 
         // Jsoup를 이용해서 크롤링
                 String pageUrl = "https://www.kamis.or.kr/customer/price/livestockRetail/period.do?action=daily&itemcategorycode=500&productrankcode=0&itemcode=" +
-                        itemcode + "&kindcode=" + kindcode + "&startday=" + today + "&endday=" + today;
+                        itemcode + "&kindcode=" + kindcode + "&startday=" + "20230201" + "&endday=" + "20230201";
 
                 Beef beef = new Beef();
                 beef.setDate(formatDay);

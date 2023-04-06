@@ -45,7 +45,7 @@ function Main() {
   const fetchData = async () => {
     try {
       const params = {
-        lan: 0,
+        lan: 1,
       };
       const dishAxios = await axios.get(`${process.env.REACT_APP_API_URL}/recipe/Popular`, {params});
       setDish(dishAxios.data)
@@ -61,7 +61,7 @@ function Main() {
       try {
         const params = {
           ingredient: ingreAxios.data[0].name,
-          lan: 0,
+          lan: 1,
         }
         const ingreDishAxios = await axios.get(`${process.env.REACT_APP_API_URL}/recipe/ingredient`,{params});
         setIngreDish(ingreDishAxios.data.slice(0, 4))
@@ -91,7 +91,7 @@ function Main() {
     try {
       const params = {
         ingredient: ingredientName,
-        lan: 0,
+        lan: 1,
       };
       const ingreDishAxios = await axios.get(`${process.env.REACT_APP_API_URL}/recipe/ingredient`, { params });
       setIngreDish(ingreDishAxios.data.slice(0, 4));
