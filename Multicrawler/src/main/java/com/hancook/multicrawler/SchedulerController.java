@@ -6,12 +6,10 @@ import org.springframework.stereotype.Controller;
 
 @Slf4j
 @Controller
-//@RequestMapping("/")
 public class SchedulerController {
 
     // Everyday 00:01:00 starts crawling
     @Scheduled(cron = "00 01 00 * * *")
-//    @GetMapping
     public void scheduler() {
         Runnable runnable = null;
 
@@ -24,9 +22,6 @@ public class SchedulerController {
         Thread t= new Thread(runnable);
         t.start();
 
-        runnable = new MartCrawler();
-        t = new Thread(runnable);
-        t.start();
     }
 
 }

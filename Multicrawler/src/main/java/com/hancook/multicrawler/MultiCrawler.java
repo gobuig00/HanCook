@@ -70,8 +70,7 @@ public class MultiCrawler implements Runnable {
         Document doc = null;
 
         try {
-            int tempN=page;
-            while(page < tempN + 500) { // 500페이지씩 읽어옴
+            while(page < (number * 500) + 500) { // 500페이지씩 읽어옴
                 // 1일치 만큼만 데이터 읽어오기
                 System.out.println("page : "+page+"number : "+(number));
 
@@ -104,7 +103,7 @@ public class MultiCrawler implements Runnable {
             splitContent(outputDateFormatStr, iterator.next().children());
 
             // 현재 날짜의 데이터가 아닌 경우, 더이상 데이터를 읽어올 필요가 없다.
-//            if(flag) return;
+            if(flag) return;
         }
     }
 
@@ -121,10 +120,10 @@ public class MultiCrawler implements Runnable {
         if(children.get(0).text().isEmpty() || date.equals(outputDateFormatStr)) {
             sb.append(date).append(", ");
         }
-//        else {
-//            flag = true;
-//            return;
-//        }
+        else {
+            flag = true;
+            return;
+        }
 
         // 부류, 품목
         for(int i = 3; i < 5; i++) {
@@ -167,8 +166,6 @@ public class MultiCrawler implements Runnable {
             sb.append("1, ");
             byNumber = Integer.parseInt(kg);
         }
-//        sb.append(byNumber).append(", "); 규격(100g or 개)
-
 
         // 가격
         float price = 0;
@@ -189,12 +186,4 @@ public class MultiCrawler implements Runnable {
         }
     }
 
-    /*private void writeFile(String date) {
-        try (PrintWriter writer = new PrintWriter(new File("./src/main/resources/"+ date + "/" + date + "_" + number + ".csv"))) {
-            writer.write(sb.toString());
-            writer.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }*/
 }
