@@ -83,7 +83,7 @@ public class RecipeController {
         logger.info("recipeResponseDtoListByName" + recipeResponseDtoListByName.get(0));
         List<String> strList = new ArrayList<>();
         strList.add(name);
-        List<RecipeResponseDto> recipeResponseDtoListByIngredient = recipeService.getRecipeByIngredient(strList, lan);
+        List<RecipeResponseDto> recipeResponseDtoListByIngredient = recipeService.getRecipeByIngredientList(strList, lan);
 
         List<RecipeResponseDto> answerList = new ArrayList<>();
         // 이름을 입력받아 일치한 레시피 데이터 리스트
