@@ -17,7 +17,6 @@ export default function Camera() {
   const [data, setData ] = useState('');
   const [show, setShow] = useState(false);
   const [toastdata, setToastData] = useState('');
-  const [imgdata, setImgData] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('hancook-token');
@@ -170,10 +169,6 @@ export default function Camera() {
             <Modal.Title>{data[status-1].food_name}</Modal.Title>
           ) : ('Nothing')}
         </ModalHeader>
-        {/* <Modal.Body>
-          <img src={data} alt="" />
-          맞음?
-        </Modal.Body> */}
         <Modal.Footer className='confirm-button-container'>
           <button onClick={handleNext} className='confirm-no-button'>
             No
