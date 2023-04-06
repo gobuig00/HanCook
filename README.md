@@ -5,14 +5,14 @@ SSAFY 8기 2학기 특화프로젝트 - HanCook
 ## :computer: 서비스 화면
 ## :dart: 기획배경
 
-### 🙆🏼‍♂️외국인을 위한 음식 소개 서비스
+## 🙆🏼‍♂️외국인을 위한 음식 소개 서비스
 
 1. 음식 인식을 통한 요리 이름 및 레시피 제공
 2. 실시간으로 제공되는 평균가, 최저가, 최고가 제공
 3. 장바구니 기능
 4. 장바구니에 들어있는 재료들의 마트별 판매정보 제공
 
-## :computer: 서비스 화면
+## :computer: 스토리보드
 
 ## :books: 기술 스텍 및 주요 기능
 ### 🖱️Backend
@@ -58,8 +58,8 @@ SSAFY 8기 2학기 특화프로젝트 - HanCook
 - Discord
 - notion
 
-# :two_men_holding_hands: 협업 환경
-## GitLab
+## :two_men_holding_hands: 협업 환경
+### GitLab
 ### Git Flow
 + 각자 맡은 기능에 맞게 ``` feature ``` 브랜치를 생성하여 개발
 + 완료된 기능은 ``` develop ``` 에 ``` merge ``` 
@@ -69,10 +69,10 @@ SSAFY 8기 2학기 특화프로젝트 - HanCook
 <br> ``` FIX ``` : 기능 변경, 기능 수정, 오류 수정
 <br> ``` REFACTOR ``` : 같은 기능을 하는 코드를 리팩토링
 
-## Notion
+### Notion
 + 팀 전체가 알아야 할 공지사항이나 프로젝트를 진행하면서 나오는 각종 산출물들의 형상관리
 
-## JIRA
+### JIRA
 + 협업 및 일정, 업무 관리를 JIRA를 통해 관리하였습니다.
 + 매 주 월요일 한 주동안 진행되어야 할 계획을 수립하여 진행할 이슈들을 스프린트를 만들어 등록
 
@@ -84,7 +84,7 @@ SSAFY 8기 2학기 특화프로젝트 - HanCook
 <img src=https://user-images.githubusercontent.com/91431779/219372056-b1257d25-3a76-4020-9628-1a98ca425077.png height="300">
 </p>
 
-## MatterMost
+### MatterMost
 + 일일 스크럼 회의록 관리
 + GitLab과 연동하여 실시간 GitLab 관리
 + Archiving채널을 통해서 각 종 정보 공유
