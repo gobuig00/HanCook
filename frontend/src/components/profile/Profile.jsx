@@ -25,10 +25,10 @@ export default function Profile() {
         'Content-Type': 'application/json',
       };
     axios.get(`${process.env.REACT_APP_API_URL}/record/get`, { headers: headers })
-              .then((res) => {
-                setProfile(createProfile(res.data));
-                console.log(res.data);
-              })
+              .then((res) => 
+                res.data
+              )
+              .then(res=>setProfile(createProfile(res)))
               .catch (() => {
                 console.log('err');
               })
@@ -92,6 +92,14 @@ export default function Profile() {
             return [foodName, kcalPer100g];
         });
 
+        console.log({
+            name: responseData[0].user.name,
+            totalCalories,
+            nutrition,
+            other,
+            ingestedFood,
+        })
+
         return {
             name: responseData[0].user.name,
             totalCalories,
@@ -104,42 +112,49 @@ export default function Profile() {
     
     return (
         <div className='profile-container'>
-            {profile !== null ? (
-                <>
+            {/* {profile !== null ? (
+                <> */}
                     <div className='profile-header'>
+                        {profile ? (<>
                         <h1>{profile.name}</h1><p>'s Profile</p>
+                        </>) : ('')
+                    }
                     </div>
                     <div className='profile-section'>
                         <h2>Daily Record</h2>
                         <div className='profile-calories'>
                             <span className='profile-sub-title'> kcal / day</span>
                             <div style={{margin: '3vh'}}>
-                                <span className='profile-big-font'>{profile.totalCalories}</span>
+                                {profile ? (<span className='profile-big-font'>{profile.totalCalories}</span>) : ('')}
+                                
                                 <span className='profile-kcal'>kcal</span>
                             </div>
                         </div>
                         <div className='profile-nutrition'>
-                            <Donut
+                            {profile ? (<Donut
                                 keyList = {['carbs', 'fat', 'protein']}
                                 valueList = {profile.nutrition.carbs ? Object.values(profile.nutrition) : [0, 0, 0]}
                                 title = {profile.nutrition.carbs ? 'Daily Nutrition Data' : 'There is No Nutrition Data'}
                                 centerText ={profile.nutrition.carbs ? `${profile.totalCalories} kcal` : ''}
-                            />
+                            />) : ('')}
+                            
                         </div>
                         <div className='profile-other'>
                             <div className='profile-sub-title'>Other Ingredients</div>
-                            <Table
+                            {profile ? (<Table
                                 body={profile.other}
-                            />
+                            />) : ('')}
+                            
                         </div>
                     </div>
                     <div className='profile-section'>
                         <h2>Ingested Food</h2>
                         <div className='profile-ingested-food'>
-                            <Table
+                            {profile ? (<Table
                                 head={['No.', 'Dish', 'kcal/100g']}
                                 body={profile.ingestedFood}
-                            />
+                            />) : ('')}
+                            
                         </div>
                     </div>
                     <div className='logout-button-container'>
@@ -148,10 +163,11 @@ export default function Profile() {
                     <footer>
                         <Footer />
                     </footer>
-                </>
-            ) : (
+                {/* </> */}
+            {/* ) : (
                 <div>Loading...</div>
-            )}
+            ) */}
         </div>
+        
     );    
 };
