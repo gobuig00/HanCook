@@ -15,7 +15,7 @@ export default function Profile() {
     const navigate = useNavigate();
     const [profile, setProfile] = useState(null);
 
-  useEffect(() => {
+    useEffect(() => {
     const token = localStorage.getItem('hancook-token');
     if (!token) {
       navigate('/login')
@@ -25,11 +25,14 @@ export default function Profile() {
         'Content-Type': 'application/json',
       };
     axios.get(`${process.env.REACT_APP_API_URL}/record/get`, { headers: headers })
-              .then(res=>setProfile(createProfile(res.data)))
+              .then((res) => {
+                setProfile(createProfile(res.data));
+                console.log(res.data);
+              })
               .catch (() => {
                 console.log('err');
               })
-  }, [navigate]);
+  }, []);
 
     const getToday = () => {
         const today = new Date();
@@ -42,20 +45,20 @@ export default function Profile() {
         navigate('/login')
     }
 
-    function useFetchProfile() {
-        const headers = {
-          'Authorization': `Bearer ${localStorage.getItem('hancook-token')}`,
-          'Content-Type': 'application/json',
-        };
+    // function useFetchProfile() {
+    //     const headers = {
+    //       'Authorization': `Bearer ${localStorage.getItem('hancook-token')}`,
+    //       'Content-Type': 'application/json',
+    //     };
       
-        useEffect(() => {
-              axios.get(`${process.env.REACT_APP_API_URL}/record/get`, { headers: headers })
-              .then(res=>createProfile(res.data))
-              .catch (() => {
-                console.log('err');
-              })
-            })
-      }
+    //     useEffect(() => {
+    //           axios.get(`${process.env.REACT_APP_API_URL}/record/get`, { headers: headers })
+    //           .then(res=>createProfile(res.data))
+    //           .catch (() => {
+    //             console.log('err');
+    //           })
+    //         })
+    //   }
       
     const isWithinLastWeek = (date) => {
         const today = getToday();
@@ -101,7 +104,7 @@ export default function Profile() {
     
     return (
         <div className='profile-container'>
-            {profile ? (
+            {profile !== null ? (
                 <>
                     <div className='profile-header'>
                         <h1>{profile.name}</h1><p>'s Profile</p>
