@@ -40,6 +40,7 @@ public class UserController {
         userService.emailCheck(email);
         return new ResponseEntity<>(new BaseResponseBody("SUCCESS", 200), HttpStatus.OK);
     }
+
     @GetMapping("/test")
     public ResponseEntity<?> test(@AuthenticationPrincipal UserDetails userDetails){
         logger.info(userDetails.getEmail());
