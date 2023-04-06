@@ -6,6 +6,8 @@ import com.wooseung.hancook.api.service.FoodRecognitionService;
 import com.wooseung.hancook.api.service.IngredientService;
 import com.wooseung.hancook.api.service.RecipeService;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.StringTokenizer;
 
 @RestController
 @RequestMapping("/food")
@@ -20,6 +23,7 @@ import java.util.List;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class FoodRecognitionController {
 
+    private static final Logger logger = LogManager.getLogger(FoodRecognitionController.class);
     private final FoodRecognitionService foodRecognitionService;
     private final RecipeService recipeService;
     private final IngredientService ingredientService;
@@ -38,6 +42,10 @@ public class FoodRecognitionController {
     // -1 : 해당 없음 / 1 : 음식 / 2 : 재료
     @GetMapping("/check")
     public ResponseEntity<CheckFoodResponseDto> checkFood(@RequestParam("name") String name) {
+        logger.info("name" + name);
+        StringTokenizer st = new StringTokenizer(name, ",");
+        name = st.nextToken();
+        logger.info("realName" + name);
 
         int checkFlag = -1;
         Long id = 1L;
