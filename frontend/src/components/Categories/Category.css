@@ -1,0 +1,16 @@
+.category {
+    font-family: "semibold";
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+}
+.isChosen {
+    color: #4d820e;
+}
+.isUnchosen {
+    color: #a0a0a0;
+}
+p {
+    margin : 3vw 0;
+}

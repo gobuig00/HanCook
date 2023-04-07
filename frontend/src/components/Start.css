@@ -1,0 +1,132 @@
+.start {
+  background-color: #F1F7EB;
+  min-height: max-content;
+}
+
+.start-header {
+  background-image: linear-gradient(
+    rgba(241, 247, 235, 0.23) 0%,
+    rgba(241, 247, 235, 0.5) 10%,
+    rgba(241, 247, 235, 0.6) 30%,
+    rgba(241, 247, 235, 0.7) 60%,
+    rgba(241, 247, 235, 1) 100%
+  ), url('../images/fullcourse.jpg');
+  background-size: cover;
+  width: 100%;
+  height: 66vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50vw;
+}
+
+.start-logo {
+  height: 28.5vw;
+  width: 95vw;
+}
+
+.take-picture-image {
+  width: 100%;
+  height: 66vw;
+  margin-bottom: 10vw;
+}
+
+.main-text-container {
+  font-family: 'semibolditalic';
+}
+
+.main-text-lineheight {
+  line-height: 28px;
+  margin-bottom: 0px;
+  display: flex;
+  justify-content: center;
+}
+
+.main-small-text-container {
+  color: #868686;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10vw;
+  font-family: 'semibolditalic';
+}
+
+.main-smaill-text-lineheight {
+  line-height: 20px;
+  margin-bottom: 0px;
+}
+
+.orange-text {
+  color: #FD964B;
+  font-size: 32px;
+}
+
+.black-text {
+  color: black;
+  font-size: 28px;
+}
+
+.green-text {
+  color: #69B550;
+  font-size: 32px;
+}
+
+footer {
+  position: fixed;
+  margin-top: auto;
+  bottom: 15px;
+  right: 2.5vw;
+  left: 2.5vw;
+}
+
+.get-started-button {
+  background-color: #69B550;
+  border-color: #69B550;
+  width: 95vw;
+  font-family: 'semibold';
+  font-size: 28px;
+}
+
+.main-line {
+  height: 5px;
+  background-color: #D9D9D9;
+  margin: 30vw 0px;
+}
+
+.seasonal-image-container {
+  margin-bottom: 10vw;
+}
+
+.seasonal-image {
+  width: 25%;
+  height: 45vw;
+}
+
+.buyimage {
+  width: 100%;
+  margin-bottom: 10vw;
+}
+
+.for-margin {
+  height: 15vh;
+}
+
+/* @media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+} */
+
+/* @keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} */
+
+
+
+
