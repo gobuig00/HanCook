@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,12 @@ public class FoodRecordServiceImpl implements FoodRecordService {
         double sugar = foodRecordRequestDto.getSugar();;
         double salt = foodRecordRequestDto.getSalt();
         double cholesterol = foodRecordRequestDto.getCholesterol();
-        LocalDateTime date = LocalDateTime.now();
+        // 현재 시간을 가져옵니다.
+        LocalDateTime now = LocalDateTime.now();
+        // 9시간 뒤의 시간을 계산합니다.
+        LocalDateTime nineHoursLater = now.plus(Duration.ofHours(9));
+
+        LocalDateTime date = nineHoursLater;
 
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ApiException(ExceptionEnum.MEMBER_NOT_EXIST_EXCEPTION));
