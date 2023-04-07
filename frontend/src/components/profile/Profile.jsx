@@ -24,6 +24,7 @@ const headers = {
 axios.get(`${process.env.REACT_APP_API_URL}/record/get`, { headers: headers })
           .then((response) => {
         const responseData = response.data
+        
           const today = getToday();
           const todaysData = responseData.filter((entry) => new Date(entry.eatDate) >= today);
           console.log(todaysData)
