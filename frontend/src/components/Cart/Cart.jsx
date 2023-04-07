@@ -33,7 +33,7 @@ export default function Cart() {
     .then((res) => {
       setCartItems(res.data)
     }).catch((err) => {
-      console.log(err)
+
     })
 
     // fetchCartItems();
@@ -41,9 +41,9 @@ export default function Cart() {
 
     // Check if the SDK is initialized
     if (Kakao.isInitialized()) {
-      console.log('Kakao SDK initialized.');
+  
     } else {
-      console.error('Failed to initialize Kakao SDK.');
+      
   }
   }, []);
 
@@ -90,7 +90,7 @@ export default function Cart() {
       
       return response.data.data.url;
     } catch (error) {
-      console.error('Error uploading image to server:', error);
+
       return null;
     }
   }
@@ -104,7 +104,7 @@ export default function Cart() {
   
     // Upload the captured image to the Spring server
     const imageUrl = await uploadImageToImgbb(imageBlob);
-    console.log(imageUrl)
+    
     
     if (imageUrl) {
       Kakao.Link.sendDefault({

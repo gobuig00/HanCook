@@ -72,7 +72,7 @@ function useRecipeAPI() {
           setOriginData(response.data);
         })
         .catch(() => {
-          console.log('There are no nutrient data.');
+          
         });
     }
   }, [data]);

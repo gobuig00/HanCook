@@ -22,11 +22,11 @@ function useIngredientPrice() {
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_API_URL}/deal/detail`, { params })
     .then(function (response) {
-      console.log(response.data)
+      
       setData(response.data);
     })
     .catch(function (err) {
-      console.log(err);
+   
     });
   }, []);
   return data;
@@ -46,7 +46,7 @@ function useRelatedFoodAPI(cardData) {
       setData(response.data.slice(0, 3));
     })
     .catch(function (err) {
-      console.log(err);
+
     });
     }
   }, [cardData]);
@@ -81,7 +81,7 @@ function useNutrition() {
       setData(nutrientData);
     })
     .catch(() => {
-      console.log('There is no nutrient data');
+
     });
   }, []);
   return data;
@@ -107,7 +107,7 @@ const useCardData = () => {
       setData(response.data);
     })
     .catch(function (err) {
-      console.log(err);
+    
     });
   }, []);
   return data;

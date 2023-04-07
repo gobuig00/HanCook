@@ -10,9 +10,9 @@ export const toggleExpandUtil = (prevExpanded, ingredient) => ({
   };
   
   export const selectItemUtil = (prevSelectedItems, item, index) => {
-    console.log(prevSelectedItems)
+
     if (prevSelectedItems[index].some((selectedItem) => selectedItem.ingredientName === item.ingredientName)) {
-      console.log('Item already added.');
+  
       return prevSelectedItems;
     }
     const newSelectedItems = [...prevSelectedItems];

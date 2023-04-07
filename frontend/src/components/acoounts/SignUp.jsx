@@ -72,17 +72,17 @@ export default function SignUp() {
 
             if (response.status === 201) {
                 // 회원가입 성공 시 할 일
-                console.log('회원가입 성공', response.data);
+   
                 navigate('/login');
             } else {
                 // 회원가입 실패 시 할 일
-                console.log('회원가입 실패', response.data);
+
             }
         } catch (error) {
-            console.error('회원가입 오류 : ', error);
+           
         }
 
-        // console.log('회원가입 정보: ', { email, password, name, gender })
+       
     }
     return (
         <div className="signup-container">

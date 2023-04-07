@@ -23,18 +23,18 @@ export default function Category({ categoryList, isChosen, setIsChosen, setPart,
             });
             setPart(ingreAxios.data)
           } catch(error) {
-            console.error('Error cheapIngre data: ', error);
+         
           }
 
         } catch (error) {
-          console.error('Error cheap data: ', error);
+   
         }
       } else if (chosen === 'Vegetable' || chosen === 'Meat' || chosen === 'Popular') {
         try {
           const ingreAxios = await axios.get(`${process.env.REACT_APP_API_URL}/ingredient/${chosen}`, {params});
           setPart(ingreAxios.data)
         } catch (error) {
-          console.error('Error VegiMeatPop data: ', error);
+   
         }
       }
     }
