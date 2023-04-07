@@ -26,36 +26,36 @@ export default function Profile() {
           try {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/record/get`, { headers: headers });
             const responseData = response.data;
-            console.log('responseData:' + responseData)
+            console.log(response.data)
             const today = getToday();
-            console.log('today:' + today)
+            console.log(today)
             const todaysData = responseData.filter((entry) => new Date(entry.eatDate) >= today);
-            console.log('todaysData: ' + todaysData);
+            console.log(todaysData)
               
             const totalCalories = todaysData.reduce((total, entry) => total + entry.kcal, 0);
-            console.log('totalCalories :' + totalCalories)
+            console.log(totalCalories)
             const nutrition = {
                 carbs: todaysData.reduce((total, entry) => total + entry.carb, 0),
                 fat: todaysData.reduce((total, entry) => total + entry.fat, 0),
                 protein: todaysData.reduce((total, entry) => total + entry.protein, 0),
             };
-            console.log('nutrition:' + nutrition)
             const other = {
                 'cholesterol (mg)': todaysData.reduce((total, entry) => total + entry.cholesterol, 0),
                 'sugar (g)': todaysData.reduce((total, entry) => total + entry.sugar, 0),
                 'salt (mg)': todaysData.reduce((total, entry) => total + entry.salt, 0),
             };
-            console.log('other :' + other)
+            console.log(other)
               
             const lastWeeksData = responseData
                 .filter((entry) => isWithinLastWeek(new Date(entry.eatDate)))
                 .sort((a, b) => new Date(b.eatDate) - new Date(a.eatDate)); // 최신 날짜가 먼저 오도록 정렬
-  
+            console.log(lastWeeksData)
             const ingestedFood = lastWeeksData.map((entry) => {
                 const kcalPer100g = entry.kcal / (entry.servingSize / 100);
                 const foodName = entry.foodName;
                 return [foodName, kcalPer100g];
             });
+            console.log(ingestedFood)
             setProfile({
                 name: responseData[0].user.name,
                 totalCalories,
@@ -154,6 +154,10 @@ return (
                 <div className='profile-header'>
                     {profile ? (<>
                     <h1>{profile.name}</h1><p>'s Profile</p>
+                    </>) : ('')
+                }
+                {profile ? (<>
+                    <h1>{profile.name}</h1><p></p>
                     </>) : ('')
                 }
                 </div>
