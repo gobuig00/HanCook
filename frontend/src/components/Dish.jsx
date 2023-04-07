@@ -41,7 +41,7 @@ function useRecipeAPI() {
       setData(response.data);
     })
     .catch(function () {
-      console.log('There is no food data');
+      
     });
   }, []);
 
