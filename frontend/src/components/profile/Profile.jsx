@@ -7,9 +7,32 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '../Footer';
 import Button from 'react-bootstrap/Button';
 
+
+  
+
+
 export default function Profile() {
     const navigate = useNavigate();
-    const [profile, setProfile] = useState({});
+    const [profile, setProfile] = useState(null);
+
+    useEffect(() => {
+    const token = localStorage.getItem('hancook-token');
+    if (!token) {
+      navigate('/login')
+    }
+    const headers = {
+        'Authorization': `Bearer ${localStorage.getItem('hancook-token')}`,
+        'Content-Type': 'application/json',
+      };
+    axios.get(`${process.env.REACT_APP_API_URL}/record/get`, { headers: headers })
+              .then((res) => 
+                res.data
+              )
+              .then(res=>setProfile(createProfile(res)))
+              .catch (() => {
+                console.log('err');
+              })
+  }, []);
 
     const getToday = () => {
         const today = new Date();
@@ -21,6 +44,21 @@ export default function Profile() {
         localStorage.removeItem('hancook-token');
         navigate('/login')
     }
+
+    // function useFetchProfile() {
+    //     const headers = {
+    //       'Authorization': `Bearer ${localStorage.getItem('hancook-token')}`,
+    //       'Content-Type': 'application/json',
+    //     };
+      
+    //     useEffect(() => {
+    //           axios.get(`${process.env.REACT_APP_API_URL}/record/get`, { headers: headers })
+    //           .then(res=>createProfile(res.data))
+    //           .catch (() => {
+    //             console.log('err');
+    //           })
+    //         })
+    //   }
       
     const isWithinLastWeek = (date) => {
         const today = getToday();
@@ -53,6 +91,14 @@ export default function Profile() {
             const foodName = entry.foodName;
             return [foodName, kcalPer100g];
         });
+
+        console.log({
+            name: responseData[0].user.name,
+            totalCalories,
+            nutrition,
+            other,
+            ingestedFood,
+        })
 
         return {
             name: responseData[0].user.name,
@@ -95,42 +141,49 @@ export default function Profile() {
     
     return (
         <div className='profile-container'>
-            {profile.name ? (
-                <>
+            {/* {profile !== null ? (
+                <> */}
                     <div className='profile-header'>
+                        {profile ? (<>
                         <h1>{profile.name}</h1><p>'s Profile</p>
+                        </>) : ('')
+                    }
                     </div>
                     <div className='profile-section'>
                         <h2>Daily Record</h2>
                         <div className='profile-calories'>
                             <span className='profile-sub-title'> kcal / day</span>
                             <div style={{margin: '3vh'}}>
-                                <span className='profile-big-font'>{profile.totalCalories}</span>
+                                {profile ? (<span className='profile-big-font'>{profile.totalCalories}</span>) : ('')}
+                                
                                 <span className='profile-kcal'>kcal</span>
                             </div>
                         </div>
                         <div className='profile-nutrition'>
-                            <Donut
+                            {profile ? (<Donut
                                 keyList = {['carbs', 'fat', 'protein']}
                                 valueList = {profile.nutrition.carbs ? Object.values(profile.nutrition) : [0, 0, 0]}
                                 title = {profile.nutrition.carbs ? 'Daily Nutrition Data' : 'There is No Nutrition Data'}
                                 centerText ={profile.nutrition.carbs ? `${profile.totalCalories} kcal` : ''}
-                            />
+                            />) : ('')}
+                            
                         </div>
                         <div className='profile-other'>
                             <div className='profile-sub-title'>Other Ingredients</div>
-                            <Table
+                            {profile ? (<Table
                                 body={profile.other}
-                            />
+                            />) : ('')}
+                            
                         </div>
                     </div>
                     <div className='profile-section'>
                         <h2>Ingested Food</h2>
                         <div className='profile-ingested-food'>
-                            <Table
+                            {profile ? (<Table
                                 head={['No.', 'Dish', 'kcal/100g']}
                                 body={profile.ingestedFood}
-                            />
+                            />) : ('')}
+                            
                         </div>
                     </div>
                     <div className='logout-button-container'>
@@ -139,10 +192,11 @@ export default function Profile() {
                     <footer>
                         <Footer />
                     </footer>
-                </>
-            ) : (
+                {/* </> */}
+            {/* ) : (
                 <div>Loading...</div>
-            )}
+            ) */}
         </div>
+        
     );    
 };
