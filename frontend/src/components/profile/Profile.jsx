@@ -66,7 +66,10 @@ export default function Profile() {
       
 
     useEffect(() => {
-        fetchProfile();
+        async function fetchData() {
+            await fetchProfile();
+        }
+        fetchData();
     }, []);
 
     const fetchProfile = async () => {
@@ -85,6 +88,7 @@ export default function Profile() {
             });
         }
         } catch (error) {
+            console.log(error)
             navigate('/login')
         }
     };
