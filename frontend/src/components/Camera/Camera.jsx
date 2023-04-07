@@ -37,13 +37,13 @@ export default function Camera() {
           .then((res) => {
             setEngFoodName(res.data)
           }).catch((err) => {
-            console.log(err)
+          
           })
       setStatus(status+1);
     }
   }
   const handleYes = useCallback ((name) => {
-    console.log(name)
+    
     axios.get(`${process.env.REACT_APP_API_URL}/food/check?name=${name}`)
     .then((res) => {
       if (res.data.checkFlag === -1) {
@@ -56,9 +56,9 @@ export default function Camera() {
         setStatus(0);
         navigate(`/ingredient/${res.data.id}`);
       }
-      console.log(res);
+  
     }).catch((err) => {
-      console.log(err)
+   
     })
   }, [navigate]);
 
@@ -93,7 +93,7 @@ export default function Camera() {
         });
         handleStream(stream);
       } catch (err) {
-        console.log(err);
+    
       }
     };
   }
@@ -116,7 +116,7 @@ export default function Camera() {
       const context = canvas.getContext('2d');
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
       const dataUrl = canvas.toDataURL('image/png')
-      // console.log(dataUrl)
+  
       imageMaker(dataUrl);
     }
   }, []);
@@ -153,7 +153,7 @@ export default function Camera() {
           .then((res) => {
             setEngFoodName(res.data)
           }).catch((err) => {
-            console.log(err)
+         
           })
           setStatus(1);
         }
