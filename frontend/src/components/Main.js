@@ -50,7 +50,7 @@ function Main() {
       const dishAxios = await axios.get(`${process.env.REACT_APP_API_URL}/recipe/Popular`, {params});
       setDish(dishAxios.data)
       const ingreAxios = await axios.get(`${process.env.REACT_APP_API_URL}/ingredient/Popular`, {params});
-      console.log(ingreAxios.data)
+   
       setIngredients(ingreAxios.data)
       setIngreName(ingreAxios.data[0].name)
       const priceChangeAxios = await axios.get(`${process.env.REACT_APP_API_URL}/deal/change`, {params});
@@ -68,11 +68,11 @@ function Main() {
         setIngreDish(ingreDishAxios.data.slice(0, 4))
         
       } catch (error) {
-        console.error('Error fetching data: ', error);
+    
       }
     }
     catch (error) {
-      console.error('Error fetching data: ', error);
+    
     }
   };
   const groupDataBySmall = (data) => {
