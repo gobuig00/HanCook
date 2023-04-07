@@ -155,11 +155,7 @@ return (
                     {profile ? (<>
                     <h1>{profile.name}</h1><p>'s Profile</p>
                     </>) : ('')
-                }
-                {profile ? (<>
-                    <h1>{profile.name}</h1><p></p>
-                    </>) : ('')
-                }
+                } 
                 </div>
                 <div className='profile-section'>
                     <h2>Daily Record</h2>
