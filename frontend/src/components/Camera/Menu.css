@@ -1,0 +1,27 @@
+.carousel-slider {
+  overflow: visible !important;
+}
+
+.slider-wrapper {
+  overflow: visible !important;
+  color: #A0A0A0;
+}
+
+.selected-background {
+  position: absolute;
+  width: 80px;
+  height: 40px;
+  background-color: #4D820E;
+  border-radius: 10px;
+}
+
+.menu-carousel-position {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+li.selected {
+  color: white;
+}
