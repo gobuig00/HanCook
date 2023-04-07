@@ -109,6 +109,35 @@ export default function Profile() {
         };
     };
     
+      
+
+    useEffect(() => {
+        async function fetchData() {
+            await fetchProfile();
+        }
+        fetchData();
+    }, []);
+
+    const fetchProfile = async () => {
+        try {
+        const token = localStorage.getItem("hancook-token");
+
+        if (token) {
+            await axios.get(`${process.env.REACT_APP_API_URL}/record/get`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            }).then(data=>{
+                console.log(data);
+                setProfile(createProfile(data.data));
+                console.log(profile);
+            });
+        }
+        } catch (error) {
+            console.log(error)
+            navigate('/login')
+        }
+    };
     
     return (
         <div className='profile-container'>
