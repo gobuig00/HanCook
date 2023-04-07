@@ -26,14 +26,10 @@ export default function Profile() {
           try {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/record/get`, { headers: headers });
             const responseData = response.data;
-            console.log(response.data)
             const today = getToday();
-            console.log(today)
-            const todaysData = responseData.filter((entry) => new Date(entry.eatDate) >= today);
-            console.log(todaysData)
-              
+            const todaysData = responseData.filter((entry) => new Date(entry.eatDate) >= today);      
             const totalCalories = todaysData.reduce((total, entry) => total + entry.kcal, 0);
-            console.log(totalCalories)
+     
             const nutrition = {
                 carbs: todaysData.reduce((total, entry) => total + entry.carb, 0),
                 fat: todaysData.reduce((total, entry) => total + entry.fat, 0),
@@ -44,18 +40,15 @@ export default function Profile() {
                 'sugar (g)': todaysData.reduce((total, entry) => total + entry.sugar, 0),
                 'salt (mg)': todaysData.reduce((total, entry) => total + entry.salt, 0),
             };
-            console.log(other)
               
             const lastWeeksData = responseData
                 .filter((entry) => isWithinLastWeek(new Date(entry.eatDate)))
                 .sort((a, b) => new Date(b.eatDate) - new Date(a.eatDate)); // 최신 날짜가 먼저 오도록 정렬
-            console.log(lastWeeksData)
             const ingestedFood = lastWeeksData.map((entry) => {
                 const kcalPer100g = entry.kcal / (entry.servingSize / 100);
                 const foodName = entry.foodName;
                 return [foodName, kcalPer100g];
             });
-            console.log(ingestedFood)
             setProfile({
                 name: responseData[0].user.name,
                 totalCalories,
@@ -64,7 +57,7 @@ export default function Profile() {
                 ingestedFood,
             })
             } catch (error) {
-                console.log('err');
+         
               }
             };
             fetchData();
@@ -80,21 +73,6 @@ const logOut = () => {
     localStorage.removeItem('hancook-token');
     navigate('/login')
 }
-
-// function useFetchProfile() {
-//     const headers = {
-//       'Authorization': `Bearer ${localStorage.getItem('hancook-token')}`,
-//       'Content-Type': 'application/json',
-//     };
-  
-//     useEffect(() => {
-//           axios.get(`${process.env.REACT_APP_API_URL}/record/get`, { headers: headers })
-//           .then(res=>createProfile(res.data))
-//           .catch (() => {
-//             console.log('err');
-//           })
-//         })
-//   }
   
 const isWithinLastWeek = (date) => {
     const today = getToday();
@@ -102,49 +80,6 @@ const isWithinLastWeek = (date) => {
     return date >= oneWeekAgo && date < new Date(today.valueOf() + 24 * 60 * 60 * 1000);
 };
 
-// const createProfile = (responseData) => {
-//         const today = getToday();
-//         const todaysData = responseData.filter((entry) => new Date(entry.eatDate) >= today);
-//         console.log(todaysData)
-        
-//         const totalCalories = todaysData.reduce((total, entry) => total + entry.kcal, 0);
-//         const nutrition = {
-//             carbs: todaysData.reduce((total, entry) => total + entry.carb, 0),
-//             fat: todaysData.reduce((total, entry) => total + entry.fat, 0),
-//             protein: todaysData.reduce((total, entry) => total + entry.protein, 0),
-//         };
-//         const other = {
-//             'cholesterol (mg)': todaysData.reduce((total, entry) => total + entry.cholesterol, 0),
-//             'sugar (g)': todaysData.reduce((total, entry) => total + entry.sugar, 0),
-//             'salt (mg)': todaysData.reduce((total, entry) => total + entry.salt, 0),
-//         };
-        
-//         const lastWeeksData = responseData
-//             .filter((entry) => isWithinLastWeek(new Date(entry.eatDate)))
-//             .sort((a, b) => new Date(b.eatDate) - new Date(a.eatDate)); // 최신 날짜가 먼저 오도록 정렬
-
-//         const ingestedFood = lastWeeksData.map((entry) => {
-//             const kcalPer100g = entry.kcal / (entry.servingSize / 100);
-//             const foodName = entry.foodName;
-//             return [foodName, kcalPer100g];
-//         });
-
-//         console.log({
-//             name: responseData[0].user.name,
-//             totalCalories,
-//             nutrition,
-//             other,
-//             ingestedFood,
-//         })
-
-//         return {
-//             name: responseData[0].user.name,
-//             totalCalories,
-//             nutrition,
-//             other,
-//             ingestedFood,
-//         };
-// };
 
 
 return (
